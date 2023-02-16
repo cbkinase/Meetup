@@ -9,6 +9,10 @@ module.exports = (sequelize, DataTypes) => {
             return { id, username, email };
         }
 
+        validatePassword(password) {
+            return bcrypt.compareSync(password, this.hashedPassword.toString());
+        }
+
         static getCurrentUserById(id) {
             return User.scope("currentUser").findByPk(id);
         }
@@ -70,12 +74,6 @@ module.exports = (sequelize, DataTypes) => {
                 allowNull: false,
                 validate: {
                     len: [60, 60],
-                    validatePassword(password) {
-                        return bcrypt.compareSync(
-                            password,
-                            this.hashedPassword.toString()
-                        );
-                    },
                 },
             },
         },
