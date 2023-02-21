@@ -2,13 +2,14 @@
 
 let options = {};
 if (process.env.NODE_ENV === "production") {
-    options.schema = process.env.SCHEMA; // define your schema in options object
+    options.schema = process.env.SCHEMA;
 }
 
+/** @type {import('sequelize-cli').Migration} */
 module.exports = {
-    up: async (queryInterface, Sequelize) => {
-        return queryInterface.createTable(
-            "Users",
+    async up(queryInterface, Sequelize) {
+        await queryInterface.createTable(
+            "Venues",
             {
                 id: {
                     allowNull: false,
@@ -16,19 +17,25 @@ module.exports = {
                     primaryKey: true,
                     type: Sequelize.INTEGER,
                 },
-                username: {
-                    type: Sequelize.STRING(30),
-                    allowNull: false,
-                    unique: true,
+                groupId: {
+                    type: Sequelize.INTEGER,
+                    references: { model: "Groups", key: "id" },
+                    onDelete: "CASCADE",
                 },
-                email: {
-                    type: Sequelize.STRING(256),
-                    allowNull: false,
-                    unique: true,
-                },
-                hashedPassword: {
+                address: {
                     type: Sequelize.STRING,
-                    allowNull: false,
+                },
+                city: {
+                    type: Sequelize.STRING,
+                },
+                state: {
+                    type: Sequelize.STRING,
+                },
+                lat: {
+                    type: Sequelize.DECIMAL,
+                },
+                lng: {
+                    type: Sequelize.DECIMAL,
                 },
                 createdAt: {
                     allowNull: false,
@@ -44,8 +51,8 @@ module.exports = {
             options
         );
     },
-    down: async (queryInterface, Sequelize) => {
-        options.tableName = "Users";
-        return queryInterface.dropTable(options);
+    async down(queryInterface, Sequelize) {
+        options.tableName = "Venues";
+        await queryInterface.dropTable(options);
     },
 };
