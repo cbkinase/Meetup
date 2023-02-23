@@ -122,12 +122,13 @@ router.post("/:id/images", requireAuth, async (req, res, next) => {
         err.status = 404;
         return next(err);
     }
+
     if (req.user.id !== group.organizerId) {
         let err = new Error("Forbidden");
         err.status = 403;
         return next(err);
     }
-    console.log;
+
     let img = await group.createGroupImage({
         url: req.body.url,
         preview: req.body.preview,
@@ -137,6 +138,52 @@ router.post("/:id/images", requireAuth, async (req, res, next) => {
         url: img.url,
         preview: img.preview,
     });
+});
+
+router.delete("/:id", requireAuth, async (req, res, next) => {
+    let group = await Group.findByPk(req.params.id);
+    if (!group) {
+        let err = new Error("Group couldn't be found");
+        err.status = 404;
+        return next(err);
+    }
+
+    if (req.user.id !== group.organizerId) {
+        let err = new Error("Forbidden");
+        err.status = 403;
+        return next(err);
+    }
+
+    await group.destroy();
+    return res.json({
+        message: "Successfully deleted",
+        statusCode: 200,
+    });
+});
+
+router.put("/:id", groupCreationMiddleware, async (req, res, next) => {
+    let group = await Group.findByPk(req.params.id);
+    if (!group) {
+        let err = new Error("Group couldn't be found");
+        err.status = 404;
+        return next(err);
+    }
+
+    if (req.user.id !== group.organizerId) {
+        let err = new Error("Forbidden");
+        err.status = 403;
+        return next(err);
+    }
+
+    await group.update({
+        name: req.body.name,
+        about: req.body.about,
+        type: req.body.type,
+        private: req.body.private,
+        city: req.body.city,
+        state: req.body.state,
+    });
+    return res.json(group);
 });
 
 router.get("/:id", async (req, res, next) => {
