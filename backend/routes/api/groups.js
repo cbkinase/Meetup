@@ -1,10 +1,17 @@
 const express = require("express");
 const { setTokenCookie, restoreUser } = require("../../utils/auth");
-const { User, Group, GroupImage, Membership } = require("../../db/models");
+const {
+    User,
+    Group,
+    GroupImage,
+    Membership,
+    Venue,
+} = require("../../db/models");
 const { check } = require("express-validator");
 const { handleValidationErrors } = require("../../utils/validation");
 const { requireAuth } = require("../../utils/auth");
 const { Op } = require("sequelize");
+const { route } = require("./users");
 
 const router = express.Router();
 
@@ -67,7 +74,23 @@ router.get("/current", requireAuth, async (req, res, next) => {
         delete group.GroupImages;
         return group;
     });
-    res.json({ Groups: groups });
+    return res.json({ Groups: groups });
+});
+
+router.get("/:id", async (req, res, next) => {
+    let group = await Group.findByPk(req.params.id, {
+        include: { all: true },
+    });
+    if (!group) {
+        let err = new Error("Group couldn't be found");
+        err.status = 404;
+        return next(err);
+    }
+    group = group.toJSON();
+    delete group.Memberships;
+    group.Organizer = group.User;
+    delete group.User;
+    return res.json(group);
 });
 
 module.exports = router;
