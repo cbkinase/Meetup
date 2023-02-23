@@ -32,12 +32,20 @@ module.exports = (sequelize, DataTypes) => {
             }
         }
 
-        static async signup({ username, email, password }) {
+        static async signup({
+            username,
+            email,
+            password,
+            firstName,
+            lastName,
+        }) {
             const hashedPassword = bcrypt.hashSync(password);
             const user = await User.create({
                 username,
                 email,
                 hashedPassword,
+                firstName,
+                lastName,
             });
             return await User.scope("currentUser").findByPk(user.id);
         }
@@ -67,6 +75,10 @@ module.exports = (sequelize, DataTypes) => {
                         }
                     },
                 },
+                unique: {
+                    args: true,
+                    msg: "User with that username already exists",
+                },
             },
             email: {
                 type: DataTypes.STRING,
@@ -75,9 +87,13 @@ module.exports = (sequelize, DataTypes) => {
                     len: [3, 256],
                     isEmail: true,
                 },
+                unique: {
+                    args: true,
+                    msg: "User with that email already exists",
+                },
             },
             hashedPassword: {
-                type: DataTypes.STRING.BINARY,
+                type: DataTypes.STRING,
                 allowNull: false,
                 validate: {
                     len: [60, 60],
@@ -113,7 +129,9 @@ module.exports = (sequelize, DataTypes) => {
             },
             scopes: {
                 currentUser: {
-                    attributes: { exclude: ["hashedPassword"] },
+                    attributes: {
+                        exclude: ["hashedPassword", "createdAt", "updatedAt"],
+                    },
                 },
                 loginUser: {
                     attributes: {},
