@@ -93,6 +93,7 @@ router.get("/:id", async (req, res, next) => {
     delete group.Memberships;
     group.Organizer = group.User;
     delete group.User;
+    delete group.Organizer.username;
     return res.json(group);
 });
 
