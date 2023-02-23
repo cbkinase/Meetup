@@ -67,7 +67,6 @@ app.use((err, _req, _res, next) => {
         }
         err.title = "Validation error";
         err.errors = errors;
-        err.status = 400;
     }
     next(err);
 });
@@ -77,7 +76,7 @@ app.use((err, _req, res, _next) => {
     res.status(err.status || 500);
     console.error(err);
     res.json({
-        title: err.title || "Server Error",
+        // title: err.title || "Server Error",
         message: err.message,
         statusCode: err.status,
         errors: err.errors,

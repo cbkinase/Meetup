@@ -35,15 +35,21 @@ const validateSignup = [
 const router = express.Router();
 
 // Sign up
-router.post("/", validateSignup, async (req, res) => {
+router.post("/", validateSignup, async (req, res, next) => {
     const { email, password, firstName, lastName, username } = req.body;
-    let user = await User.signup({
-        email,
-        password,
-        firstName,
-        lastName,
-        username,
-    });
+    let user;
+    try {
+        user = await User.signup({
+            email,
+            password,
+            firstName,
+            lastName,
+            username,
+        });
+    } catch (err) {
+        err.status = 403;
+        next(err);
+    }
 
     const tok = await setTokenCookie(res, user);
     user = user.toJSON();
