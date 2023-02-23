@@ -16,19 +16,19 @@ module.exports = {
                     url: "banana",
                     preview: true,
                 },
+                // {
+                //     groupId: 2,
+                //     url: "banana",
+                //     preview: true,
+                // },
                 {
-                    groupId: 2,
+                    groupId: 3,
                     url: "banana",
                     preview: true,
                 },
                 {
                     groupId: 3,
-                    url: "banana",
-                    preview: true,
-                },
-                {
-                    groupId: 3,
-                    url: "banana",
+                    url: "banana2",
                     preview: false,
                 },
             ],
