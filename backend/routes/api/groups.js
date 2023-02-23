@@ -115,6 +115,30 @@ router.post("/", groupCreationMiddleware, async (req, res, next) => {
     return res.json(group);
 });
 
+router.post("/:id/images", requireAuth, async (req, res, next) => {
+    let group = await Group.findByPk(req.params.id);
+    if (!group) {
+        let err = new Error("Group couldn't be found");
+        err.status = 404;
+        return next(err);
+    }
+    if (req.user.id !== group.organizerId) {
+        let err = new Error("Forbidden");
+        err.status = 403;
+        return next(err);
+    }
+    console.log;
+    let img = await group.createGroupImage({
+        url: req.body.url,
+        preview: req.body.preview,
+    });
+    return res.json({
+        id: img.id,
+        url: img.url,
+        preview: img.preview,
+    });
+});
+
 router.get("/:id", async (req, res, next) => {
     let group = await Group.findByPk(req.params.id, {
         include: { all: true },
