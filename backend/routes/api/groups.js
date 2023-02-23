@@ -86,7 +86,10 @@ router.get("/:id", async (req, res, next) => {
         err.status = 404;
         return next(err);
     }
+
+    numMembers = await group.getMemberships();
     group = group.toJSON();
+    group.numMembers = numMembers.length;
     delete group.Memberships;
     group.Organizer = group.User;
     delete group.User;
