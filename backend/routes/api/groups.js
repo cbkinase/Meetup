@@ -19,8 +19,9 @@ router.get("/", async (req, res, next) => {
         const members = await grp.getMemberships();
         counts.push(members.length);
     }
-    groups = groups.map((group) => group.toJSON());
+
     groups = groups.map((group, idx) => {
+        group = group.toJSON();
         group.numMembers = counts[idx];
         group.previewImage = group.GroupImages[0].url;
         delete group.GroupImages;
