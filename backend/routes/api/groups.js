@@ -13,6 +13,8 @@ const { requireAuth } = require("../../utils/auth");
 const { Op } = require("sequelize");
 const { route } = require("./users");
 
+// Some middleware
+
 async function ensureGroupExists(req, res, next) {
     if (!req.params.groupId) {
         req.params.groupId = req.params.id;
@@ -61,6 +63,53 @@ async function ensureUserIsCoHost(req, res, next) {
     }
     next();
 }
+
+const validateGroupCreation = [
+    check("name")
+        .exists({ checkFalsy: true })
+        .isLength({ max: 60 })
+        .withMessage("Name must be 60 characters or less"),
+    check("about")
+        .exists({ checkFalsy: true })
+        .isLength({ min: 50 })
+        .withMessage("About must be 50 characters or more"),
+    check("type")
+        .exists({ checkFalsy: true })
+        .isIn(["Online", "In person"])
+        .withMessage("Type must be 'Online' or 'In person'"),
+    check("private")
+        .exists()
+        .isBoolean()
+        .withMessage("Private must be boolean"),
+    check("city").exists().withMessage("City is required"),
+    check("state").exists().withMessage("State is required"),
+    handleValidationErrors,
+];
+const groupCreationMiddleware = [requireAuth, ...validateGroupCreation];
+
+const validateVenueCreation = [
+    check("address")
+        .exists({ checkFalsy: true })
+        .withMessage("Street address is required"),
+    check("city").exists().withMessage("City is required"),
+    check("state").exists().withMessage("State is required"),
+    check("lat")
+        .exists()
+        .isFloat({ min: -180, max: 180 })
+        .withMessage("Latitude is not valid"),
+    check("lng")
+        .exists()
+        .isFloat({ min: -180, max: 180 })
+        .withMessage("Longitude is not valid"),
+    handleValidationErrors,
+];
+
+const venueCreationMiddleware = [
+    requireAuth,
+    ensureGroupExists,
+    ensureUserIsCoHost,
+    ...validateVenueCreation,
+];
 
 const router = express.Router();
 
@@ -134,29 +183,6 @@ router.get("/current", requireAuth, async (req, res, next) => {
     return res.json({ Groups: groups });
 });
 
-const validateGroupCreation = [
-    check("name")
-        .exists({ checkFalsy: true })
-        .isLength({ max: 60 })
-        .withMessage("Name must be 60 characters or less"),
-    check("about")
-        .exists({ checkFalsy: true })
-        .isLength({ min: 50 })
-        .withMessage("About must be 50 characters or more"),
-    check("type")
-        .exists({ checkFalsy: true })
-        .isIn(["Online", "In person"])
-        .withMessage("Type must be 'Online' or 'In person'"),
-    check("private")
-        .exists()
-        .isBoolean()
-        .withMessage("Private must be boolean"),
-    check("city").exists().withMessage("City is required"),
-    check("state").exists().withMessage("State is required"),
-    handleValidationErrors,
-];
-const groupCreationMiddleware = [requireAuth, ...validateGroupCreation];
-
 // Create a Group
 
 router.post("/", groupCreationMiddleware, async (req, res, next) => {
@@ -211,30 +237,6 @@ router.get(
 );
 
 // Create a new Venue for a Group specified by its id
-
-const validateVenueCreation = [
-    check("address")
-        .exists({ checkFalsy: true })
-        .withMessage("Street address is required"),
-    check("city").exists().withMessage("City is required"),
-    check("state").exists().withMessage("State is required"),
-    check("lat")
-        .exists()
-        .isFloat({ min: -180, max: 180 })
-        .withMessage("Latitude is not valid"),
-    check("lng")
-        .exists()
-        .isFloat({ min: -180, max: 180 })
-        .withMessage("Longitude is not valid"),
-    handleValidationErrors,
-];
-
-const venueCreationMiddleware = [
-    requireAuth,
-    ensureGroupExists,
-    ensureUserIsCoHost,
-    ...validateVenueCreation,
-];
 
 router.post(
     "/:groupId/venues",
