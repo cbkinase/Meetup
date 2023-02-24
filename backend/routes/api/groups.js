@@ -66,7 +66,6 @@ router.get("/current", requireAuth, async (req, res, next) => {
             },
         ],
     });
-    console.log(groups);
     const counts = [];
     for (const grp of groups) {
         const members = await grp.getMemberships();
