@@ -45,7 +45,21 @@ async function ensureUserIsCoHost(req, res, next) {
     if (!req.params.groupId) {
         req.params.groupId = req.params.id;
     }
-    let group = await Group.findByPk(req.params.groupId);
+    let group = await Group.findByPk(req.params.groupId, {
+        include: {
+            model: Membership,
+            where: {
+                userId: req.user.id,
+                status: "co-host",
+            },
+        },
+    });
+    if (!group) {
+        let err = new Error("Forbidden");
+        err.status = 403;
+        return next(err);
+    }
+    next();
 }
 
 const router = express.Router();
@@ -218,7 +232,7 @@ const validateVenueCreation = [
 const venueCreationMiddleware = [
     requireAuth,
     ensureGroupExists,
-    ensureUserIsOrganizer,
+    ensureUserIsCoHost,
     ...validateVenueCreation,
 ];
 
