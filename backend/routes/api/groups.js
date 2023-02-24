@@ -13,6 +13,41 @@ const { requireAuth } = require("../../utils/auth");
 const { Op } = require("sequelize");
 const { route } = require("./users");
 
+async function ensureGroupExists(req, res, next) {
+    if (!req.params.groupId) {
+        req.params.groupId = req.params.id;
+    }
+    let group = await Group.findByPk(req.params.groupId);
+
+    if (!group) {
+        let err = new Error("Group couldn't be found");
+        err.status = 404;
+        return next(err);
+    }
+    next();
+}
+
+async function ensureUserIsOrganizer(req, res, next) {
+    if (!req.params.groupId) {
+        req.params.groupId = req.params.id;
+    }
+    let group = await Group.findByPk(req.params.groupId);
+
+    if (req.user.id !== group.organizerId) {
+        let err = new Error("Forbidden");
+        err.status = 403;
+        return next(err);
+    }
+    next();
+}
+
+async function ensureUserIsCoHost(req, res, next) {
+    if (!req.params.groupId) {
+        req.params.groupId = req.params.id;
+    }
+    let group = await Group.findByPk(req.params.groupId);
+}
+
 const router = express.Router();
 
 // Get all Groups
@@ -132,102 +167,123 @@ router.post("/", groupCreationMiddleware, async (req, res, next) => {
 
 // Get All Venues for a Group specified by its id
 
-router.get("/:id/venues", requireAuth, async (req, res, next) => {
-    let group = await Group.findByPk(req.params.id);
-
-    if (!group) {
-        let err = new Error("Group couldn't be found");
-        err.status = 404;
-        return next(err);
-    }
-
-    if (req.user.id !== group.organizerId) {
-        let err = new Error("Forbidden");
-        err.status = 403;
-        return next(err);
-    }
-
-    let venues = await Venue.findAll({
-        include: {
-            model: Group,
-            where: {
-                id: req.params.id,
+router.get(
+    "/:groupId/venues",
+    [requireAuth, ensureGroupExists, ensureUserIsOrganizer],
+    async (req, res, next) => {
+        let venues = await Venue.findAll({
+            include: {
+                model: Group,
+                where: {
+                    id: req.params.groupId,
+                },
+                attributes: [],
             },
-            attributes: [],
-        },
-        attributes: ["id", "groupId", "address", "city", "state", "lat", "lng"],
-    });
+            attributes: [
+                "id",
+                "groupId",
+                "address",
+                "city",
+                "state",
+                "lat",
+                "lng",
+            ],
+        });
 
-    return res.json({
-        Venues: venues,
-    });
-});
+        return res.json({
+            Venues: venues,
+        });
+    }
+);
+
+// Create a new Venue for a Group specified by its id
+
+const validateVenueCreation = [
+    check("address")
+        .exists({ checkFalsy: true })
+        .withMessage("Street address is required"),
+    check("city").exists().withMessage("City is required"),
+    check("state").exists().withMessage("State is required"),
+    check("lat")
+        .exists()
+        .isFloat({ min: -180, max: 180 })
+        .withMessage("Latitude is not valid"),
+    check("lng")
+        .exists()
+        .isFloat({ min: -180, max: 180 })
+        .withMessage("Longitude is not valid"),
+    handleValidationErrors,
+];
+
+const venueCreationMiddleware = [
+    requireAuth,
+    ensureGroupExists,
+    ensureUserIsOrganizer,
+    ...validateVenueCreation,
+];
+
+router.post(
+    "/:groupId/venues",
+    venueCreationMiddleware,
+    async (req, res, next) => {
+        let group = await Group.findByPk(req.params.groupId);
+
+        const { id, groupId, address, city, state, lat, lng } = req.body;
+
+        let venue = await group.createVenue({
+            id: id,
+            groupId: groupId,
+            address: address,
+            city: city,
+            state: state,
+            lat: lat,
+            lng: lng,
+        });
+
+        return res.json(venue);
+    }
+);
 
 // Add an Image to a Group based on the Group's id
 
-router.post("/:id/images", requireAuth, async (req, res, next) => {
-    let group = await Group.findByPk(req.params.id);
-    if (!group) {
-        let err = new Error("Group couldn't be found");
-        err.status = 404;
-        return next(err);
-    }
+router.post(
+    "/:id/images",
+    [requireAuth, ensureGroupExists, ensureUserIsOrganizer],
+    async (req, res, next) => {
+        let group = await Group.findByPk(req.params.id);
 
-    if (req.user.id !== group.organizerId) {
-        let err = new Error("Forbidden");
-        err.status = 403;
-        return next(err);
+        let img = await group.createGroupImage({
+            url: req.body.url,
+            preview: req.body.preview,
+        });
+        return res.json({
+            id: img.id,
+            url: img.url,
+            preview: img.preview,
+        });
     }
-
-    let img = await group.createGroupImage({
-        url: req.body.url,
-        preview: req.body.preview,
-    });
-    return res.json({
-        id: img.id,
-        url: img.url,
-        preview: img.preview,
-    });
-});
+);
 
 // Delete a Group
 
-router.delete("/:id", requireAuth, async (req, res, next) => {
-    let group = await Group.findByPk(req.params.id);
-    if (!group) {
-        let err = new Error("Group couldn't be found");
-        err.status = 404;
-        return next(err);
-    }
+router.delete(
+    "/:id",
+    [requireAuth, ensureGroupExists, ensureUserIsOrganizer],
+    async (req, res, next) => {
+        let group = await Group.findByPk(req.params.id);
 
-    if (req.user.id !== group.organizerId) {
-        let err = new Error("Forbidden");
-        err.status = 403;
-        return next(err);
+        await group.destroy();
+        return res.json({
+            message: "Successfully deleted",
+            statusCode: 200,
+        });
     }
-
-    await group.destroy();
-    return res.json({
-        message: "Successfully deleted",
-        statusCode: 200,
-    });
-});
+);
 
 // Edit a Group
 
 router.put("/:id", groupCreationMiddleware, async (req, res, next) => {
     let group = await Group.findByPk(req.params.id);
-    if (!group) {
-        let err = new Error("Group couldn't be found");
-        err.status = 404;
-        return next(err);
-    }
-
-    if (req.user.id !== group.organizerId) {
-        let err = new Error("Forbidden");
-        err.status = 403;
-        return next(err);
-    }
 
     await group.update({
         name: req.body.name,
@@ -242,15 +298,10 @@ router.put("/:id", groupCreationMiddleware, async (req, res, next) => {
 
 // Get details of a Group from an id
 
-router.get("/:id", async (req, res, next) => {
+router.get("/:id", ensureGroupExists, async (req, res, next) => {
     let group = await Group.findByPk(req.params.id, {
         include: { all: true },
     });
-    if (!group) {
-        let err = new Error("Group couldn't be found");
-        err.status = 404;
-        return next(err);
-    }
 
     numMembers = await group.getMemberships();
     group = group.toJSON();
