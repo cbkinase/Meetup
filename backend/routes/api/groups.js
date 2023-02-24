@@ -15,6 +15,8 @@ const { route } = require("./users");
 
 const router = express.Router();
 
+// Get all Groups
+
 router.get("/", async (req, res, next) => {
     let groups = await Group.findAll({
         include: {
@@ -36,7 +38,6 @@ router.get("/", async (req, res, next) => {
     groups = groups.map((group, idx) => {
         group = group.toJSON();
         group.numMembers = counts[idx];
-        console.log(group.GroupImages[0]);
         // Check to see whether the group has a preview image, set to null if not.
         group.previewImage = group.GroupImages[0]?.url
             ? group.GroupImages[0].url
@@ -49,14 +50,23 @@ router.get("/", async (req, res, next) => {
     });
 });
 
+// Get all Groups joined or organized by the Current User
+
 router.get("/current", requireAuth, async (req, res, next) => {
     let groups = await Group.findAll({
-        where: {
-            id: req.user.id,
-        },
-        include: { model: GroupImage },
+        // where: {
+        //     id: req.user.id,
+        // },
+        include: [
+            { model: GroupImage },
+            {
+                model: Membership,
+                where: { userId: req.user.id },
+                attributes: [],
+            },
+        ],
     });
-
+    console.log(groups);
     const counts = [];
     for (const grp of groups) {
         const members = await grp.getMemberships();
@@ -66,7 +76,6 @@ router.get("/current", requireAuth, async (req, res, next) => {
     groups = groups.map((group, idx) => {
         group = group.toJSON();
         group.numMembers = counts[idx];
-        console.log(group.GroupImages[0]);
         // Check to see whether the group has a preview image, set to null if not.
         group.previewImage = group.GroupImages[0]?.url
             ? group.GroupImages[0].url
@@ -100,6 +109,8 @@ const validateGroupCreation = [
 ];
 const groupCreationMiddleware = [requireAuth, ...validateGroupCreation];
 
+// Create a Group
+
 router.post("/", groupCreationMiddleware, async (req, res, next) => {
     const { name, about, type, private, city, state } = req.body;
     let group = await Group.create({
@@ -111,9 +122,16 @@ router.post("/", groupCreationMiddleware, async (req, res, next) => {
         city: city,
         state: state,
     });
+    await Membership.create({
+        userId: req.user.id,
+        groupId: group.id,
+        status: "co-host",
+    });
     res.status(201);
     return res.json(group);
 });
+
+// Add an Image to a Group based on the Group's id
 
 router.post("/:id/images", requireAuth, async (req, res, next) => {
     let group = await Group.findByPk(req.params.id);
@@ -140,6 +158,8 @@ router.post("/:id/images", requireAuth, async (req, res, next) => {
     });
 });
 
+// Delete a Group
+
 router.delete("/:id", requireAuth, async (req, res, next) => {
     let group = await Group.findByPk(req.params.id);
     if (!group) {
@@ -160,6 +180,8 @@ router.delete("/:id", requireAuth, async (req, res, next) => {
         statusCode: 200,
     });
 });
+
+// Edit a Group
 
 router.put("/:id", groupCreationMiddleware, async (req, res, next) => {
     let group = await Group.findByPk(req.params.id);
@@ -185,6 +207,8 @@ router.put("/:id", groupCreationMiddleware, async (req, res, next) => {
     });
     return res.json(group);
 });
+
+// Get details of a Group from an id
 
 router.get("/:id", async (req, res, next) => {
     let group = await Group.findByPk(req.params.id, {
