@@ -298,19 +298,23 @@ router.delete(
 
 // Edit a Group
 
-router.put("/:id", groupCreationMiddleware, async (req, res, next) => {
-    let group = await Group.findByPk(req.params.id);
+router.put(
+    "/:id",
+    [ensureGroupExists, groupCreationMiddleware, ensureUserIsOrganizer],
+    async (req, res, next) => {
+        let group = await Group.findByPk(req.params.id);
 
-    await group.update({
-        name: req.body.name,
-        about: req.body.about,
-        type: req.body.type,
-        private: req.body.private,
-        city: req.body.city,
-        state: req.body.state,
-    });
-    return res.json(group);
-});
+        await group.update({
+            name: req.body.name,
+            about: req.body.about,
+            type: req.body.type,
+            private: req.body.private,
+            city: req.body.city,
+            state: req.body.state,
+        });
+        return res.json(group);
+    }
+);
 
 // Get details of a Group from an id
 
