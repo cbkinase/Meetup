@@ -6,25 +6,7 @@ const { check } = require("express-validator");
 const { handleValidationErrors } = require("../../utils/validation");
 
 // Middleware to validate signup
-// async function checkDuplicateUsername(req, res, next) {
-//     console.log(tstDuplicateUsrname);
 
-//     if (tstDuplicateUsrname) {
-//         let err = new Error("User with that username already exists");
-//         err.status = 403;
-//         return next(err);
-//     }
-//     next();
-// }
-// async function checkDuplicateEmail(req, res, next) {
-//     // console.log(tstDuplicateEmail);
-//     if (tstDuplicateEmail) {
-//         let err = new Error("User with that email already exists");
-//         err.status = 403;
-//         return next(err);
-//     }
-//     next();
-// }
 const validateSignup = [
     check("email")
         .exists({ checkFalsy: true })
