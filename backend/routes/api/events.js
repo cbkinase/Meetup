@@ -16,6 +16,17 @@ const { requireAuth } = require("../../utils/auth");
 const { Op } = require("sequelize");
 const { route } = require("./users");
 
+async function ensureEventExists(req, res, next) {
+    const event = await Event.findByPk(req.params.eventId);
+
+    if (!event) {
+        let err = new Error("Event couldn't be found");
+        err.status = 404;
+        return next(err);
+    }
+    next();
+}
+
 const router = express.Router();
 
 // Get all Events
@@ -80,6 +91,33 @@ router.get("/", async (req, res, next) => {
     return res.json({
         Events: events,
     });
+});
+
+// Get details of an Event specified by its id
+
+router.get("/:eventId", ensureEventExists, async (req, res, next) => {
+    let event = await Event.findByPk(req.params.eventId, {
+        attributes: {
+            exclude: ["createdAt", "updatedAt"],
+        },
+        include: [
+            {
+                model: Group,
+                attributes: ["id", "name", "private", "city", "state"],
+            },
+            {
+                model: Venue,
+                attributes: {
+                    exclude: ["groupId", "createdAt", "updatedAt"],
+                },
+            },
+            { model: EventImage, attributes: ["id", "url", "preview"] },
+        ],
+    });
+    let attendees = await event.getAttendances();
+    event = event.toJSON();
+    event.numAttending = attendees.length;
+    return res.json(event);
 });
 
 module.exports = router;
