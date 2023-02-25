@@ -23,7 +23,13 @@ const router = express.Router();
 router.get("/", async (req, res, next) => {
     let events = await Event.findAll({
         attributes: {
-            exclude: ["capacity", "price", "updatedAt", "createdAt"],
+            exclude: [
+                "capacity",
+                "description",
+                "price",
+                "updatedAt",
+                "createdAt",
+            ],
         },
         include: [
             { model: EventImage },
@@ -45,6 +51,7 @@ router.get("/", async (req, res, next) => {
                 attributes: {
                     exclude: [
                         "organizerId",
+                        "about",
                         "private",
                         "type",
                         "createdAt",

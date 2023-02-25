@@ -239,6 +239,73 @@ router.get(
     }
 );
 
+// Get all Events of a Group specified by its id
+
+router.get("/:groupId/events", async (req, res, next) => {
+    let events = await Event.findAll({
+        where: {
+            groupId: req.params.groupId,
+        },
+        attributes: {
+            exclude: [
+                "capacity",
+                "price",
+                "updatedAt",
+                "createdAt",
+                "description",
+            ],
+        },
+        include: [
+            { model: EventImage },
+            {
+                model: Venue,
+                attributes: {
+                    exclude: [
+                        "createdAt",
+                        "updatedAt",
+                        "lat",
+                        "lng",
+                        "groupId",
+                        "address",
+                    ],
+                },
+            },
+            {
+                model: Group,
+                attributes: {
+                    exclude: [
+                        "organizerId",
+                        "about",
+                        "private",
+                        "type",
+                        "createdAt",
+                        "updatedAt",
+                    ],
+                },
+            },
+        ],
+    });
+    const counts = [];
+    for (const event of events) {
+        const attendees = await event.getAttendances();
+        counts.push(attendees.length);
+    }
+
+    events = events.map((event, idx) => {
+        event = event.toJSON();
+        event.numAttending = counts[idx];
+        event.previewImage = event.EventImages[0]?.url
+            ? event.EventImages[0].url
+            : null;
+        delete event.EventImages;
+        return event;
+    });
+
+    return res.json({
+        Events: events,
+    });
+});
+
 // Create a new Venue for a Group specified by its id
 
 router.post(
