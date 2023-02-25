@@ -67,6 +67,8 @@ async function ensureUserIsCoHost(req, res, next) {
     next();
 }
 
+// Group creation middleware
+
 const validateGroupCreation = [
     check("name")
         .exists({ checkFalsy: true })
@@ -90,6 +92,8 @@ const validateGroupCreation = [
 ];
 const groupCreationMiddleware = [requireAuth, ...validateGroupCreation];
 
+// Venue creation middleware
+
 const validateVenueCreation = [
     check("address")
         .exists({ checkFalsy: true })
@@ -112,6 +116,70 @@ const venueCreationMiddleware = [
     ensureGroupExists,
     ensureUserIsCoHost,
     ...validateVenueCreation,
+];
+
+// Event creation middleware
+
+const validateEventCreation = [
+    check("venueId").custom(async (venueId) => {
+        let venue = await Venue.findByPk(venueId);
+        if (!venue) {
+            let err = new Error("Venue does not exist");
+            err.status = 400;
+            throw err;
+        } else {
+        }
+        return true;
+    }),
+    check("name")
+        .exists()
+        .isLength({ min: 5 })
+        .withMessage("Name must be at least 5 characters"),
+    check("type")
+        .exists()
+        .isIn(["Online", "In person"])
+        .withMessage("Type must be Online or In person"),
+    check("capacity")
+        .exists()
+        .isInt()
+        .withMessage("Capacity must be an integer"),
+    check("price").exists().isFloat({ min: 0 }).withMessage("Price is invalid"),
+    check("description")
+        .exists({ checkFalsy: true })
+        .withMessage("Description is required"),
+    check("startDate")
+        .exists()
+        .custom((date) => {
+            let now = new Date();
+            if (now > new Date(date)) {
+                let err = new Error("Start date must be in the future");
+                err.status = 400;
+                throw err;
+            } else {
+                return true;
+            }
+        }),
+    check("endDate")
+        .exists()
+        .custom((date, { req }) => {
+            let startDate = new Date(req.body.startDate);
+            let endDate = new Date(date);
+            if (endDate < startDate) {
+                let err = new Error("End date is less than start date");
+                err.status = 400;
+                throw err;
+            } else {
+                return true;
+            }
+        }),
+    handleValidationErrors,
+];
+
+const eventCreationMiddleware = [
+    requireAuth,
+    ensureGroupExists,
+    ensureUserIsCoHost,
+    ...validateEventCreation,
 ];
 
 const router = express.Router();
@@ -305,6 +373,44 @@ router.get("/:groupId/events", async (req, res, next) => {
         Events: events,
     });
 });
+
+// Create an Event for a Group specified by its id
+
+router.post(
+    "/:groupId/events",
+    eventCreationMiddleware,
+    async (req, res, next) => {
+        const {
+            venueId,
+            name,
+            type,
+            capacity,
+            price,
+            description,
+            startDate,
+            endDate,
+        } = req.body;
+        const groupId = req.params.groupId;
+
+        let group = await Group.findByPk(groupId);
+        let event = await group.createEvent({
+            venueId: venueId,
+            groupId: groupId,
+            name: name,
+            type: type,
+            capacity: capacity,
+            price: price,
+            description: description,
+            startDate: startDate,
+            endDate: endDate,
+        });
+        event = event.toJSON();
+        delete event.createdAt;
+        delete event.updatedAt;
+
+        return res.json(event);
+    }
+);
 
 // Create a new Venue for a Group specified by its id
 
