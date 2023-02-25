@@ -6,6 +6,8 @@ const {
     GroupImage,
     Membership,
     Venue,
+    EventImage,
+    Attendance,
 } = require("../../db/models");
 const { check } = require("express-validator");
 const { handleValidationErrors } = require("../../utils/validation");
