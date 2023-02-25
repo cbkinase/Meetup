@@ -12,6 +12,7 @@ module.exports = (sequelize, DataTypes) => {
             Event.hasMany(models.Attendance, { foreignKey: "eventId" });
             Event.hasMany(models.EventImage, { foreignKey: "eventId" });
             Event.belongsTo(models.Venue, { foreignKey: "venueId" });
+            Event.belongsTo(models.Group, { foreignKey: "groupId" });
         }
     }
     Event.init(
@@ -29,6 +30,11 @@ module.exports = (sequelize, DataTypes) => {
         {
             sequelize,
             modelName: "Event",
+            defaultScope: {
+                attributes: {
+                    exclude: ["createdAt", "updatedAt"],
+                },
+            },
         }
     );
     return Event;

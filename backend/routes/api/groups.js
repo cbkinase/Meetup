@@ -6,6 +6,7 @@ const {
     GroupImage,
     Membership,
     Venue,
+    Event,
     EventImage,
     Attendance,
 } = require("../../db/models");
