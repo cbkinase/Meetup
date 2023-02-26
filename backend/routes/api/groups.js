@@ -152,10 +152,7 @@ const validateEventCreation = [
         .custom((date) => {
             let now = new Date();
             let comparisonDate = new Date(date);
-            if (
-                comparisonDate.toString() === "Invalid Date" ||
-                now > comparisonDate
-            ) {
+            if (comparisonDate == "Invalid Date" || now > comparisonDate) {
                 let err = new Error("Start date must be in the future");
                 err.status = 400;
                 throw err;
@@ -168,7 +165,7 @@ const validateEventCreation = [
         .custom((date, { req }) => {
             let startDate = new Date(req.body.startDate);
             let endDate = new Date(date);
-            if (endDate.toString() === "Invalid Date" || endDate < startDate) {
+            if (endDate == "Invalid Date" || endDate < startDate) {
                 let err = new Error("End date is less than start date");
                 err.status = 400;
                 throw err;
