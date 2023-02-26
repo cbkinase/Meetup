@@ -228,7 +228,6 @@ router.get("/:eventId/attendees", ensureEventExists, async (req, res, next) => {
     let attendees = await event.getAttendances(query);
     attendees = attendees.map((attendee) => {
         attendee = attendee.toJSON();
-        console.log(attendee);
         attendee.id = attendee.User.id;
         attendee.firstName = attendee.User.firstName;
         attendee.lastName = attendee.User.lastName;
@@ -239,5 +238,60 @@ router.get("/:eventId/attendees", ensureEventExists, async (req, res, next) => {
     });
     return res.json({ Attendees: attendees });
 });
+
+// Request to Attend an Event based on the Event's id
+
+router.post(
+    "/:eventId/attendance",
+    [requireAuth, ensureEventExists],
+    async (req, res, next) => {
+        let event = await Event.findByPk(req.params.eventId);
+        let group = await event.getGroup();
+        // Make sure User is Member of Group
+        let membership = await group.getMemberships({
+            where: {
+                userId: req.user.id,
+                groupId: group.id,
+                status: { [Op.in]: ["member", "co-host"] },
+            },
+        });
+        if (!membership.length) {
+            let err = new Error("Forbidden");
+            err.status = 403;
+            return next(err);
+        }
+        // Check to see if User is already attending
+        let possibleAttendance = await event.getAttendances({
+            where: { userId: req.user.id },
+        });
+        if (possibleAttendance.length) {
+            let attendanceStatus = possibleAttendance[0].status;
+            if (attendanceStatus === "pending") {
+                let err = new Error("Attendance has already been requested");
+                err.status = 400;
+                return next(err);
+            }
+            if (
+                attendanceStatus === "attending" ||
+                attendanceStatus === "waitlist"
+            ) {
+                let err = new Error("User is already an attendee of the event");
+                err.status = 400;
+                return next(err);
+            }
+        }
+
+        let attendanceRequest = await Attendance.create({
+            eventId: req.params.eventId,
+            userId: req.user.id,
+            status: "pending",
+        });
+
+        return res.json({
+            userId: req.user.id,
+            status: attendanceRequest.status,
+        });
+    }
+);
 
 module.exports = router;
