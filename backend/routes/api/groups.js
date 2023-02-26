@@ -527,6 +527,80 @@ router.post(
     }
 );
 
+// Change the status of a membership for a group specified by id
+let changeMembershipStatusMiddleware = [
+    requireAuth,
+    ensureGroupExists,
+    check("status")
+        .not()
+        .equals("pending")
+        .withMessage("Cannot change a membership status to pending"),
+    check("memberId").custom(async (id) => {
+        let user = await User.findByPk(id);
+        if (!user) {
+            let err = new Error("User couldn't be found");
+            err.status = 400;
+            throw err;
+        }
+        return true;
+    }),
+    handleValidationErrors,
+];
+router.put(
+    "/:groupId/membership",
+    changeMembershipStatusMiddleware,
+    async (req, res, next) => {
+        let group = await Group.findByPk(req.params.groupId);
+        let members = await group.getMemberships({
+            where: { userId: req.body.memberId },
+        });
+
+        if (!members.length) {
+            let err = new Error(
+                "Membership between the user and the group does not exist"
+            );
+            err.status = 404;
+            return next(err);
+        }
+        const newStatus = req.body.status;
+        if (newStatus === "co-host") {
+            let group = await Group.findByPk(req.params.groupId);
+
+            if (req.user.id !== group.organizerId) {
+                let err = new Error("Forbidden");
+                err.status = 403;
+                return next(err);
+            }
+        }
+
+        if (newStatus === "member") {
+            let group = await Group.findByPk(req.params.groupId, {
+                include: {
+                    model: Membership,
+                    where: {
+                        userId: req.user.id,
+                        status: "co-host",
+                    },
+                },
+            });
+            if (!group) {
+                let err = new Error("Forbidden");
+                err.status = 403;
+                return next(err);
+            }
+        }
+        await members[0].update({
+            status: req.body.status,
+        });
+        return res.json({
+            id: members[0].id,
+            groupId: members[0].groupId,
+            memberId: members[0].userId,
+            status: members[0].status,
+        });
+    }
+);
+
 // Delete a Group
 
 router.delete(
