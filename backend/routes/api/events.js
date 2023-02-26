@@ -144,6 +144,31 @@ router.put(
     }
 );
 
+// Delete an Event specified by its id
+
+router.delete(
+    "/:eventId",
+    [requireAuth, ensureEventExists],
+    async (req, res, next) => {
+        let event = await Event.findByPk(req.params.eventId);
+        let group = await event.getGroup();
+        let memberships = await group.getMemberships({
+            where: {
+                userId: req.user.id,
+            },
+        });
+        if (!memberships) {
+            let err = new Error("Forbidden");
+            err.status = 403;
+            return next(err);
+        }
+        await event.destroy();
+        return res.json({
+            message: "Successfully deleted",
+        });
+    }
+);
+
 // Add an Image to a Event based on the Event's id
 
 router.post(
