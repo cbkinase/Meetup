@@ -130,7 +130,7 @@ router.post(
             include: [
                 {
                     model: Attendance,
-                    where: { userId: req.user.id },
+                    where: { userId: req.user.id, status: "attending" },
                 },
             ],
         });
