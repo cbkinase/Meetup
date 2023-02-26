@@ -294,4 +294,54 @@ router.post(
     }
 );
 
+// Change the status of an attendance for an event specified by id
+
+router.put(
+    "/:eventId/attendance",
+    [requireAuth, ensureEventExists],
+    async (req, res, next) => {
+        if (req.body.status === "pending") {
+            let err = new Error(
+                "Cannot change an attendance status to pending"
+            );
+            err.status = 400;
+            return next(err);
+        }
+        let event = await Event.findByPk(req.params.eventId);
+        let group = await event.getGroup();
+        let membership = await group.getMemberships({
+            where: {
+                userId: req.user.id,
+                groupId: group.id,
+            },
+        });
+        let attendance = await Attendance.findOne({
+            where: { eventId: req.params.eventId, userId: req.body.userId },
+        });
+        if (!attendance) {
+            let err = new Error(
+                "Attendance between the user and the event does not exist"
+            );
+            err.status = 404;
+            return next(err);
+        }
+        console.log(membership);
+        if (membership[0]?.status !== "co-host") {
+            let err = new Error("Forbidden");
+            err.status = 403;
+            return next(err);
+        }
+
+        await attendance.update({
+            status: req.body.status,
+        });
+        return res.json({
+            id: attendance.id,
+            eventId: attendance.eventId,
+            userId: attendance.userId,
+            status: attendance.status,
+        });
+    }
+);
+
 module.exports = router;
