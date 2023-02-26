@@ -120,4 +120,35 @@ router.get("/:eventId", ensureEventExists, async (req, res, next) => {
     return res.json(event);
 });
 
+// Add an Image to a Event based on the Event's id
+
+router.post(
+    "/:eventId/images",
+    [requireAuth, ensureEventExists],
+    async (req, res, next) => {
+        let event = await Event.findByPk(req.params.eventId, {
+            include: [
+                {
+                    model: Attendance,
+                    where: { userId: req.user.id },
+                },
+            ],
+        });
+        if (!event) {
+            let err = new Error("Forbidden");
+            err.status = 403;
+            return next(err);
+        }
+        let newImage = await event.createEventImage({
+            url: req.body.url,
+            preview: req.body.preview,
+        });
+        return res.json({
+            id: newImage.id,
+            url: newImage.url,
+            preview: newImage.preview,
+        });
+    }
+);
+
 module.exports = router;
