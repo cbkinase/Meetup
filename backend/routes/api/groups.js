@@ -493,6 +493,40 @@ router.get("/:groupId/members", ensureGroupExists, async (req, res, next) => {
     return res.json({ Members: memberList });
 });
 
+// Request a Membership for a Group based on the Group's id
+
+router.post(
+    "/:groupId/membership",
+    [requireAuth, ensureGroupExists],
+    async (req, res, next) => {
+        let group = await Group.findByPk(req.params.groupId);
+        let memberships = await group.getMemberships({
+            where: { userId: req.user.id },
+        });
+        if (memberships.length) {
+            let userInfo = memberships[0].status;
+            if (userInfo === "pending") {
+                let err = new Error("Membership has already been requested");
+                err.status = 400;
+                return next(err);
+            } else {
+                let err = new Error("User is already a member of the group");
+                err.status = 400;
+                return next(err);
+            }
+        }
+        let newMembership = await Membership.create({
+            userId: req.user.id,
+            groupId: req.params.groupId,
+            status: "pending",
+        });
+        return res.json({
+            memberId: newMembership.userId,
+            status: newMembership.status,
+        });
+    }
+);
+
 // Delete a Group
 
 router.delete(
