@@ -510,4 +510,4 @@ router.get("/:id", ensureGroupExists, async (req, res, next) => {
     return res.json(group);
 });
 
-module.exports = router;
+module.exports = { router, validateEventCreation };
