@@ -15,6 +15,7 @@ const { handleValidationErrors } = require("../../utils/validation");
 const { requireAuth } = require("../../utils/auth");
 const { Op } = require("sequelize");
 const { route } = require("./users");
+const { validateEventCreation } = require("./groups");
 
 async function ensureEventExists(req, res, next) {
     const event = await Event.findByPk(req.params.eventId);
@@ -119,6 +120,29 @@ router.get("/:eventId", ensureEventExists, async (req, res, next) => {
     event.numAttending = attendees.length;
     return res.json(event);
 });
+
+// Edit an Event specified by its id
+
+router.put(
+    "/:eventId",
+    [requireAuth, ensureEventExists, validateEventCreation],
+    async (req, res, next) => {
+        let event = await Event.findByPk(req.params.eventId);
+        await event.update({
+            venueId: req.body.venueId,
+            name: req.body.name,
+            type: req.body.type,
+            capacity: req.body.capacity,
+            price: req.body.price,
+            description: req.body.description,
+            startDate: req.body.startDate,
+            endDate: req.body.endDate,
+        });
+        event = event.toJSON();
+        delete event.updatedAt;
+        return res.json(event);
+    }
+);
 
 // Add an Image to a Event based on the Event's id
 
