@@ -16,6 +16,7 @@ const { requireAuth } = require("../../utils/auth");
 const { Op } = require("sequelize");
 const { route } = require("./users");
 const { validateEventCreation } = require("./groups");
+const group = require("../../db/models/group");
 
 async function ensureEventExists(req, res, next) {
     const event = await Event.findByPk(req.params.eventId);
@@ -199,5 +200,44 @@ router.post(
         });
     }
 );
+
+// Get all Attendees of an Event specified by its id
+
+router.get("/:eventId/attendees", ensureEventExists, async (req, res, next) => {
+    let event = await Event.findByPk(req.params.eventId);
+    let query = {
+        where: { status: { [Op.in]: ["attending", "waitlist"] } },
+        attributes: ["status"],
+        include: { model: User },
+    };
+    // Check to see if user is co-host/owner of
+    // the Group the Event belongs to
+    if (req.user) {
+        let group = await event.getGroup();
+        let membership = await group.getMemberships({
+            where: {
+                userId: req.user.id,
+                groupId: group.id,
+            },
+        });
+        if (membership[0].status === "co-host") {
+            delete query.where;
+        }
+    }
+
+    let attendees = await event.getAttendances(query);
+    attendees = attendees.map((attendee) => {
+        attendee = attendee.toJSON();
+        console.log(attendee);
+        attendee.id = attendee.User.id;
+        attendee.firstName = attendee.User.firstName;
+        attendee.lastName = attendee.User.lastName;
+        attendee.Attendance = { status: attendee.status };
+        delete attendee.status;
+        delete attendee.User;
+        return attendee;
+    });
+    return res.json({ Attendees: attendees });
+});
 
 module.exports = router;
