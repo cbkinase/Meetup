@@ -206,7 +206,7 @@ router.post(
 router.get("/:eventId/attendees", ensureEventExists, async (req, res, next) => {
     let event = await Event.findByPk(req.params.eventId);
     let query = {
-        where: { status: { [Op.in]: ["attending", "waitlist"] } },
+        where: { status: { [Op.not]: ["pending"] } },
         attributes: ["status"],
         include: { model: User },
     };
