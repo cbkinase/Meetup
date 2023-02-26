@@ -457,6 +457,42 @@ router.post(
     }
 );
 
+// Get all Members of a Group specified by its id
+
+router.get("/:groupId/members", ensureGroupExists, async (req, res, next) => {
+    let group = await Group.findByPk(req.params.groupId);
+    let currentUser;
+    try {
+        currentUser = await group.getMemberships({
+            where: { userId: req.user.id },
+        });
+    } catch (err) {
+        currentUser = {};
+        currentUser.status = null;
+    }
+
+    let memberList;
+    if (currentUser[0]?.status === "co-host") {
+        memberList = await group.getMemberships({
+            attributes: {
+                exclude: ["createdAt", "updatedAt"],
+            },
+        });
+    } else {
+        memberList = await group.getMemberships({
+            attributes: {
+                exclude: ["createdAt", "updatedAt"],
+            },
+            where: {
+                status: {
+                    [Op.in]: ["member", "co-host"],
+                },
+            },
+        });
+    }
+    return res.json({ Members: memberList });
+});
+
 // Delete a Group
 
 router.delete(
