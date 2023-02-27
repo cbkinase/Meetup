@@ -259,6 +259,7 @@ router.post("/", groupCreationMiddleware, async (req, res, next) => {
         city: city,
         state: state,
     });
+    console.log("I reached this point");
     await Membership.create({
         userId: req.user.id,
         groupId: group.id,
