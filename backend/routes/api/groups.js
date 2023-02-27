@@ -191,12 +191,6 @@ router.get("/", async (req, res, next) => {
     let groups = await Group.findAll({
         include: {
             model: GroupImage,
-            // where: {
-            //     url: {
-            //         [Op.not]: false,
-            //     },
-            // },
-            // attributes: ["url"],
         },
     });
     const counts = [];
