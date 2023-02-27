@@ -12,7 +12,7 @@ module.exports = {
             "Memberships",
             {
                 id: {
-                    allowNull: false,
+                    //allowNull: false,
                     autoIncrement: true,
                     primaryKey: true,
                     type: Sequelize.INTEGER,
