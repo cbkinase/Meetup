@@ -400,6 +400,12 @@ router.post(
         delete event.createdAt;
         delete event.updatedAt;
 
+        await Attendance.create({
+            eventId: event.id,
+            userId: req.user.id,
+            status: "attending",
+        });
+
         return res.json(event);
     }
 );
@@ -423,6 +429,10 @@ router.post(
             lat: lat,
             lng: lng,
         });
+
+        venue = venue.toJSON();
+        delete venue.createdAt;
+        delete venue.updatedAt;
 
         return res.json(venue);
     }
