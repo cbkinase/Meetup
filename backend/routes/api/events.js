@@ -10,7 +10,7 @@ const {
     EventImage,
     Attendance,
 } = require("../../db/models");
-const { check } = require("express-validator");
+const { check, query } = require("express-validator");
 const { handleValidationErrors } = require("../../utils/validation");
 const { requireAuth } = require("../../utils/auth");
 const { Op } = require("sequelize");
@@ -32,9 +32,59 @@ async function ensureEventExists(req, res, next) {
 const router = express.Router();
 
 // Get all Events
+const getAllEventsMiddleware = [
+    query("page")
+        .optional({ checkFalsy: true })
+        .isInt({ min: 1 })
+        .withMessage("Page must be greater than or equal to one"),
+    query("size")
+        .optional({ checkFalsy: true })
+        .isInt({ min: 1 })
+        .withMessage("Size must be greather than or equal to one"),
+    query("name").optional().isString().withMessage("Name must be a string"),
+    query("type")
+        .optional()
+        .isIn(["Online", "In person"])
+        .withMessage("Type must be 'Online' or 'In person'"),
+    query("startDate")
+        .optional()
+        .isDate()
+        .withMessage("Start date must be a valid datetime"),
+    handleValidationErrors,
+];
+router.get("/", getAllEventsMiddleware, async (req, res, next) => {
+    let where = {};
 
-router.get("/", async (req, res, next) => {
+    let { page, size } = req.query;
+    page = Number(page);
+    size = Number(size);
+    let pagination = {};
+
+    if (page === undefined) page = 1;
+    if (size === undefined) size = 20;
+
+    if (page && size) {
+        pagination.limit = size;
+        pagination.offset = size * (page - 1);
+    }
+
+    if (req.query.name !== undefined) {
+        where.name = req.query.name;
+    }
+
+    if (req.query.type) {
+        where.type = req.query.type;
+    }
+
+    if (req.query.startDate) {
+        let startDate = new Date(req.query.startDate);
+        let endDate = new Date(startDate);
+        endDate.setDate(startDate.getDate() + 1);
+        where.startDate = { [Op.between]: [startDate, endDate] };
+    }
+
     let events = await Event.findAll({
+        ...pagination,
         attributes: {
             exclude: [
                 "capacity",
@@ -44,6 +94,7 @@ router.get("/", async (req, res, next) => {
                 "createdAt",
             ],
         },
+        where,
         include: [
             { model: EventImage },
             {
