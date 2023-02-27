@@ -70,7 +70,7 @@ async function ensureUserIsCoHost(req, res, next) {
 // Group creation middleware
 
 const validateGroupCreation = [
-    check("name")
+    check("name", "Name must be 60 characters or less")
         .exists({ checkFalsy: true })
         .isLength({ max: 60 })
         .withMessage("Name must be 60 characters or less"),
@@ -259,7 +259,6 @@ router.post("/", groupCreationMiddleware, async (req, res, next) => {
         city: city,
         state: state,
     });
-    console.log("I reached this point");
     await Membership.create({
         userId: req.user.id,
         groupId: group.id,
