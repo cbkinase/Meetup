@@ -207,9 +207,10 @@ router.delete(
         let memberships = await group.getMemberships({
             where: {
                 userId: req.user.id,
+                status: "co-host",
             },
         });
-        if (!memberships) {
+        if (!memberships.length) {
             let err = new Error("Forbidden");
             err.status = 403;
             return next(err);
