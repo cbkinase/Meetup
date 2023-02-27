@@ -348,6 +348,11 @@ router.get("/:groupId/events", async (req, res, next) => {
             },
         ],
     });
+    if (!events.length) {
+        let err = new Error("No events found for this group");
+        err.status = 404;
+        return next(err);
+    }
     const counts = [];
     for (const event of events) {
         const attendees = await event.getAttendances();
