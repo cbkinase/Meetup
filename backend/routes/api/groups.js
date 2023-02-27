@@ -687,6 +687,12 @@ router.get("/:id", ensureGroupExists, async (req, res, next) => {
     group.Organizer = group.User;
     delete group.User;
     delete group.Organizer.username;
+    delete group.Events;
+    group.GroupImages.forEach((img) => {
+        delete img.createdAt;
+        delete img.updatedAt;
+        delete img.groupId;
+    });
     return res.json(group);
 });
 
