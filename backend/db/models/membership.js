@@ -14,10 +14,10 @@ module.exports = (sequelize, DataTypes) => {
     }
     Membership.init(
         {
-            id: {
-                primaryKey: true,
-                type: DataTypes.INTEGER,
-            },
+            // id: {
+            //     primaryKey: true,
+            //     type: DataTypes.INTEGER,
+            // },
             userId: DataTypes.INTEGER,
             groupId: DataTypes.INTEGER,
             status: DataTypes.ENUM("co-host", "member", "pending"),
