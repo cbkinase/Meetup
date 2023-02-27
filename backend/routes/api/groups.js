@@ -218,9 +218,6 @@ router.get("/", async (req, res, next) => {
 
 router.get("/current", requireAuth, async (req, res, next) => {
     let groups = await Group.findAll({
-        // where: {
-        //     id: req.user.id,
-        // },
         include: [
             { model: GroupImage },
             {
