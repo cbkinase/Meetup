@@ -207,6 +207,7 @@ router.delete(
         let memberships = await group.getMemberships({
             where: {
                 userId: req.user.id,
+                status: "co-host",
             },
         });
         if (!memberships) {
