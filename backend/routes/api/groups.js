@@ -121,7 +121,10 @@ const venueCreationMiddleware = [
 // Event creation middleware
 
 const validateEventCreation = [
-    check("venueId").custom(async (venueId) => {
+    check("venueId").custom(async (venueId, { req }) => {
+        if (req.body.type === "Online") {
+            return true;
+        }
         let venue = await Venue.findByPk(venueId);
         if (!venue) {
             let err = new Error("Venue does not exist");
