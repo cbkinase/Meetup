@@ -1,4 +1,4 @@
-.login-container {
+.sign-up-container {
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -6,7 +6,7 @@
     margin-top: 50px;
 }
 
-.login-form {
+.sign-up-form {
     display: flex;
     flex-direction: column;
     justify-content: center;
