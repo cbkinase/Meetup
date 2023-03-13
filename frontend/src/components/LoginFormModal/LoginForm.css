@@ -1,9 +1,9 @@
-/* .login-container {
+.login-container {
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    margin-top: 50px;
+    margin: 15px 20px 15px 20px;
 }
 
 .login-form {
@@ -13,16 +13,42 @@
     align-items: center;
 }
 
-h2 {
+.form-item {
+    padding: 5px 0 5px 0;
+}
+
+#submit {
+    margin-top: 10px;
+    height: 30px;
+}
+
+#submit,
+#demo,
+.input-field {
+    width: 300px;
+}
+
+#demo {
+    margin: 20px 0 10px 0;
+    height: 30px;
+}
+
+.errors {
+    color: red;
+    padding: 5px 0 5px 0;
+    font-size: 14px;
+}
+
+#title {
+    padding-bottom: 5px;
+}
+
+/* h2 {
     padding-bottom: 10px;
     font-weight: bold;
     font-size: 18px;
 }
 
-ul {
-    padding-bottom: 10px;
-    color: red;
-}
 
 input,
 button {
