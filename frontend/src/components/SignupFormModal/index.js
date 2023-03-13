@@ -1,12 +1,11 @@
 import React, { useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { Redirect } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { useModal } from "../../context/Modal";
 import * as sessionActions from "../../store/session";
 import "./SignupForm.css";
 
-function SignupFormPage() {
+function SignupFormModal() {
     const dispatch = useDispatch();
-    const sessionUser = useSelector((state) => state.session.user);
     const [email, setEmail] = useState("");
     const [username, setUsername] = useState("");
     const [firstName, setFirstName] = useState("");
@@ -14,8 +13,7 @@ function SignupFormPage() {
     const [password, setPassword] = useState("");
     const [confirmPassword, setConfirmPassword] = useState("");
     const [errors, setErrors] = useState([]);
-
-    if (sessionUser) return <Redirect to="/" />;
+    const { closeModal } = useModal();
 
     const handleSubmit = (e) => {
         e.preventDefault();
@@ -29,10 +27,13 @@ function SignupFormPage() {
                     lastName,
                     password,
                 })
-            ).catch(async (res) => {
-                const data = await res.json();
-                if (data && data.errors) setErrors(Object.values(data.errors));
-            });
+            )
+                .then(closeModal)
+                .catch(async (res) => {
+                    const data = await res.json();
+                    if (data && data.errors)
+                        setErrors(Object.values(data.errors));
+                });
         }
         return setErrors([
             "Confirm Password field must be the same as the Password field",
@@ -40,17 +41,17 @@ function SignupFormPage() {
     };
 
     return (
-        <div className="sign-up-container">
-            <h2>Sign Up</h2>
-            <form className="sign-up-form" onSubmit={handleSubmit}>
+        <>
+            <h1>Sign Up</h1>
+            <form onSubmit={handleSubmit}>
                 <ul>
                     {errors.map((error, idx) => (
                         <li key={idx}>{error}</li>
                     ))}
                 </ul>
                 <label>
+                    Email
                     <input
-                        placeholder="Email"
                         type="text"
                         value={email}
                         onChange={(e) => setEmail(e.target.value)}
@@ -58,8 +59,8 @@ function SignupFormPage() {
                     />
                 </label>
                 <label>
+                    Username
                     <input
-                        placeholder="Username"
                         type="text"
                         value={username}
                         onChange={(e) => setUsername(e.target.value)}
@@ -67,8 +68,8 @@ function SignupFormPage() {
                     />
                 </label>
                 <label>
+                    First Name
                     <input
-                        placeholder="First Name"
                         type="text"
                         value={firstName}
                         onChange={(e) => setFirstName(e.target.value)}
@@ -76,8 +77,8 @@ function SignupFormPage() {
                     />
                 </label>
                 <label>
+                    Last Name
                     <input
-                        placeholder="Last Name"
                         type="text"
                         value={lastName}
                         onChange={(e) => setLastName(e.target.value)}
@@ -85,8 +86,8 @@ function SignupFormPage() {
                     />
                 </label>
                 <label>
+                    Password
                     <input
-                        placeholder="Password"
                         type="password"
                         value={password}
                         onChange={(e) => setPassword(e.target.value)}
@@ -94,8 +95,8 @@ function SignupFormPage() {
                     />
                 </label>
                 <label>
+                    Confirm Password
                     <input
-                        placeholder="Confirm Password"
                         type="password"
                         value={confirmPassword}
                         onChange={(e) => setConfirmPassword(e.target.value)}
@@ -104,8 +105,8 @@ function SignupFormPage() {
                 </label>
                 <button type="submit">Sign Up</button>
             </form>
-        </div>
+        </>
     );
 }
 
-export default SignupFormPage;
+export default SignupFormModal;
