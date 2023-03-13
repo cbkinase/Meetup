@@ -77,9 +77,9 @@ function LoginFormModal() {
                             required
                         />
                     </label>
-                    {validationErrors.credential && (
+                    {/* {validationErrors.credential && (
                         <p className="errors">*{validationErrors.credential}</p>
-                    )}
+                    )} */}
                 </div>
                 <div className="form-item">
                     <label>
@@ -92,9 +92,9 @@ function LoginFormModal() {
                             required
                         />
                     </label>
-                    {validationErrors.password && (
+                    {/* {validationErrors.password && (
                         <p className="errors">*{validationErrors.password}</p>
-                    )}
+                    )} */}
                 </div>
                 <button disabled={submitDisabled} id="submit" type="submit">
                     Log In
