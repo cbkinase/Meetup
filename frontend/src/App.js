@@ -4,6 +4,7 @@ import { Switch, Route } from "react-router-dom";
 import * as sessionActions from "./store/session";
 import Navigation from "./components/Navigation";
 import GroupCollection from "./components/GetAllGroups/index";
+import Homepage from "./components/Homepage";
 
 function App() {
     const dispatch = useDispatch();
@@ -17,6 +18,9 @@ function App() {
             <Navigation isLoaded={isLoaded} />
             {isLoaded && (
                 <Switch>
+                    <Route exact path="/">
+                        <Homepage></Homepage>
+                    </Route>
                     <Route exact path="/groups">
                         <GroupCollection></GroupCollection>
                     </Route>

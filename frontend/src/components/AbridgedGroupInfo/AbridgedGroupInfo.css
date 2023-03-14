@@ -6,20 +6,19 @@
     margin: 15px 0 15px 0;
 }
 
-.main-groups-container {
-}
-
 #preview-image {
     width: 200px;
     height: 130px;
     max-width: 200px;
     max-height: 130px;
     margin-right: 20px;
+    cursor: pointer;
 }
 
 #group-info {
     width: 300px;
     font-size: 14px;
+    cursor: pointer;
 }
 
 .group-attr {
