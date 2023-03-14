@@ -15,6 +15,31 @@ function SignupFormModal() {
     const [errors, setErrors] = useState({});
     const { closeModal } = useModal();
     const [hasSubmitted, setHasSubmitted] = useState(false);
+    const [submitDisabled, setSubmitDisabled] = useState(true);
+    const [validationErrors, setValidationErrors] = useState({});
+    const signUpDependencies = [
+        email,
+        username,
+        firstName,
+        lastName,
+        password,
+        confirmPassword,
+    ];
+    useEffect(() => {
+        const errors = {};
+        if (signUpDependencies.some((formInput) => formInput.length === 0))
+            errors.empty = "Positive input length required";
+        if (username.length < 4)
+            errors.username = "Username must be at least 4 characters";
+        if (password.length < 6)
+            errors.password = "Password must be at least 6 characters";
+        if (password !== confirmPassword)
+            errors.confirmation = "Passwords do not match";
+        setValidationErrors(errors);
+
+        if (Object.keys(errors).length === 0) setSubmitDisabled(false);
+        else setSubmitDisabled(true);
+    }, signUpDependencies);
 
     const handleSubmit = (e) => {
         e.preventDefault();
@@ -50,7 +75,7 @@ function SignupFormModal() {
                         <input
                             className="input-field"
                             placeholder="Email"
-                            type="text"
+                            type="email"
                             value={email}
                             onChange={(e) => setEmail(e.target.value)}
                             required
@@ -64,7 +89,7 @@ function SignupFormModal() {
                     <label>
                         <input
                             className="input-field"
-                            placeholder="Username"
+                            placeholder="Username - 4 characters minimum"
                             type="text"
                             value={username}
                             onChange={(e) => setUsername(e.target.value)}
@@ -103,7 +128,7 @@ function SignupFormModal() {
                     <label>
                         <input
                             className="input-field"
-                            placeholder="Password"
+                            placeholder="Password - 6 characters minimum"
                             type="password"
                             value={password}
                             onChange={(e) => setPassword(e.target.value)}
@@ -126,7 +151,7 @@ function SignupFormModal() {
                         />
                     </label>
                 </div>
-                <button id="submit" type="submit">
+                <button disabled={submitDisabled} id="submit" type="submit">
                     Sign Up
                 </button>
             </form>

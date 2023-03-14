@@ -11,22 +11,29 @@ export default function AbridgedGroupInfo({ group }) {
 
     if (!Object.values(group).length) return null;
     return (
-        <div className="group-info-container">
-            <img
-                src={group.previewImage ? group.previewImage : defaultImage}
-                alt={`${group.name} image`}
-            ></img>
-            <div>
-                <h2>{group.name}</h2>
-                <p>
-                    {group.type === "Online"
-                        ? "Online"
-                        : `${group.city}, ${group.state}`}
-                </p>
-                <p>{group.about}</p>
-                <div>
-                    <p>FIXME: ## Events</p>
-                    <p>{group.private ? "Private" : "Public"}</p>
+        <div className="main-group-container">
+            <div className="group-info-container">
+                <img
+                    id="preview-image"
+                    src={group.previewImage ? group.previewImage : defaultImage}
+                    alt={`${group.name}`}
+                ></img>
+                <div id="group-info">
+                    <h2 id="group-name" className="group-attr">
+                        {group.name}
+                    </h2>
+                    <p className="group-attr">
+                        {group.type === "Online"
+                            ? "Online"
+                            : `${group.city}, ${group.state}`}
+                    </p>
+                    <p id="group-about" className="group-attr">
+                        {group.about}
+                    </p>
+                    <p className="group-attr">
+                        FIXME: ## Events ·{" "}
+                        {group.private ? "Private" : "Public"}
+                    </p>
                 </div>
             </div>
         </div>
