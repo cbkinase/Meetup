@@ -9,32 +9,34 @@ export default function AbridgedGroupInfo({ group }) {
         history.push(`/groups/${group.id}`);
     };
 
+    const handleClick = () => {
+        getDetailsOfGroup(group);
+    };
+
     if (!Object.values(group).length) return null;
     return (
-        <div className="main-group-container">
-            <div className="group-info-container">
-                <img
-                    id="preview-image"
-                    src={group.previewImage ? group.previewImage : defaultImage}
-                    alt={`${group.name}`}
-                ></img>
-                <div id="group-info">
-                    <h2 id="group-name" className="group-attr">
-                        {group.name}
-                    </h2>
-                    <p className="group-attr">
-                        {group.type === "Online"
-                            ? "Online"
-                            : `${group.city}, ${group.state}`}
-                    </p>
-                    <p id="group-about" className="group-attr">
-                        {group.about}
-                    </p>
-                    <p className="group-attr">
-                        FIXME: ## Events ·{" "}
-                        {group.private ? "Private" : "Public"}
-                    </p>
-                </div>
+        <div className="group-info-container">
+            <img
+                onClick={handleClick}
+                id="preview-image"
+                src={group.previewImage ? group.previewImage : defaultImage}
+                alt={`${group.name}`}
+            ></img>
+            <div onClick={handleClick} id="group-info">
+                <h2 id="group-name" className="group-attr">
+                    {group.name}
+                </h2>
+                <p className="group-attr">
+                    {group.type === "Online"
+                        ? "Online"
+                        : `${group.city}, ${group.state}`}
+                </p>
+                <p id="group-about" className="group-attr">
+                    {group.about}
+                </p>
+                <p className="group-attr">
+                    FIXME: ## Events · {group.private ? "Private" : "Public"}
+                </p>
             </div>
         </div>
     );

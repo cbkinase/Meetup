@@ -1,5 +1,5 @@
 import { useDispatch, useSelector } from "react-redux";
-import { useHistory, NavLink } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 import { useEffect } from "react";
 import { getAllGroups } from "../../store/groups";
 import AbridgedGroupInfo from "../AbridgedGroupInfo";
@@ -17,10 +17,25 @@ export default function GroupCollection() {
     if (Object.values(groups.allGroups).length === 0) return null;
 
     return (
-        <ul className="item1-container">
-            {Object.values(groups.allGroups).map((group) => {
-                return <AbridgedGroupInfo group={group}></AbridgedGroupInfo>;
-            })}
-        </ul>
+        <div>
+            <div id="top-bar-groups-events">
+                <div>
+                    <NavLink className="active-tab" to="/groups">
+                        Groups
+                    </NavLink>
+                    <NavLink className="inactive-tab" to="/events">
+                        Events
+                    </NavLink>
+                </div>
+                <h2>Groups in Meetup</h2>
+            </div>
+            <ul className="item1-container">
+                {Object.values(groups.allGroups).map((group) => {
+                    return (
+                        <AbridgedGroupInfo group={group}></AbridgedGroupInfo>
+                    );
+                })}
+            </ul>
+        </div>
     );
 }

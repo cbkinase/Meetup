@@ -28,7 +28,7 @@ function SignupFormModal() {
     useEffect(() => {
         const errors = {};
         if (signUpDependencies.some((formInput) => formInput.length === 0))
-            errors.empty = "Positive input length required";
+            errors.empty = "Nonzero input length required";
         if (username.length < 4)
             errors.username = "Username must be at least 4 characters";
         if (password.length < 6)
