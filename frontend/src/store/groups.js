@@ -15,7 +15,7 @@ export function getAllGroups() {
 
         if (res.ok) {
             const data = await res.json();
-            const normalizedData = normalizeData(data);
+            const normalizedData = normalizeData(data.Groups);
             dispatch(loadGroups(normalizedData));
             return normalizedData;
         }
@@ -27,9 +27,7 @@ const initialState = { allGroups: {}, singleGroup: {}, Venues: {} };
 export default function groupsReducer(state = initialState, action) {
     switch (action.type) {
         case GET_ALL_GROUPS: {
-            console.log("ACTION:", action);
-            return state;
-            // return { ...state, allGroups: { ...action.group } };
+            return { ...state, allGroups: { ...action.groups } };
         }
         default:
             return state;
