@@ -3,8 +3,9 @@ import { useDispatch } from "react-redux";
 import { Switch, Route } from "react-router-dom";
 import * as sessionActions from "./store/session";
 import Navigation from "./components/Navigation";
-import GroupCollection from "./components/GetAllGroups/index";
+import GroupCollection from "./components/GetAllGroups";
 import Homepage from "./components/Homepage";
+import SingleGroup from "./components/GetSingleGroup";
 
 function App() {
     const dispatch = useDispatch();
@@ -24,6 +25,10 @@ function App() {
                     <Route exact path="/groups">
                         <GroupCollection></GroupCollection>
                     </Route>
+                    <Route exact path="/groups/:groupId">
+                        <SingleGroup></SingleGroup>
+                    </Route>
+                    <Route path="/creategroup"></Route>
                 </Switch>
             )}
         </>
