@@ -10,6 +10,7 @@
 
 #section-1-image {
     max-width: 500px;
+    padding-left: 10px;
 }
 
 #section-1-text {
@@ -17,6 +18,7 @@
     flex-direction: column;
     align-items: center;
     justify-content: center;
+    padding-right: 10px;
 }
 
 #main-intro {
@@ -58,4 +60,35 @@
     margin: 100px 0 100px 0;
     display: flex;
     justify-content: center;
+}
+
+@media screen and (max-width: 600px) {
+    #main-homepage-container {
+        margin: 75px 0 75px 0;
+    }
+    #section-1 {
+        flex-direction: column;
+        margin: 50px 0 50px 0;
+        text-align: center;
+        justify-content: center;
+        align-items: center;
+    }
+
+    #main-intro {
+        padding-bottom: 10px;
+    }
+    #section-1-image {
+        max-width: 225px;
+        padding-top: 20px;
+    }
+    #section-2 {
+        margin: 75px 0 75px 0;
+    }
+    #section-3 {
+        flex-direction: column;
+        margin: 75px 0 75px 0;
+    }
+    #section-4 {
+        margin: 75px 0 75px 0;
+    }
 }

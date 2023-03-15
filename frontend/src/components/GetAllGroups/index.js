@@ -32,7 +32,10 @@ export default function GroupCollection() {
             <ul className="item1-container">
                 {Object.values(groups.allGroups).map((group) => {
                     return (
-                        <AbridgedGroupInfo group={group}></AbridgedGroupInfo>
+                        <AbridgedGroupInfo
+                            key={group.id}
+                            group={group}
+                        ></AbridgedGroupInfo>
                     );
                 })}
             </ul>
