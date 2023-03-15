@@ -92,3 +92,14 @@
         margin: 75px 0 75px 0;
     }
 }
+
+@media screen and (min-width: 1024px) {
+    #main-homepage-container {
+        width: 1000px;
+    }
+    #container-container-lol {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+}
