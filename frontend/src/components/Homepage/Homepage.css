@@ -102,4 +102,16 @@
         align-items: center;
         justify-content: center;
     }
+    #section-1 {
+        margin: 150px 0 150px 0;
+    }
+    #section-2 {
+        margin: 150px 0 150px 0;
+    }
+    #section-3 {
+        margin: 150px 0 150px 0;
+    }
+    #section-4 {
+        margin: 150px 0 150px 0;
+    }
 }
