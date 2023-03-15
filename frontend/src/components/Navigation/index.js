@@ -23,13 +23,13 @@ function Navigation({ isLoaded }) {
     return (
         // <div className="nav-container">
         <ul className="nav-container">
-            <li>
+            <li className="nav-elements">
                 <NavLink exact to="/">
                     {meetupSvg}
                 </NavLink>
             </li>
             {isLoaded && (
-                <li>
+                <li className="nav-elements">
                     <ProfileButton user={sessionUser} />
                 </li>
             )}
