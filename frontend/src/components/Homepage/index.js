@@ -3,8 +3,10 @@ import React, { useState, useEffect, useRef } from "react";
 import OpenModalButton from "../OpenModalButton/";
 import SignupFormModal from "../SignupFormModal";
 import "./Homepage.css";
+import { useSelector } from "react-redux";
 
 export default function Homepage() {
+    const user = useSelector((state) => state.session.user);
     const [showMenu, setShowMenu] = useState(false);
     const ulRef = useRef();
 
@@ -21,6 +23,25 @@ export default function Homepage() {
 
         return () => document.removeEventListener("click", closeMenu);
     }, [showMenu]);
+
+    useEffect(() => {
+        if (!user) {
+            const createGroups = document.getElementById(
+                "create-group-homepage-link"
+            );
+            createGroups.style.color = "grey";
+            createGroups.style.textDecoration = "none";
+            createGroups.style.cursor = "default";
+        }
+        if (user) {
+            const createGroups = document.getElementById(
+                "create-group-homepage-link"
+            );
+            createGroups.style.color = "revert";
+            createGroups.style.textDecoration = "revert";
+            createGroups.style.cursor = "pointer";
+        }
+    }, [user]);
 
     const closeMenu = () => setShowMenu(false);
     return (
@@ -60,7 +81,7 @@ export default function Homepage() {
                             ></img>
                         </div>
                         <NavLink to="/groups">Join a group</NavLink>
-                        <p>
+                        <p className="homepage-section-3-desc">
                             Do what you love, meet others who love it, find your
                             community. The rest is history!
                         </p>
@@ -73,7 +94,7 @@ export default function Homepage() {
                             ></img>
                         </div>
                         <NavLink to="/events">Find an event</NavLink>
-                        <p>
+                        <p className="homepage-section-3-desc">
                             Events are happening on just about any topic you can
                             think of, from online gaming and photography to yoga
                             and hiking.
@@ -86,8 +107,20 @@ export default function Homepage() {
                                 src="https://secure.meetupstatic.com/next/images/shared/joinGroup.svg?w=256"
                             ></img>
                         </div>
-                        <NavLink to="/FIXME">Start a group</NavLink>
-                        <p>
+                        <NavLink
+                            id="create-group-homepage-link"
+                            onClick={
+                                user
+                                    ? () => {}
+                                    : (e) => {
+                                          e.preventDefault();
+                                      }
+                            }
+                            to="/groups/new"
+                        >
+                            Start a group
+                        </NavLink>
+                        <p className="homepage-section-3-desc">
                             You don’t have to be an expert to gather people
                             together and explore shared interests.
                         </p>
