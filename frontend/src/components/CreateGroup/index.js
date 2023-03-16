@@ -1,6 +1,6 @@
 import { useDispatch, useSelector } from "react-redux";
 import { useState } from "react";
-import { createGroup, createGroupImage } from "../../store/groups";
+import { createGroup, createGroupImage, editGroup } from "../../store/groups";
 import { useHistory, useParams } from "react-router-dom";
 
 export default function CreateGroupForm({ isUpdating }) {
@@ -19,7 +19,7 @@ export default function CreateGroupForm({ isUpdating }) {
         loc = groupInfo.city + "," + groupInfo.state;
     }
     let gImage;
-    if (isUpdating && groupInfo.GroupImages?.length) {
+    if (isUpdating && groupInfo && groupInfo.GroupImages?.length) {
         gImage = groupInfo.GroupImages.filter((img) => img.preview === true)[0]
             .url;
     }
@@ -70,25 +70,51 @@ export default function CreateGroupForm({ isUpdating }) {
             state: loc[1],
         };
         // const newGroup = await dispatch(createGroup(payload));
-        const newGroup = await dispatch(createGroup(payload)).catch(
-            async (res) => {
+        if (!isUpdating) {
+            const newGroup = await dispatch(createGroup(payload)).catch(
+                async (res) => {
+                    setHasSubmitted(true);
+                    const data = await res.json();
+                    if (data && data.errors)
+                        setErrors({ ...data.errors, ...err });
+                }
+            );
+            if (newGroup) {
+                await dispatch(createGroupImage(newGroup.id, groupImage, true));
+                history.push(`/groups/${newGroup.id}`);
+            }
+        } else {
+            const updatedGroup = await dispatch(
+                editGroup(payload, groupId)
+            ).catch(async (res) => {
                 setHasSubmitted(true);
                 const data = await res.json();
                 if (data && data.errors) setErrors({ ...data.errors, ...err });
+            });
+            if (updatedGroup) {
+                history.push(`/groups/${groupId}`);
             }
-        );
-        if (newGroup) {
-            await dispatch(createGroupImage(newGroup.id, groupImage, true));
-            history.push(`/groups/${newGroup.id}`);
         }
     };
 
     return (
         <div>
-            <h3>BECOME AN ORGANIZER</h3>
-            <h2>
-                We'll walk you through a few steps to build your local community
-            </h2>
+            {!isUpdating ? (
+                <h3>BECOME AN ORGANIZER</h3>
+            ) : (
+                <h3>UPDATE YOUR GROUP'S INFORMATION</h3>
+            )}
+            {!isUpdating ? (
+                <h2>
+                    We'll walk you through a few steps to build your local
+                    community
+                </h2>
+            ) : (
+                <h2>
+                    We'll walk you through a few steps to update your group's
+                    information
+                </h2>
+            )}
             <form onSubmit={handleSubmit}>
                 <div className="form-create-section">
                     <h2>First, set your group's location</h2>
@@ -183,16 +209,18 @@ export default function CreateGroupForm({ isUpdating }) {
                             <p className="errors">*{errors.privacy}</p>
                         )}
                     </div>
-                    <div>
-                        <p>Please add an image url for your group below:</p>
-                        <input
-                            onChange={(e) => setGroupImage(e.target.value)}
-                            defaultValue={groupImage}
-                        ></input>
-                        {hasSubmitted && errors.image && (
-                            <p className="errors">*{errors.image}</p>
-                        )}
-                    </div>
+                    {!isUpdating && (
+                        <div>
+                            <p>Please add an image url for your group below:</p>
+                            <input
+                                onChange={(e) => setGroupImage(e.target.value)}
+                                defaultValue={groupImage}
+                            ></input>
+                            {hasSubmitted && errors.image && (
+                                <p className="errors">*{errors.image}</p>
+                            )}
+                        </div>
+                    )}
                 </div>
                 {!isUpdating ? (
                     <button id="submit" type="submit">

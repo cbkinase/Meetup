@@ -5,6 +5,7 @@ const GET_ALL_GROUPS = "groups/getAllGroups";
 const MAKE_GROUP = "groups/makeGroup";
 const GET_SINGLE_GROUP = "groups/info";
 const MAKE_GROUP_IMAGE = "/groups/makeImage";
+const DELETE_GROUP = "/groups/delete";
 
 function loadGroups(groups) {
     return {
@@ -35,6 +36,13 @@ function makeGroupImage(groupId, img) {
     };
 }
 
+function deleteGroup(id) {
+    return {
+        type: DELETE_GROUP,
+        id,
+    };
+}
+
 export function getAllGroups() {
     return async function (dispatch) {
         const res = await fetch("/api/groups");
@@ -52,6 +60,22 @@ export function createGroup(group) {
     return async function (dispatch) {
         const res = await csrfFetch("/api/groups", {
             method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(group),
+        });
+
+        if (res.ok) {
+            const data = await res.json();
+            dispatch(makeGroup(data));
+            return data;
+        }
+    };
+}
+
+export function editGroup(group, groupId) {
+    return async function (dispatch) {
+        const res = await csrfFetch(`/api/groups/${groupId}`, {
+            method: "PUT",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify(group),
         });
@@ -95,6 +119,18 @@ export function getGroupInfo(id) {
     };
 }
 
+export function destroyGroup(id) {
+    return async function (dispatch) {
+        const res = await csrfFetch(`/api/groups/${id}`, {
+            method: "DELETE",
+        });
+
+        if (res.ok) {
+            dispatch(deleteGroup(id));
+        }
+    };
+}
+
 const initialState = { allGroups: {}, singleGroup: {}, Venues: {} };
 
 export default function groupsReducer(state = initialState, action) {
@@ -122,6 +158,15 @@ export default function groupsReducer(state = initialState, action) {
         }
         case GET_SINGLE_GROUP: {
             return { ...state, singleGroup: { ...action.group } };
+        }
+        case DELETE_GROUP: {
+            let newState = {
+                ...state,
+                singleGroup: {},
+                allGroups: { ...state.allGroups },
+            };
+            delete newState.allGroups[action.id];
+            return newState;
         }
         default:
             return state;

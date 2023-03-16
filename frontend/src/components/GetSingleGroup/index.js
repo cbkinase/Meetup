@@ -3,6 +3,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
 import { getGroupInfo } from "../../store/groups";
 import { NavLink } from "react-router-dom";
+import OpenModalButton from "../OpenModalButton";
+import DeleteGroupModal from "../DeleteGroup";
 
 export default function SingleGroup() {
     const dispatch = useDispatch();
@@ -61,7 +63,13 @@ export default function SingleGroup() {
                             >
                                 Update
                             </button>
-                            <button>Delete</button>
+                            <OpenModalButton
+                                buttonText="Delete"
+                                // onItemClick={closeMenu}
+                                modalComponent={
+                                    <DeleteGroupModal groupId={groupId} />
+                                }
+                            ></OpenModalButton>
                         </div>
                     ) : (
                         <div>
