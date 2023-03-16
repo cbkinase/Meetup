@@ -29,6 +29,9 @@ function App() {
                     <Route path="/groups/new">
                         <CreateGroupForm></CreateGroupForm>
                     </Route>
+                    <Route exact path="/groups/:groupId/edit">
+                        <CreateGroupForm isUpdating={true}></CreateGroupForm>
+                    </Route>
                     <Route exact path="/groups/:groupId">
                         <SingleGroup></SingleGroup>
                     </Route>

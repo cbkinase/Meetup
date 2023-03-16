@@ -10,27 +10,33 @@ export default function CreateGroupForm({ isUpdating }) {
     const params = useParams();
     const groupId = params.groupId;
     const groupInfo = useSelector((state) => {
-        // if (groupId == state.groups.singleGroup.id)
-        return state.groups.singleGroup;
+        if (groupId == state.groups.singleGroup.id)
+            return state.groups.singleGroup;
         return null;
     });
     let loc = null;
-    if (isUpdating) {
+    if (isUpdating && groupInfo) {
         loc = groupInfo.city + "," + groupInfo.state;
     }
     let gImage;
-    if (groupInfo.groupImages) {
-        // gImage = groupInfo.groupImages.filter((img) => img.preview === true)[0];
-        gImage = groupInfo.groupImages[0];
+    if (isUpdating && groupInfo.GroupImages?.length) {
+        gImage = groupInfo.GroupImages.filter((img) => img.preview === true)[0]
+            .url;
+    }
+    let gPrivacy;
+    if (isUpdating && groupInfo) {
+        groupInfo.private = true
+            ? (gPrivacy = "Private")
+            : (gPrivacy = "Public");
     }
     const [location, setLocation] = useState(loc || "");
-    const [groupName, setGroupName] = useState(groupInfo.name || "");
-    const [description, setDescription] = useState(groupInfo.about || "");
-    const [groupType, setGroupType] = useState(groupInfo.type || "");
+    const [groupName, setGroupName] = useState(groupInfo?.name || "");
+    const [description, setDescription] = useState(groupInfo?.about || "");
+    const [groupType, setGroupType] = useState(groupInfo?.type || "");
     const [groupImage, setGroupImage] = useState(gImage || "");
     const [errors, setErrors] = useState({});
     const [hasSubmitted, setHasSubmitted] = useState(false);
-    const [groupPrivacy, setGroupPrivacy] = useState("Public" || "");
+    const [groupPrivacy, setGroupPrivacy] = useState(gPrivacy || "");
     const history = useHistory();
 
     const handleSubmit = async (e) => {
@@ -72,7 +78,7 @@ export default function CreateGroupForm({ isUpdating }) {
             }
         );
         if (newGroup) {
-            await createGroupImage(newGroup.id, groupImage, true);
+            await dispatch(createGroupImage(newGroup.id, groupImage, true));
             history.push(`/groups/${newGroup.id}`);
         }
     };

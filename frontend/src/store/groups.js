@@ -66,7 +66,7 @@ export function createGroup(group) {
 
 export function createGroupImage(groupId, url, preview = false) {
     return async function (dispatch) {
-        const res = await csrfFetch(`api/groups/${groupId}/images`, {
+        const res = await csrfFetch(`/api/groups/${groupId}/images`, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({

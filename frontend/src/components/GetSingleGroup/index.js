@@ -1,4 +1,4 @@
-import { useParams } from "react-router-dom";
+import { useParams, useHistory } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
 import { getGroupInfo } from "../../store/groups";
@@ -8,6 +8,7 @@ export default function SingleGroup() {
     const dispatch = useDispatch();
     const params = useParams();
     const groupId = params.groupId;
+    const history = useHistory();
 
     useEffect(() => {
         dispatch(getGroupInfo(groupId));
@@ -33,7 +34,7 @@ export default function SingleGroup() {
                 <img
                     src={
                         groupInfo.GroupImages.length > 0
-                            ? groupInfo.GroupImages[0]
+                            ? groupInfo.GroupImages[0].url
                             : "NO IMAGE"
                     }
                 ></img>
@@ -53,7 +54,13 @@ export default function SingleGroup() {
                       userInfo.id ? (
                         <div>
                             <button>Create event</button>
-                            <button>Update</button>
+                            <button
+                                onClick={() =>
+                                    history.push(`/groups/${groupId}/edit`)
+                                }
+                            >
+                                Update
+                            </button>
                             <button>Delete</button>
                         </div>
                     ) : (
