@@ -6,6 +6,7 @@ import Navigation from "./components/Navigation";
 import GroupCollection from "./components/GetAllGroups";
 import Homepage from "./components/Homepage";
 import SingleGroup from "./components/GetSingleGroup";
+import CreateGroupForm from "./components/CreateGroup";
 
 function App() {
     const dispatch = useDispatch();
@@ -25,10 +26,12 @@ function App() {
                     <Route exact path="/groups">
                         <GroupCollection></GroupCollection>
                     </Route>
+                    <Route path="/groups/new">
+                        <CreateGroupForm></CreateGroupForm>
+                    </Route>
                     <Route exact path="/groups/:groupId">
                         <SingleGroup></SingleGroup>
                     </Route>
-                    <Route path="/creategroup"></Route>
                 </Switch>
             )}
         </>

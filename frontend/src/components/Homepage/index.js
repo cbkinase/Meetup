@@ -116,7 +116,7 @@ export default function Homepage() {
                                           e.preventDefault();
                                       }
                             }
-                            to="/creategroup"
+                            to="/groups/new"
                         >
                             Start a group
                         </NavLink>

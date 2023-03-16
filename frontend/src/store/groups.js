@@ -75,7 +75,13 @@ export default function groupsReducer(state = initialState, action) {
             return { ...state, allGroups: { ...action.groups } };
         }
         case MAKE_GROUP: {
-            return { ...state, singleGroup: { ...action.group } };
+            return {
+                ...state,
+                allGroups: {
+                    ...state.allGroups,
+                    [action.group.id]: action.group,
+                },
+            };
         }
         case GET_SINGLE_GROUP: {
             return { ...state, singleGroup: { ...action.group } };

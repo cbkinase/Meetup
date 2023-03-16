@@ -13,11 +13,14 @@ export default function SingleGroup() {
         dispatch(getGroupInfo(groupId));
     }, [dispatch]);
 
-    const groupInfo = useSelector((state) => state.groups.singleGroup);
+    const groupInfo = useSelector((state) => {
+        if (groupId == state.groups.singleGroup.id)
+            return state.groups.singleGroup;
+        return {};
+    });
     const userInfo = useSelector((state) => state.session.user);
-    console.log(typeof userInfo.id);
 
-    if (Object.values(groupInfo).length === 0) return null;
+    if (Object.keys(groupInfo).length === 0) return null;
 
     return (
         <div>
