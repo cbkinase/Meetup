@@ -1,13 +1,16 @@
-import { useParams } from "react-router-dom";
+import { useParams, useHistory } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
 import { getGroupInfo } from "../../store/groups";
 import { NavLink } from "react-router-dom";
+import OpenModalButton from "../OpenModalButton";
+import DeleteGroupModal from "../DeleteGroup";
 
 export default function SingleGroup() {
     const dispatch = useDispatch();
     const params = useParams();
     const groupId = params.groupId;
+    const history = useHistory();
 
     useEffect(() => {
         dispatch(getGroupInfo(groupId));
@@ -18,6 +21,10 @@ export default function SingleGroup() {
             return state.groups.singleGroup;
         return {};
     });
+
+    const handleJoinGroup = () => {
+        alert("Feature coming soon");
+    };
     const userInfo = useSelector((state) => state.session.user);
 
     if (Object.keys(groupInfo).length === 0) return null;
@@ -29,7 +36,7 @@ export default function SingleGroup() {
                 <img
                     src={
                         groupInfo.GroupImages.length > 0
-                            ? groupInfo.GroupImages[0]
+                            ? groupInfo.GroupImages[0].url
                             : "NO IMAGE"
                     }
                 ></img>
@@ -49,12 +56,26 @@ export default function SingleGroup() {
                       userInfo.id ? (
                         <div>
                             <button>Create event</button>
-                            <button>Update</button>
-                            <button>Delete</button>
+                            <button
+                                onClick={() =>
+                                    history.push(`/groups/${groupId}/edit`)
+                                }
+                            >
+                                Update
+                            </button>
+                            <OpenModalButton
+                                buttonText="Delete"
+                                // onItemClick={closeMenu}
+                                modalComponent={
+                                    <DeleteGroupModal groupId={groupId} />
+                                }
+                            ></OpenModalButton>
                         </div>
                     ) : (
                         <div>
-                            <button>Join this Group</button>
+                            <button onClick={handleJoinGroup}>
+                                Join this Group
+                            </button>
                         </div>
                     )}
                 </div>

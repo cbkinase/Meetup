@@ -4,6 +4,8 @@ import normalizeData from "./normalize";
 const GET_ALL_GROUPS = "groups/getAllGroups";
 const MAKE_GROUP = "groups/makeGroup";
 const GET_SINGLE_GROUP = "groups/info";
+const MAKE_GROUP_IMAGE = "/groups/makeImage";
+const DELETE_GROUP = "/groups/delete";
 
 function loadGroups(groups) {
     return {
@@ -23,6 +25,21 @@ function loadGroupInfo(group) {
     return {
         type: GET_SINGLE_GROUP,
         group,
+    };
+}
+
+function makeGroupImage(groupId, img) {
+    return {
+        type: MAKE_GROUP_IMAGE,
+        groupId,
+        img,
+    };
+}
+
+function deleteGroup(id) {
+    return {
+        type: DELETE_GROUP,
+        id,
     };
 }
 
@@ -55,6 +72,41 @@ export function createGroup(group) {
     };
 }
 
+export function editGroup(group, groupId) {
+    return async function (dispatch) {
+        const res = await csrfFetch(`/api/groups/${groupId}`, {
+            method: "PUT",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(group),
+        });
+
+        if (res.ok) {
+            const data = await res.json();
+            dispatch(makeGroup(data));
+            return data;
+        }
+    };
+}
+
+export function createGroupImage(groupId, url, preview = false) {
+    return async function (dispatch) {
+        const res = await csrfFetch(`/api/groups/${groupId}/images`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+                url,
+                preview,
+            }),
+        });
+
+        if (res.ok) {
+            const data = await res.json();
+            dispatch(makeGroupImage(groupId, data));
+            return data;
+        }
+    };
+}
+
 export function getGroupInfo(id) {
     return async function (dispatch) {
         const res = await fetch(`/api/groups/${id}`);
@@ -63,6 +115,18 @@ export function getGroupInfo(id) {
             const data = await res.json();
             dispatch(loadGroupInfo(data));
             return data;
+        }
+    };
+}
+
+export function destroyGroup(id) {
+    return async function (dispatch) {
+        const res = await csrfFetch(`/api/groups/${id}`, {
+            method: "DELETE",
+        });
+
+        if (res.ok) {
+            dispatch(deleteGroup(id));
         }
     };
 }
@@ -83,8 +147,26 @@ export default function groupsReducer(state = initialState, action) {
                 },
             };
         }
+        case MAKE_GROUP_IMAGE: {
+            return {
+                ...state,
+                singleGroup: {
+                    ...state.singleGroup,
+                    GroupImages: [...state.singleGroup.GroupImages, action.img],
+                },
+            };
+        }
         case GET_SINGLE_GROUP: {
             return { ...state, singleGroup: { ...action.group } };
+        }
+        case DELETE_GROUP: {
+            let newState = {
+                ...state,
+                singleGroup: {},
+                allGroups: { ...state.allGroups },
+            };
+            delete newState.allGroups[action.id];
+            return newState;
         }
         default:
             return state;

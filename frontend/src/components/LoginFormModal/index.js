@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import * as sessionActions from "../../store/session";
 import { useDispatch } from "react-redux";
 import { useModal } from "../../context/Modal";
+import { useHistory } from "react-router-dom";
 import "./LoginForm.css";
 
 function LoginFormModal() {
@@ -12,6 +13,7 @@ function LoginFormModal() {
     const { closeModal } = useModal();
     const [validationErrors, setValidationErrors] = useState({});
     const [submitDisabled, setSubmitDisabled] = useState(true);
+    const history = useHistory();
 
     useEffect(() => {
         const errors = {};
@@ -30,29 +32,31 @@ function LoginFormModal() {
         } else setSubmitDisabled(true);
     }, [credential, password]);
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
         setErrors([]);
-        return dispatch(sessionActions.login({ credential, password }))
+        await dispatch(sessionActions.login({ credential, password }))
             .then(closeModal)
             .catch(async (res) => {
                 const data = await res.json();
                 if (data && data.errors) setErrors(Object.values(data.errors));
             });
+        if (errors.length === 0) history.push("/");
     };
 
-    const handleDemoLogin = (e) => {
+    const handleDemoLogin = async (e) => {
         e.preventDefault();
         const demoUser = {
             credential: "Demo-lition",
             password: "password",
         };
-        return dispatch(sessionActions.login(demoUser))
+        await dispatch(sessionActions.login(demoUser))
             .then(closeModal)
             .catch(async (res) => {
                 const data = await res.json();
                 if (data && data.errors) setErrors(Object.values(data.errors));
             });
+        if (errors.length === 0) history.push("/");
     };
 
     return (
