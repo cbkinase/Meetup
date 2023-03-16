@@ -126,13 +126,15 @@ export default function Homepage() {
                         </p>
                     </div>
                 </div>
-                <div id="section-4">
-                    <OpenModalButton
-                        buttonText="Join Meetup"
-                        onItemClick={closeMenu}
-                        modalComponent={<SignupFormModal />}
-                    ></OpenModalButton>
-                </div>
+                {!user ? (
+                    <div id="section-4">
+                        <OpenModalButton
+                            buttonText="Join Meetup"
+                            onItemClick={closeMenu}
+                            modalComponent={<SignupFormModal />}
+                        ></OpenModalButton>
+                    </div>
+                ) : null}
             </div>
         </div>
     );

@@ -28,6 +28,23 @@ export default function CreateGroupForm() {
         e.preventDefault();
         let err = {};
         let loc = location.split(",");
+        setHasSubmitted(true);
+
+        if (groupName.length === 0) {
+            err.name = "Name is required";
+        }
+        if (location.length === 0) {
+            err.location = "Location is required";
+        }
+
+        if (!groupType) err.type = "Group Type is required";
+        if (!groupPrivacy) err.privacy = "Visibility Type is required";
+        if (
+            !groupImage.endsWith(".png") &&
+            !groupImage.endsWith(".jpg") &&
+            !groupImage.endsWith(".jpeg")
+        )
+            err.image = "Image URL must end in .png, .jpg, or .jpeg";
 
         const payload = {
             name: groupName,
@@ -66,6 +83,12 @@ export default function CreateGroupForm() {
                         onChange={(e) => setLocation(e.target.value)}
                         placeholder="City, STATE"
                     ></input>
+                    {hasSubmitted && errors.location && (
+                        <p className="errors">*{errors.location}</p>
+                    )}
+                    {!errors.location && hasSubmitted && errors.state && (
+                        <p className="errors">*{errors.state}</p>
+                    )}
                 </div>
                 <div className="form-create-section">
                     <h2>What will your group's name be?</h2>
@@ -78,6 +101,9 @@ export default function CreateGroupForm() {
                         onChange={(e) => setGroupName(e.target.value)}
                         placeholder="What is your group name?"
                     ></input>
+                    {hasSubmitted && errors.name && (
+                        <p className="errors">*{errors.name}</p>
+                    )}
                 </div>
                 <div className="form-create-section">
                     <h2>Now describe what your group will be about</h2>
@@ -94,6 +120,9 @@ export default function CreateGroupForm() {
                         onChange={(e) => setDescription(e.target.value)}
                         placeholder="Please write at least 30 characters"
                     ></textarea>
+                    {hasSubmitted && errors.about && (
+                        <p className="errors">*{errors.about}</p>
+                    )}
                 </div>
                 <div className="form-create-section">
                     <h2>Final steps...</h2>
@@ -110,6 +139,9 @@ export default function CreateGroupForm() {
                             <option value="Online">Online</option>
                             <option value="In person">In person</option>
                         </select>
+                        {hasSubmitted && errors.type && (
+                            <p className="errors">*{errors.type}</p>
+                        )}
                     </div>
                     <div>
                         <label htmlFor="type">
@@ -124,12 +156,18 @@ export default function CreateGroupForm() {
                             <option value="Public">Public</option>
                             <option value="Private">Private</option>
                         </select>
+                        {hasSubmitted && errors.privacy && (
+                            <p className="errors">*{errors.privacy}</p>
+                        )}
                     </div>
                     <div>
                         <p>Please add an image url for your group below:</p>
                         <input
                             onChange={(e) => setGroupImage(e.target.value)}
                         ></input>
+                        {hasSubmitted && errors.image && (
+                            <p className="errors">*{errors.image}</p>
+                        )}
                     </div>
                 </div>
                 <button id="submit" type="submit">

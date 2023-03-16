@@ -18,6 +18,10 @@ export default function SingleGroup() {
             return state.groups.singleGroup;
         return {};
     });
+
+    const handleJoinGroup = () => {
+        alert("Feature coming soon");
+    };
     const userInfo = useSelector((state) => state.session.user);
 
     if (Object.keys(groupInfo).length === 0) return null;
@@ -54,7 +58,9 @@ export default function SingleGroup() {
                         </div>
                     ) : (
                         <div>
-                            <button>Join this Group</button>
+                            <button onClick={handleJoinGroup}>
+                                Join this Group
+                            </button>
                         </div>
                     )}
                 </div>
