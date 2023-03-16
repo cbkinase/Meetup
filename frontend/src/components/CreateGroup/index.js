@@ -1,28 +1,37 @@
 import { useDispatch, useSelector } from "react-redux";
-import { useEffect, useState } from "react";
-import { createGroup } from "../../store/groups";
-import { useHistory } from "react-router-dom";
+import { useState } from "react";
+import { createGroup, createGroupImage } from "../../store/groups";
+import { useHistory, useParams } from "react-router-dom";
 
-export default function CreateGroupForm() {
+export default function CreateGroupForm({ isUpdating }) {
+    // Rather than using the 'isUpdating' boolean, it might make more sense to
+    // Just check params.groupId
     const dispatch = useDispatch();
-    const [location, setLocation] = useState("");
-    const [groupName, setGroupName] = useState("");
-    const [description, setDescription] = useState("");
-    const [groupType, setGroupType] = useState("");
-    const [groupImage, setGroupImage] = useState("");
+    const params = useParams();
+    const groupId = params.groupId;
+    const groupInfo = useSelector((state) => {
+        // if (groupId == state.groups.singleGroup.id)
+        return state.groups.singleGroup;
+        return null;
+    });
+    let loc = null;
+    if (isUpdating) {
+        loc = groupInfo.city + "," + groupInfo.state;
+    }
+    let gImage;
+    if (groupInfo.groupImages) {
+        // gImage = groupInfo.groupImages.filter((img) => img.preview === true)[0];
+        gImage = groupInfo.groupImages[0];
+    }
+    const [location, setLocation] = useState(loc || "");
+    const [groupName, setGroupName] = useState(groupInfo.name || "");
+    const [description, setDescription] = useState(groupInfo.about || "");
+    const [groupType, setGroupType] = useState(groupInfo.type || "");
+    const [groupImage, setGroupImage] = useState(gImage || "");
     const [errors, setErrors] = useState({});
     const [hasSubmitted, setHasSubmitted] = useState(false);
-    const [groupPrivacy, setGroupPrivacy] = useState("");
+    const [groupPrivacy, setGroupPrivacy] = useState("Public" || "");
     const history = useHistory();
-
-    useEffect(() => {}, [
-        location,
-        groupName,
-        description,
-        groupType,
-        groupImage,
-        groupPrivacy,
-    ]);
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -62,7 +71,10 @@ export default function CreateGroupForm() {
                 if (data && data.errors) setErrors({ ...data.errors, ...err });
             }
         );
-        if (newGroup) history.push(`/groups/${newGroup.id}`);
+        if (newGroup) {
+            await createGroupImage(newGroup.id, groupImage, true);
+            history.push(`/groups/${newGroup.id}`);
+        }
     };
 
     return (
@@ -82,6 +94,7 @@ export default function CreateGroupForm() {
                     <input
                         onChange={(e) => setLocation(e.target.value)}
                         placeholder="City, STATE"
+                        defaultValue={location}
                     ></input>
                     {hasSubmitted && errors.location && (
                         <p className="errors">*{errors.location}</p>
@@ -98,6 +111,7 @@ export default function CreateGroupForm() {
                         edit this later if you change your mind.
                     </p>
                     <input
+                        defaultValue={groupName}
                         onChange={(e) => setGroupName(e.target.value)}
                         placeholder="What is your group name?"
                     ></input>
@@ -117,6 +131,7 @@ export default function CreateGroupForm() {
                         <li>3. What will you do at your events?</li>
                     </ol>
                     <textarea
+                        defaultValue={description}
                         onChange={(e) => setDescription(e.target.value)}
                         placeholder="Please write at least 30 characters"
                     ></textarea>
@@ -134,6 +149,7 @@ export default function CreateGroupForm() {
                             onChange={(e) => setGroupType(e.target.value)}
                             id="type"
                             name="type"
+                            defaultValue={groupType}
                         >
                             <option value="">(select one)</option>
                             <option value="Online">Online</option>
@@ -151,6 +167,7 @@ export default function CreateGroupForm() {
                             onChange={(e) => setGroupPrivacy(e.target.value)}
                             id="type"
                             name="type"
+                            defaultValue={groupPrivacy}
                         >
                             <option value="">(select one)</option>
                             <option value="Public">Public</option>
@@ -164,15 +181,22 @@ export default function CreateGroupForm() {
                         <p>Please add an image url for your group below:</p>
                         <input
                             onChange={(e) => setGroupImage(e.target.value)}
+                            defaultValue={groupImage}
                         ></input>
                         {hasSubmitted && errors.image && (
                             <p className="errors">*{errors.image}</p>
                         )}
                     </div>
                 </div>
-                <button id="submit" type="submit">
-                    Create group
-                </button>
+                {!isUpdating ? (
+                    <button id="submit" type="submit">
+                        Create group
+                    </button>
+                ) : (
+                    <button id="submit" type="submit">
+                        Update group
+                    </button>
+                )}
             </form>
         </div>
     );

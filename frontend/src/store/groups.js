@@ -4,6 +4,7 @@ import normalizeData from "./normalize";
 const GET_ALL_GROUPS = "groups/getAllGroups";
 const MAKE_GROUP = "groups/makeGroup";
 const GET_SINGLE_GROUP = "groups/info";
+const MAKE_GROUP_IMAGE = "/groups/makeImage";
 
 function loadGroups(groups) {
     return {
@@ -23,6 +24,14 @@ function loadGroupInfo(group) {
     return {
         type: GET_SINGLE_GROUP,
         group,
+    };
+}
+
+function makeGroupImage(groupId, img) {
+    return {
+        type: MAKE_GROUP_IMAGE,
+        groupId,
+        img,
     };
 }
 
@@ -55,6 +64,25 @@ export function createGroup(group) {
     };
 }
 
+export function createGroupImage(groupId, url, preview = false) {
+    return async function (dispatch) {
+        const res = await csrfFetch(`api/groups/${groupId}/images`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+                url,
+                preview,
+            }),
+        });
+
+        if (res.ok) {
+            const data = await res.json();
+            dispatch(makeGroupImage(groupId, data));
+            return data;
+        }
+    };
+}
+
 export function getGroupInfo(id) {
     return async function (dispatch) {
         const res = await fetch(`/api/groups/${id}`);
@@ -80,6 +108,15 @@ export default function groupsReducer(state = initialState, action) {
                 allGroups: {
                     ...state.allGroups,
                     [action.group.id]: action.group,
+                },
+            };
+        }
+        case MAKE_GROUP_IMAGE: {
+            return {
+                ...state,
+                singleGroup: {
+                    ...state.singleGroup,
+                    GroupImages: [...state.singleGroup.GroupImages, action.img],
                 },
             };
         }

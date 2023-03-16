@@ -32,4 +32,5 @@
 
 #group-about {
     font-weight: bold;
+    overflow-x: hidden;
 }
