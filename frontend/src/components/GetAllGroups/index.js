@@ -56,14 +56,20 @@ export default function GroupCollection({ isEvents }) {
                               ></AbridgedGroupInfo>
                           );
                       })
-                    : Object.values(events.allEvents).map((event) => {
-                          return (
-                              <AbridgedEventInfo
-                                  key={event.id}
-                                  event={event}
-                              ></AbridgedEventInfo>
-                          );
-                      })}
+                    : Object.values(events.allEvents)
+                          .sort(function (a, b) {
+                              return (
+                                  new Date(a.startDate) - new Date(b.startDate)
+                              );
+                          })
+                          .map((event) => {
+                              return (
+                                  <AbridgedEventInfo
+                                      key={event.id}
+                                      event={event}
+                                  ></AbridgedEventInfo>
+                              );
+                          })}
             </ul>
         </div>
     );

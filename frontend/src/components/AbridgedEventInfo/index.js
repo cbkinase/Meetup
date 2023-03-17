@@ -30,7 +30,9 @@ export default function AbridgedEventInfo({ event }) {
                     <h3>{printDate}</h3>
                     <h2>{event.name}</h2>
                     <p>
-                        {event.Venue.city}, {event.Venue.state}
+                        {event.Venue
+                            ? `${event.Venue.city}, ${event.Venue.state}`
+                            : "ONLINE"}
                     </p>
                 </div>
             </div>
