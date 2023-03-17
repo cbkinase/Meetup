@@ -1,13 +1,18 @@
-.group-info-container {
+.main-event-container {
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
     margin: 15px 0 15px 0;
 }
 
-#preview-image {
-    width: 50%;
+.event-subcontainer {
+    display: flex;
+    flex-direction: row;
+}
+
+.event-image {
+    width: 200px;
     height: 130px;
     max-width: 200px;
     max-height: 130px;
@@ -15,22 +20,8 @@
     cursor: pointer;
 }
 
-#group-info {
+.event-actual-info {
     width: 300px;
     font-size: 14px;
     cursor: pointer;
-}
-
-.group-attr {
-    padding: 3px 0px 3px 0px;
-}
-
-#group-name {
-    font-weight: bold;
-    font-size: 18px;
-}
-
-#group-about {
-    font-weight: bold;
-    overflow-x: hidden;
 }

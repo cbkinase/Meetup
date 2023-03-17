@@ -26,6 +26,9 @@ function App() {
                     <Route exact path="/groups">
                         <GroupCollection></GroupCollection>
                     </Route>
+                    <Route exact path="/events">
+                        <GroupCollection isEvents={true}></GroupCollection>
+                    </Route>
                     <Route path="/groups/new">
                         <CreateGroupForm></CreateGroupForm>
                     </Route>
