@@ -130,6 +130,11 @@ export function destroyGroup(id) {
         }
     };
 }
+// May be better to initialize GroupImages as an empty array within single group
+// To make the MAKE_GROUP_IMAGE action type more generalizable, so we can spread
+// The previous content of singleGroup.GroupImages within, like so:
+// GroupImages: [...state.singleGroup.GroupImages, action.img] <--- would current throw an error: GroupImages not iterable
+// For now, the current version works though.
 
 const initialState = { allGroups: {}, singleGroup: {}, Venues: {} };
 
@@ -152,7 +157,7 @@ export default function groupsReducer(state = initialState, action) {
                 ...state,
                 singleGroup: {
                     ...state.singleGroup,
-                    GroupImages: [...state.singleGroup.GroupImages, action.img],
+                    GroupImages: [action.img],
                 },
             };
         }

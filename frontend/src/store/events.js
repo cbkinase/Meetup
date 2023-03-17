@@ -16,7 +16,9 @@ export function getAllEvents() {
 
         if (res.ok) {
             const data = await res.json();
+            console.log(data);
             const normalizedData = normalizeData(data.Events);
+            console.log(normalizedData);
             dispatch(loadEvents(normalizedData));
             return normalizedData;
         }

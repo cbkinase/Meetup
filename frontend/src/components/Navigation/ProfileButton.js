@@ -5,6 +5,8 @@ import * as sessionActions from "../../store/session";
 import OpenModalMenuItem from "./OpenModalMenuItem";
 import LoginFormModal from "../LoginFormModal";
 import SignupFormModal from "../SignupFormModal";
+import { NavLink } from "react-router-dom";
+import "./Navigation.css";
 
 function ProfileButton({ user }) {
     const dispatch = useDispatch();
@@ -46,19 +48,23 @@ function ProfileButton({ user }) {
         <>
             <button onClick={openMenu}>
                 <i
-                    className="fa-solid fa-bars"
+                    className="fas fa-user-circle"
                     style={{
-                        fontSize: "16px",
-                        color: "#000000",
                         marginRight: "5px",
+                        color: "#000000",
+                        fontSize: "16px",
                     }}
                 />
                 <i
-                    className="fas fa-user-circle"
+                    className={
+                        !showMenu
+                            ? "fa-solid fa-chevron-down"
+                            : "fa-solid fa-chevron-up"
+                    }
                     style={{
-                        marginLeft: "5px",
-                        color: "#000000",
                         fontSize: "16px",
+                        color: "#000000",
+                        marginLeft: "5px",
                     }}
                 />
             </button>
@@ -69,21 +75,63 @@ function ProfileButton({ user }) {
                         <li>Hello, {user.firstName}</li>
                         <li>{user.email}</li>
                         <li>
+                            <NavLink
+                                onClick={closeMenu}
+                                className="menu-clickable"
+                                id="vg-link"
+                                to="/groups"
+                            >
+                                View groups
+                            </NavLink>
+                        </li>
+                        <li>
+                            <NavLink
+                                onClick={closeMenu}
+                                className="menu-clickable"
+                                id="ve-link"
+                                to="/events"
+                            >
+                                View events
+                            </NavLink>
+                        </li>
+                        <li className="menu-clickable">
                             <button onClick={logout}>Log Out</button>
                         </li>
                     </>
                 ) : (
                     <>
                         <OpenModalMenuItem
+                            className="menu-clickable"
                             itemText="Log In"
                             onItemClick={closeMenu}
                             modalComponent={<LoginFormModal />}
                         />
                         <OpenModalMenuItem
+                            className="menu-clickable"
                             itemText="Sign Up"
                             onItemClick={closeMenu}
                             modalComponent={<SignupFormModal />}
                         />
+                        <li>
+                            <NavLink
+                                onClick={closeMenu}
+                                className="menu-clickable"
+                                id="vg-link"
+                                to="/groups"
+                            >
+                                View groups
+                            </NavLink>
+                        </li>
+                        <li>
+                            <NavLink
+                                onClick={closeMenu}
+                                className="menu-clickable"
+                                id="ve-link"
+                                to="/events"
+                            >
+                                View events
+                            </NavLink>
+                        </li>
                     </>
                 )}
             </ul>

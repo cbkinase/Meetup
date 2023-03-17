@@ -16,3 +16,18 @@
     margin-left: 30px;
     margin-right: 30px;
 }
+
+.navbar-2nd-half {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 5px;
+}
+
+.menu-clickable {
+    cursor: pointer;
+}
+/* #ve-link {
+    padding-left: 15px;
+} */

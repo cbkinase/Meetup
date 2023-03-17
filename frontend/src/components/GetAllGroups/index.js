@@ -26,14 +26,20 @@ export default function GroupCollection({ isEvents }) {
         <div>
             <div id="top-bar-groups-events">
                 <div>
-                    <NavLink className="active-tab" to="/groups">
+                    <NavLink
+                        className={isEvents ? "inactive-tab" : "active-tab"}
+                        to="/groups"
+                    >
                         Groups
                     </NavLink>
-                    <NavLink className="inactive-tab" to="/events">
+                    <NavLink
+                        className={isEvents ? "active-tab" : "inactive-tab"}
+                        to="/events"
+                    >
                         Events
                     </NavLink>
                 </div>
-                <h2>Groups in Meetup</h2>
+                <h2>{isEvents ? "Events" : "Groups"} in Meetup</h2>
             </div>
             <ul className="item1-container">
                 {!isEvents
@@ -50,14 +56,20 @@ export default function GroupCollection({ isEvents }) {
                               ></AbridgedGroupInfo>
                           );
                       })
-                    : Object.values(events.allEvents).map((event) => {
-                          return (
-                              <AbridgedEventInfo
-                                  key={event.id}
-                                  event={event}
-                              ></AbridgedEventInfo>
-                          );
-                      })}
+                    : Object.values(events.allEvents)
+                          .sort(function (a, b) {
+                              return (
+                                  new Date(a.startDate) - new Date(b.startDate)
+                              );
+                          })
+                          .map((event) => {
+                              return (
+                                  <AbridgedEventInfo
+                                      key={event.id}
+                                      event={event}
+                                  ></AbridgedEventInfo>
+                              );
+                          })}
             </ul>
         </div>
     );

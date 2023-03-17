@@ -1,19 +1,27 @@
 import { useDispatch, useSelector } from "react-redux";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { createGroup, createGroupImage, editGroup } from "../../store/groups";
 import { useHistory, useParams } from "react-router-dom";
 
 export default function CreateGroupForm({ isUpdating }) {
     // Rather than using the 'isUpdating' boolean, it might make more sense to
     // Just check params.groupId
+
+    // Might also make sense to do an action to population state.groups.singleGroup in the event that it is not in the store.
     const dispatch = useDispatch();
     const params = useParams();
+    const history = useHistory();
     const groupId = params.groupId;
     const groupInfo = useSelector((state) => {
         if (groupId == state.groups.singleGroup.id)
             return state.groups.singleGroup;
         return null;
     });
+    const user = useSelector((state) => state.session.user);
+
+    if (!user) {
+        history.push("/");
+    }
     let loc = null;
     if (isUpdating && groupInfo) {
         loc = groupInfo.city + "," + groupInfo.state;
@@ -37,7 +45,6 @@ export default function CreateGroupForm({ isUpdating }) {
     const [errors, setErrors] = useState({});
     const [hasSubmitted, setHasSubmitted] = useState(false);
     const [groupPrivacy, setGroupPrivacy] = useState(gPrivacy || "");
-    const history = useHistory();
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -69,7 +76,7 @@ export default function CreateGroupForm({ isUpdating }) {
             city: loc[0],
             state: loc[1],
         };
-        // const newGroup = await dispatch(createGroup(payload));
+
         if (!isUpdating) {
             const newGroup = await dispatch(createGroup(payload)).catch(
                 async (res) => {
@@ -96,6 +103,22 @@ export default function CreateGroupForm({ isUpdating }) {
             }
         }
     };
+
+    // Set page title and reset upon leaving the page
+
+    useEffect(() => {
+        const prevTitle = document.title;
+        document.title = "Create a group";
+        return () => {
+            document.title = prevTitle;
+        };
+    }, []);
+
+    // Make sure user is group organizer
+
+    if (isUpdating && groupInfo && user.id !== groupInfo.organizerId) {
+        history.push("/");
+    }
 
     return (
         <div>
