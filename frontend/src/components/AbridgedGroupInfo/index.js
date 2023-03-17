@@ -1,7 +1,7 @@
 import { useHistory } from "react-router-dom";
 import "./AbridgedGroupInfo.css";
 
-export default function AbridgedGroupInfo({ group }) {
+export default function AbridgedGroupInfo({ group, numEvents }) {
     const defaultImage =
         "https://content.instructables.com/FNF/7PUG/IRAVYHIC/FNF7PUGIRAVYHIC.jpg?auto=webp&frame=1&width=320&md=060c25d3f1bceaa6d309292040645220";
     const history = useHistory();
@@ -35,7 +35,8 @@ export default function AbridgedGroupInfo({ group }) {
                     {group.about}
                 </p>
                 <p className="group-attr">
-                    FIXME: ## Events · {group.private ? "Private" : "Public"}
+                    {numEvents === 1 ? `1 event` : `${numEvents} events`} ·{" "}
+                    {group.private ? "Private" : "Public"}
                 </p>
             </div>
         </div>
