@@ -1,18 +1,69 @@
 import { useParams, useHistory } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { getGroupInfo } from "../../store/groups";
+import { getAllEvents } from "../../store/events";
 import { NavLink } from "react-router-dom";
 import OpenModalButton from "../OpenModalButton";
 import DeleteGroupModal from "../DeleteGroup";
+import AbridgedEventInfo from "../AbridgedEventInfo";
 
 export default function SingleGroup() {
     const dispatch = useDispatch();
     const params = useParams();
     const groupId = params.groupId;
     const history = useHistory();
-
+    let groupEvents = useSelector((state) => state.events.allEvents);
+    let prevEvents = [];
+    let futureEvents = [];
+    function splitEvents(eventData) {
+        prevEvents = [];
+        futureEvents = [];
+        eventData = Object.values(eventData).filter((event) => {
+            return event.groupId === +groupId;
+        });
+        for (const event of eventData) {
+            const currentTime = new Date();
+            const comparisonDate = new Date(event.startDate);
+            if (currentTime < comparisonDate) {
+                futureEvents.push(event);
+            } else {
+                prevEvents.push(event);
+            }
+        }
+        futureEvents.sort(
+            (a, b) => Date.parse(a.startDate) - Date.parse(b.startDate)
+        );
+        prevEvents.sort(
+            (a, b) => Date.parse(b.startDate) - Date.parse(a.startDate)
+        );
+        console.log(futureEvents);
+    }
+    splitEvents(groupEvents);
     useEffect(() => {
+        async function fetchData() {
+            let data = await dispatch(getAllEvents());
+            groupEvents = Object.values(data).filter((event) => {
+                return event.groupId === +groupId;
+            });
+            for (const event of groupEvents) {
+                const currentTime = new Date();
+                const comparisonDate = new Date(event.startDate);
+                if (currentTime < comparisonDate) {
+                    futureEvents.push(event);
+                } else {
+                    prevEvents.push(event);
+                }
+            }
+            futureEvents.sort(
+                (a, b) => Date.parse(a.startDate) - Date.parse(b.startDate)
+            );
+            prevEvents.sort(
+                (a, b) => Date.parse(b.startDate) - Date.parse(a.startDate)
+            );
+            console.log(futureEvents);
+        }
+        fetchData();
         dispatch(getGroupInfo(groupId));
     }, [dispatch]);
 
@@ -27,7 +78,12 @@ export default function SingleGroup() {
     };
     const userInfo = useSelector((state) => state.session.user);
 
-    if (Object.keys(groupInfo).length === 0) return null;
+    if (Object.keys(groupInfo).length === 0) return <h1>Loading...</h1>;
+    if (Object.keys(groupEvents).length === 0) return <h1>Loading...</h1>;
+
+    let numAssociatedEvents = Object.values(groupEvents).filter((event) => {
+        return event.groupId === +groupId;
+    }).length;
 
     return (
         <div>
@@ -46,7 +102,11 @@ export default function SingleGroup() {
                         <p>
                             {groupInfo.city}, {groupInfo.state}
                         </p>
-                        <p>FIXME: ## events · {groupInfo.type}</p>
+                        <p>
+                            {numAssociatedEvents}{" "}
+                            {numAssociatedEvents === 1 ? "Event" : "Events"} ·{" "}
+                            {groupInfo.type}
+                        </p>
                         <p>
                             Organized by {groupInfo.Organizer.firstName}{" "}
                             {groupInfo.Organizer.lastName}
@@ -73,7 +133,6 @@ export default function SingleGroup() {
                             </button>
                             <OpenModalButton
                                 buttonText="Delete"
-                                // onItemClick={closeMenu}
                                 modalComponent={
                                     <DeleteGroupModal groupId={groupId} />
                                 }
@@ -96,9 +155,31 @@ export default function SingleGroup() {
                     <h2>What we're about</h2>
                     <p>{groupInfo.about}</p>
                 </div>
-                <div>
-                    <h2>FIXME: Upcoming Events</h2>
-                </div>
+                {!groupEvents.length && (
+                    <div>
+                        <h2>No upcoming events!</h2>
+                    </div>
+                )}
+                {futureEvents.length && (
+                    <div>
+                        <h2>Upcoming Events ({futureEvents.length})</h2>
+                        {futureEvents.map((event) => (
+                            <AbridgedEventInfo
+                                event={event}
+                            ></AbridgedEventInfo>
+                        ))}
+                    </div>
+                )}
+                {prevEvents.length && (
+                    <div>
+                        <h2>Past Events ({prevEvents.length})</h2>
+                        {prevEvents.map((event) => (
+                            <AbridgedEventInfo
+                                event={event}
+                            ></AbridgedEventInfo>
+                        ))}
+                    </div>
+                )}
             </div>
         </div>
     );

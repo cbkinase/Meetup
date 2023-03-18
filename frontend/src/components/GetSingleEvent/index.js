@@ -74,15 +74,24 @@ export default function SingleEvent() {
                         <div>
                             <p>{event.type}</p>
                             {userInfo && userInfo.id === group.Organizer.id && (
-                                <OpenModalButton
-                                    buttonText="Delete"
-                                    modalComponent={
-                                        <DeleteEventModal
-                                            groupId={group.id}
-                                            eventId={eventId}
-                                        ></DeleteEventModal>
-                                    }
-                                ></OpenModalButton>
+                                <>
+                                    <button
+                                        onClick={() =>
+                                            alert("Feature coming soon")
+                                        }
+                                    >
+                                        Update
+                                    </button>
+                                    <OpenModalButton
+                                        buttonText="Delete"
+                                        modalComponent={
+                                            <DeleteEventModal
+                                                groupId={group.id}
+                                                eventId={eventId}
+                                            ></DeleteEventModal>
+                                        }
+                                    ></OpenModalButton>
+                                </>
                             )}
                         </div>
                     </div>
