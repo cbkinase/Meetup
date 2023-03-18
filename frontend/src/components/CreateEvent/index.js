@@ -27,7 +27,7 @@ export default function CreateEventForm() {
     const [eventImage, setEventImage] = useState("");
     const [eventDescription, setEventDescription] = useState("");
     const [eventCapacity, setEventCapacity] = useState(10);
-    const [eventVenueId, setEventVenueId] = useState(1);
+    // const [eventVenueId, setEventVenueId] = useState(1);
     const [errors, setErrors] = useState({});
     const [hasSubmitted, setHasSubmitted] = useState(false);
 
@@ -76,7 +76,8 @@ export default function CreateEventForm() {
             err.description = "Description must be at least 30 characters long";
 
         const payload = {
-            venueId: eventVenueId,
+            // venueId: eventVenueId,
+            venueId: null,
             name: eventName,
             type: eventType,
             capacity: eventCapacity,
