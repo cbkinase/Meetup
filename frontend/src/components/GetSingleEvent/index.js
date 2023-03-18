@@ -57,7 +57,8 @@ export default function SingleEvent() {
                     <div>
                         <img
                             src={
-                                group.GroupImages.length && group.GroupImages[0]
+                                group.GroupImages.length &&
+                                group.GroupImages[0].url
                             }
                             alt={group.name}
                         ></img>
@@ -65,14 +66,27 @@ export default function SingleEvent() {
                     </div>
                     <div>
                         <div>
-                            <p>START {printStartDate}</p>
-                            <p>END {printEndDate}</p>
+                            <div>
+                                <i className="fa-regular fa-clock"></i>
+                            </div>
+                            <div>
+                                <p>START {printStartDate}</p>
+                                <p>END {printEndDate}</p>
+                            </div>
                         </div>
                         <div>
-                            <p>{event.price ? event.price : "FREE"}</p>
+                            <i className="fa-regular fa-dollar-sign"></i>
+                            <p>
+                                {event.price != 0
+                                    ? `$${Number(event.price).toFixed(2)}`
+                                    : "FREE"}
+                            </p>
                         </div>
                         <div>
-                            <p>{event.type}</p>
+                            <div>
+                                <i className="	fas fa-map-pin"></i>
+                                <p>{event.type}</p>
+                            </div>
                             {userInfo && userInfo.id === group.Organizer.id && (
                                 <>
                                     <button
