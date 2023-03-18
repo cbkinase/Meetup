@@ -122,7 +122,8 @@ const venueCreationMiddleware = [
 
 const validateEventCreation = [
     check("venueId").custom(async (venueId, { req }) => {
-        if (req.body.type === "Online") {
+        // Adjusted until we add Venues
+        if (req.body.type === "Online" || "In Person") {
             return true;
         }
         let venue = await Venue.findByPk(venueId);
