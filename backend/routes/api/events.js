@@ -85,6 +85,7 @@ router.get("/", getAllEventsMiddleware, async (req, res, next) => {
 
     let events = await Event.findAll({
         ...pagination,
+        order: [["startDate", "ASC"]],
         attributes: {
             exclude: [
                 "capacity",
