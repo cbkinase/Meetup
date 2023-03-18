@@ -58,6 +58,10 @@ export default function GroupCollection({ isEvents }) {
                       })
                     : Object.values(events.allEvents)
                           .sort(function (a, b) {
+                              // Order events by most upcoming at top.
+                              // Events whose startDate is in the past are
+                              // filtered to the bottom.
+                              if (new Date() > new Date(a.startDate)) return 1;
                               return (
                                   new Date(a.startDate) - new Date(b.startDate)
                               );

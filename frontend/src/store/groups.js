@@ -134,7 +134,7 @@ export function destroyGroup(id) {
 // To make the MAKE_GROUP_IMAGE action type more generalizable, so we can spread
 // The previous content of singleGroup.GroupImages within, like so:
 // GroupImages: [...state.singleGroup.GroupImages, action.img] <--- would current throw an error: GroupImages not iterable
-// For now, the current version works though.
+// For now, the current version works though. Same for make event image.
 
 const initialState = { allGroups: {}, singleGroup: {}, Venues: {} };
 
