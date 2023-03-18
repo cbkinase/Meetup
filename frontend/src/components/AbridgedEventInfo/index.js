@@ -2,6 +2,8 @@ import "./AbridgedEventInfo.css";
 import { useHistory } from "react-router-dom";
 
 export default function AbridgedEventInfo({ event }) {
+    const defaultImage =
+        "https://content.instructables.com/FNF/7PUG/IRAVYHIC/FNF7PUGIRAVYHIC.jpg?auto=webp&frame=1&width=320&md=060c25d3f1bceaa6d309292040645220";
     const history = useHistory();
 
     const getDetailsOfEvent = (event) => {
@@ -18,7 +20,7 @@ export default function AbridgedEventInfo({ event }) {
     if (event.Venue && event.Venue.length) {
         printVenue = `${event.Venue.city}, ${event.Venue.state}`;
     } else if (event.type === "In person") {
-        printVenue = "In person";
+        printVenue = "In person, no Venue specified";
     } else {
         printVenue = "Online";
     }
@@ -31,7 +33,11 @@ export default function AbridgedEventInfo({ event }) {
                         onClick={handleClick}
                         className="event-image"
                         alt={event.name}
-                        src={event.previewImage}
+                        src={
+                            event.previewImage
+                                ? event.previewImage
+                                : defaultImage
+                        }
                     ></img>
                 </div>
                 <div className="event-actual-info" onClick={handleClick}>

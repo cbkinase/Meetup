@@ -155,12 +155,12 @@ export default function SingleGroup() {
                     <h2>What we're about</h2>
                     <p>{groupInfo.about}</p>
                 </div>
-                {!groupEvents.length && (
+                {groupEvents.length === 0 ? (
                     <div>
                         <h2>No upcoming events!</h2>
                     </div>
-                )}
-                {futureEvents.length && (
+                ) : null}
+                {futureEvents.length ? (
                     <div>
                         <h2>Upcoming Events ({futureEvents.length})</h2>
                         {futureEvents.map((event) => (
@@ -169,8 +169,8 @@ export default function SingleGroup() {
                             ></AbridgedEventInfo>
                         ))}
                     </div>
-                )}
-                {prevEvents.length && (
+                ) : null}
+                {prevEvents.length ? (
                     <div>
                         <h2>Past Events ({prevEvents.length})</h2>
                         {prevEvents.map((event) => (
@@ -179,7 +179,7 @@ export default function SingleGroup() {
                             ></AbridgedEventInfo>
                         ))}
                     </div>
-                )}
+                ) : null}
             </div>
         </div>
     );
