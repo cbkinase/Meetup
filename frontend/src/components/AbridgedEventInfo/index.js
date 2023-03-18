@@ -14,6 +14,14 @@ export default function AbridgedEventInfo({ event }) {
 
     let printDate = event.startDate.split("T");
     printDate = `${printDate[0]} · ${printDate[1].slice(0, -5)}`;
+    let printVenue;
+    if (event.Venue && event.Venue.length) {
+        printVenue = `${event.Venue.city}, ${event.Venue.state}`;
+    } else if (event.type === "In person") {
+        printVenue = "In person";
+    } else {
+        printVenue = "Online";
+    }
 
     return (
         <div className="main-event-container">
@@ -29,11 +37,7 @@ export default function AbridgedEventInfo({ event }) {
                 <div className="event-actual-info" onClick={handleClick}>
                     <h3>{printDate}</h3>
                     <h2>{event.name}</h2>
-                    <p>
-                        {event.Venue
-                            ? `${event.Venue.city}, ${event.Venue.state}`
-                            : "ONLINE"}
-                    </p>
+                    <p>{printVenue}</p>
                 </div>
             </div>
         </div>
