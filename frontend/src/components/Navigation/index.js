@@ -22,26 +22,28 @@ function Navigation({ isLoaded }) {
     );
     return (
         // <div className="nav-container">
-        <ul className="nav-container">
-            <div>
-                <li className="nav-elements">
-                    <NavLink exact to="/">
-                        {meetupSvg}
-                    </NavLink>
-                </li>
-            </div>
-
-            <div className="navbar-2nd-half">
-                {sessionUser && (
-                    <NavLink to="/groups/new">Start a new group</NavLink>
-                )}
-                {isLoaded && (
-                    <li id="profile-stuff" className="nav-elements">
-                        <ProfileButton user={sessionUser} />
+        <div id="nav-full-container">
+            <ul className="nav-container">
+                <div>
+                    <li className="nav-elements">
+                        <NavLink exact to="/">
+                            {meetupSvg}
+                        </NavLink>
                     </li>
-                )}
-            </div>
-        </ul>
+                </div>
+
+                <div className="navbar-2nd-half">
+                    {sessionUser && (
+                        <NavLink to="/groups/new">Start a new group</NavLink>
+                    )}
+                    {isLoaded && (
+                        <li id="profile-stuff" className="nav-elements">
+                            <ProfileButton user={sessionUser} />
+                        </li>
+                    )}
+                </div>
+            </ul>
+        </div>
     );
 }
 

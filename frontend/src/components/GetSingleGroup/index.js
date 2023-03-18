@@ -55,7 +55,15 @@ export default function SingleGroup() {
                     {!userInfo ? null : groupInfo.Organizer.id ===
                       userInfo.id ? (
                         <div>
-                            <button>Create event</button>
+                            <button
+                                onClick={() => {
+                                    history.push(
+                                        `/groups/${groupId}/events/new`
+                                    );
+                                }}
+                            >
+                                Create event
+                            </button>
                             <button
                                 onClick={() =>
                                     history.push(`/groups/${groupId}/edit`)

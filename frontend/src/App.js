@@ -7,6 +7,8 @@ import GroupCollection from "./components/GetAllGroups";
 import Homepage from "./components/Homepage";
 import SingleGroup from "./components/GetSingleGroup";
 import CreateGroupForm from "./components/CreateGroup";
+import SingleEvent from "./components/GetSingleEvent";
+import CreateEventForm from "./components/CreateEvent";
 
 function App() {
     const dispatch = useDispatch();
@@ -35,8 +37,14 @@ function App() {
                     <Route exact path="/groups/:groupId/edit">
                         <CreateGroupForm isUpdating={true}></CreateGroupForm>
                     </Route>
+                    <Route exact path="/groups/:groupId/events/new">
+                        <CreateEventForm></CreateEventForm>
+                    </Route>
                     <Route exact path="/groups/:groupId">
                         <SingleGroup></SingleGroup>
+                    </Route>
+                    <Route exact path="/events/:eventId">
+                        <SingleEvent></SingleEvent>
                     </Route>
                 </Switch>
             )}
