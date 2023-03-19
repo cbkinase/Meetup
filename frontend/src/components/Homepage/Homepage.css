@@ -80,7 +80,11 @@
 
 @media screen and (max-width: 600px) {
     #main-homepage-container {
-        margin: 75px 0 75px 0;
+        margin: 75px 20px 75px 20px;
+    }
+
+    #section-3-middle {
+        padding: 0 0px 0 0px;
     }
     #section-1 {
         flex-direction: column;
@@ -113,7 +117,7 @@
     #main-homepage-container {
         width: 1000px;
     }
-    #container-container-lol {
+    #ccl {
         display: flex;
         align-items: center;
         justify-content: center;

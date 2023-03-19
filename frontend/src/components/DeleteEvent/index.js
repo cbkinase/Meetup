@@ -17,7 +17,7 @@ export default function DeleteEventModal({ groupId, eventId }) {
         <div>
             <h2>Confirm Delete</h2>
             <h3>Are you sure you want to remove this event?</h3>
-            <button onClick={handleDelete}>Yes(Delete event)</button>
+            <button onClick={handleDelete}>Yes (Delete event)</button>
             <button onClick={closeModal}>No (Keep event)</button>
         </div>
     );
