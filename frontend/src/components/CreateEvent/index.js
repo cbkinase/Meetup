@@ -199,7 +199,11 @@ export default function CreateEventForm() {
                         )}
                     </div>
                 </div>
-                <button className="decorated-button" id="submit" type="submit">
+                <button
+                    className="decorated-button button-needs-adjustment"
+                    id="submit"
+                    type="submit"
+                >
                     Create Event
                 </button>
             </form>

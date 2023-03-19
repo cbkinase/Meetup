@@ -19,6 +19,7 @@
 }
 
 #ge-status {
+    font-size: 17px;
     color: gray;
 }
 
@@ -28,7 +29,8 @@
 }
 
 .active-tab {
-    color: #00525e;
+    color: rgb(13, 149, 149);
+    font-weight: bold;
     cursor: default;
 }
 

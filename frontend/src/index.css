@@ -94,7 +94,7 @@ h1 {
     font-weight: bold;
 }
 
-.decorated-button {
+/* .decorated-button {
     border-radius: 8px;
     cursor: pointer;
     color: #fff;
@@ -106,6 +106,30 @@ h1 {
 .decorated-button:hover {
     background-color: #1b9bac;
     border-color: #1b9bac;
+} */
+
+.decorated-button:not(:disabled) {
+    border-radius: 8px;
+    cursor: pointer;
+    color: #fff;
+    padding: 8px 16px;
+    background-color: #008294;
+    border-color: #008294;
+}
+
+.decorated-button:not(:disabled):hover {
+    background-color: #1b9bac;
+    border-color: #1b9bac;
+}
+
+.button-needs-adjustment:not(:disabled) {
+    padding: 0px;
+}
+
+:root {
+    background: #ece9e6;
+    background: -webkit-linear-gradient(to left, #ffffff, #ece9e6);
+    background: linear-gradient(to left, #ffffff, #ece9e6);
 }
 
 /* h2 {
