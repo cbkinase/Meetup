@@ -94,7 +94,7 @@ h1 {
     font-weight: bold;
 }
 
-button {
+.decorated-button {
     border-radius: 8px;
     cursor: pointer;
     color: #fff;
@@ -103,7 +103,7 @@ button {
     border-color: #008294;
 }
 
-button:hover {
+.decorated-button:hover {
     background-color: #1b9bac;
     border-color: #1b9bac;
 }

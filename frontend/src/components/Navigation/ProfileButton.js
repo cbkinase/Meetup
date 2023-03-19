@@ -101,7 +101,12 @@ function ProfileButton({ user }) {
                                 </NavLink>
                             </li>
                             <li className="menu-clickable">
-                                <button onClick={logout}>Log Out</button>
+                                <button
+                                    className="decorated-button"
+                                    onClick={logout}
+                                >
+                                    Log Out
+                                </button>
                             </li>
                         </div>
                     </>

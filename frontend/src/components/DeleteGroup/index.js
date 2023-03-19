@@ -17,8 +17,12 @@ export default function DeleteGroupModal({ groupId }) {
         <div>
             <h2>Confirm Delete</h2>
             <h3>Are you sure you want to remove this group?</h3>
-            <button onClick={handleDelete}>Yes(Delete Group)</button>
-            <button onClick={closeModal}>No (Keep Group)</button>
+            <button className="decorated-button" onClick={handleDelete}>
+                Yes(Delete Group)
+            </button>
+            <button className="decorated-button" onClick={closeModal}>
+                No (Keep Group)
+            </button>
         </div>
     );
 }

@@ -246,11 +246,19 @@ export default function CreateGroupForm({ isUpdating }) {
                     )}
                 </div>
                 {!isUpdating ? (
-                    <button id="submit" type="submit">
+                    <button
+                        className="decorated-button"
+                        id="submit"
+                        type="submit"
+                    >
                         Create group
                     </button>
                 ) : (
-                    <button id="submit" type="submit">
+                    <button
+                        className="decorated-button"
+                        id="submit"
+                        type="submit"
+                    >
                         Update group
                     </button>
                 )}
