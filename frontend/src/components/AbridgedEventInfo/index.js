@@ -15,7 +15,7 @@ export default function AbridgedEventInfo({ event }) {
     };
 
     let printDate = event.startDate.split("T");
-    printDate = `${printDate[0]} · ${printDate[1].slice(0, -5)}`;
+    printDate = `${printDate[0]} · ${printDate[1].slice(0, -5)} UTC`;
     let printVenue;
     if (event.Venue && event.Venue.length) {
         printVenue = `${event.Venue.city}, ${event.Venue.state}`;
@@ -28,7 +28,7 @@ export default function AbridgedEventInfo({ event }) {
     return (
         <div className="main-event-container">
             <div className="event-subcontainer">
-                <div id="add-ev-img-pad">
+                <div onClick={handleClick} id="add-ev-img-pad">
                     <img
                         onClick={handleClick}
                         className="event-image"
@@ -41,9 +41,9 @@ export default function AbridgedEventInfo({ event }) {
                     ></img>
                 </div>
                 <div className="event-actual-info" onClick={handleClick}>
-                    <h3>{printDate}</h3>
-                    <h2>{event.name}</h2>
-                    <p>{printVenue}</p>
+                    <h3 id="abg-event-date">{printDate}</h3>
+                    <h2 id="abg-event-name">{event.name}</h2>
+                    <p id="abg-event-venue">{printVenue}</p>
                 </div>
             </div>
         </div>

@@ -85,7 +85,9 @@ export default function SingleGroup() {
 
     return (
         <div>
-            <NavLink to="/groups">Groups</NavLink>
+            <NavLink to="/groups">
+                <i class="fa-regular fa-less-than"></i> Groups
+            </NavLink>
             <div>
                 <img
                     src={

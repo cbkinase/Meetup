@@ -41,10 +41,16 @@ function LoginFormModal() {
                 const data = await res.json();
                 if (data && data.errors) setErrors(Object.values(data.errors));
             });
-        if (errors.length === 0) history.push("/");
+        if (errors.length === 0) {
+            const self = document.getElementsByClassName("nav-container")[0];
+            self.style.borderBottom = "1px solid rgb(103, 102, 102)";
+            history.push("/");
+        }
     };
 
     const handleDemoLogin = async (e) => {
+        const self = document.getElementsByClassName("nav-container")[0];
+        self.style.borderBottom = "1px solid rgb(103, 102, 102)";
         e.preventDefault();
         const demoUser = {
             credential: "Demo-lition",

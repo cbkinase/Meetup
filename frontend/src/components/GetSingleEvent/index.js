@@ -43,7 +43,9 @@ export default function SingleEvent() {
 
     return (
         <div>
-            <NavLink to="/events">Events</NavLink>
+            <NavLink to="/events">
+                <i class="fa-regular fa-less-than"></i> Events
+            </NavLink>
             <h2>{event.name}</h2>
             <p>
                 Hosted by {group.Organizer.firstName} {group.Organizer.lastName}
