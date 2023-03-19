@@ -1,13 +1,26 @@
 .group-info-container {
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
     margin: 15px 0 15px 0;
 }
 
+.group-info-subcontainer {
+    display: flex;
+    flex-direction: row;
+    max-width: 600px;
+    border-bottom: 2px solid rgb(103, 102, 102);
+    padding-top: 20px;
+    padding-bottom: 20px;
+    padding-left: 10px;
+    padding-right: 10px;
+    box-shadow: rgba(0, 0, 0, 0.1) 0px 0px 5px 0px,
+        rgba(0, 0, 0, 0.1) 0px 0px 1px 0px;
+}
+
 #preview-image {
-    width: 50%;
+    width: 200px;
     height: 130px;
     max-width: 200px;
     max-height: 130px;
@@ -19,6 +32,7 @@
     width: 300px;
     font-size: 14px;
     cursor: pointer;
+    overflow-x: hidden;
 }
 
 .group-attr {
@@ -33,4 +47,14 @@
 #group-about {
     font-weight: bold;
     overflow-x: hidden;
+}
+
+@media screen and (max-width: 800px) {
+    #preview-image {
+        width: 30%;
+        height: 100px;
+    }
+    .group-info-subcontainer {
+        max-width: 80vw;
+    }
 }
