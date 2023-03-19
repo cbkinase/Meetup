@@ -38,10 +38,16 @@ function ProfileButton({ user }) {
         return () => document.removeEventListener("click", closeMenu);
     }, [showMenu]);
 
-    const closeMenu = () => setShowMenu(false);
+    const closeMenu = () => {
+        const self = document.getElementsByClassName("nav-container")[0];
+        self.style.borderBottom = "1px solid rgb(103, 102, 102)";
+        setShowMenu(false);
+    };
 
     const logout = (e) => {
         e.preventDefault();
+        const self = document.getElementsByClassName("nav-container")[0];
+        self.style.borderBottom = "1px solid rgb(103, 102, 102)";
         dispatch(sessionActions.logout());
         closeMenu();
         history.push("/");

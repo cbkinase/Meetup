@@ -27,7 +27,7 @@ export default function AbridgedGroupInfo({ group, numEvents }) {
                     <h2 id="group-name" className="group-attr">
                         {group.name}
                     </h2>
-                    <p className="group-attr">
+                    <p className="group-attr quiet-group-attr">
                         {group.type === "Online"
                             ? "Online"
                             : `${group.city}, ${group.state}`}
@@ -35,7 +35,7 @@ export default function AbridgedGroupInfo({ group, numEvents }) {
                     <p id="group-about" className="group-attr">
                         {group.about}
                     </p>
-                    <p className="group-attr">
+                    <p className="group-attr quiet-group-attr">
                         {numEvents === 1 ? `1 event` : `${numEvents} events`} ·{" "}
                         {group.private ? "Private" : "Public"}
                     </p>
