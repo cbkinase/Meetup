@@ -114,6 +114,7 @@ export default function SingleGroup() {
                       userInfo.id ? (
                         <div>
                             <button
+                                className="decorated-button"
                                 onClick={() => {
                                     history.push(
                                         `/groups/${groupId}/events/new`
@@ -123,6 +124,7 @@ export default function SingleGroup() {
                                 Create event
                             </button>
                             <button
+                                className="decorated-button"
                                 onClick={() =>
                                     history.push(`/groups/${groupId}/edit`)
                                 }
@@ -130,6 +132,7 @@ export default function SingleGroup() {
                                 Update
                             </button>
                             <OpenModalButton
+                                className="decorated-button"
                                 buttonText="Delete"
                                 modalComponent={
                                     <DeleteGroupModal groupId={groupId} />
@@ -138,7 +141,10 @@ export default function SingleGroup() {
                         </div>
                     ) : (
                         <div>
-                            <button onClick={handleJoinGroup}>
+                            <button
+                                className="decorated-button"
+                                onClick={handleJoinGroup}
+                            >
                                 Join this Group
                             </button>
                         </div>

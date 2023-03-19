@@ -90,6 +90,7 @@ export default function SingleEvent() {
                             {userInfo && userInfo.id === group.Organizer.id && (
                                 <>
                                     <button
+                                        className="decorated-button"
                                         onClick={() =>
                                             alert("Feature coming soon")
                                         }
@@ -97,6 +98,7 @@ export default function SingleEvent() {
                                         Update
                                     </button>
                                     <OpenModalButton
+                                        className="decorated-button"
                                         buttonText="Delete"
                                         modalComponent={
                                             <DeleteEventModal
