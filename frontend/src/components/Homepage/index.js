@@ -129,6 +129,7 @@ export default function Homepage() {
                 {!user ? (
                     <div id="section-4">
                         <OpenModalButton
+                            className="join-meetup-button"
                             buttonText="Join Meetup"
                             onItemClick={closeMenu}
                             modalComponent={<SignupFormModal />}

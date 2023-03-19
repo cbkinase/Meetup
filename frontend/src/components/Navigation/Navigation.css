@@ -29,6 +29,36 @@
     cursor: pointer;
 }
 
+.profile-dropdown {
+    animation: growDown 300ms ease-in-out forwards;
+    transform-origin: top center;
+    z-index: 1;
+}
+
+.main-menu-user-interaction {
+    font-weight: bold;
+}
+
+@keyframes growDown {
+    0% {
+        transform: scaleY(0);
+    }
+    80% {
+        transform: scaleY(1.1);
+    }
+    100% {
+        transform: scaleY(1);
+    }
+}
+
+.main-dropdown-button {
+    border-radius: 20px;
+    border: 1px solid black;
+    padding: 3px 5px 3px 5px;
+    background-color: rgb(230, 229, 229);
+    cursor: pointer;
+}
+
 /* #ve-link {
     padding-left: 15px;
 } */

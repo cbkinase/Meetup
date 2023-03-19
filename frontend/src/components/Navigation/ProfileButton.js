@@ -46,13 +46,13 @@ function ProfileButton({ user }) {
 
     return (
         <>
-            <button onClick={openMenu}>
+            <button className="main-dropdown-button" onClick={openMenu}>
                 <i
                     className="fas fa-user-circle"
                     style={{
-                        marginRight: "5px",
+                        marginRight: "7px",
                         color: "#000000",
-                        fontSize: "16px",
+                        fontSize: "20px",
                     }}
                 />
                 <i
@@ -62,9 +62,9 @@ function ProfileButton({ user }) {
                             : "fa-solid fa-chevron-up"
                     }
                     style={{
-                        fontSize: "16px",
+                        fontSize: "20px",
                         color: "#000000",
-                        marginLeft: "5px",
+                        marginLeft: "7px",
                     }}
                 />
             </button>
@@ -101,13 +101,13 @@ function ProfileButton({ user }) {
                 ) : (
                     <>
                         <OpenModalMenuItem
-                            className="menu-clickable"
+                            className="menu-clickable main-menu-user-interaction"
                             itemText="Log In"
                             onItemClick={closeMenu}
                             modalComponent={<LoginFormModal />}
                         />
                         <OpenModalMenuItem
-                            className="menu-clickable"
+                            className="menu-clickable main-menu-user-interaction"
                             itemText="Sign Up"
                             onItemClick={closeMenu}
                             modalComponent={<SignupFormModal />}
