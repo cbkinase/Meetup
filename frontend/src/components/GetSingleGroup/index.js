@@ -37,7 +37,6 @@ export default function SingleGroup() {
         prevEvents.sort(
             (a, b) => Date.parse(b.startDate) - Date.parse(a.startDate)
         );
-        console.log(futureEvents);
     }
     splitEvents(groupEvents);
     useEffect(() => {
@@ -61,7 +60,6 @@ export default function SingleGroup() {
             prevEvents.sort(
                 (a, b) => Date.parse(b.startDate) - Date.parse(a.startDate)
             );
-            console.log(futureEvents);
         }
         fetchData();
         dispatch(getGroupInfo(groupId));

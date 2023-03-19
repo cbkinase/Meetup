@@ -64,6 +64,20 @@
     justify-content: center;
 }
 
+.join-meetup-button {
+    border-radius: 8px;
+    cursor: pointer;
+    color: #fff;
+    padding: 8px 16px;
+    background-color: #008294;
+    border-color: #008294;
+}
+
+.join-meetup-button:hover {
+    background-color: #1b9bac;
+    border-color: #1b9bac;
+}
+
 @media screen and (max-width: 600px) {
     #main-homepage-container {
         margin: 75px 0 75px 0;
