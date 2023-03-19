@@ -16,6 +16,8 @@ function ProfileButton({ user }) {
 
     const openMenu = () => {
         if (showMenu) return;
+        const self = document.getElementsByClassName("nav-container")[0];
+        self.style.borderBottom = "none";
         setShowMenu(true);
     };
 
@@ -25,6 +27,9 @@ function ProfileButton({ user }) {
         const closeMenu = (e) => {
             if (!ulRef.current.contains(e.target)) {
                 setShowMenu(false);
+                const self =
+                    document.getElementsByClassName("nav-container")[0];
+                self.style.borderBottom = "1px solid rgb(103, 102, 102)";
             }
         };
 
@@ -62,7 +67,7 @@ function ProfileButton({ user }) {
                             : "fa-solid fa-chevron-up"
                     }
                     style={{
-                        fontSize: "20px",
+                        fontSize: "16px",
                         color: "#000000",
                         marginLeft: "7px",
                     }}
@@ -71,67 +76,71 @@ function ProfileButton({ user }) {
             <ul className={ulClassName} ref={ulRef}>
                 {user ? (
                     <>
-                        <li>{user.username}</li>
-                        <li>Hello, {user.firstName}</li>
-                        <li>{user.email}</li>
-                        <li>
-                            <NavLink
-                                onClick={closeMenu}
-                                className="menu-clickable"
-                                id="vg-link"
-                                to="/groups"
-                            >
-                                View groups
-                            </NavLink>
-                        </li>
-                        <li>
-                            <NavLink
-                                onClick={closeMenu}
-                                className="menu-clickable"
-                                id="ve-link"
-                                to="/events"
-                            >
-                                View events
-                            </NavLink>
-                        </li>
-                        <li className="menu-clickable">
-                            <button onClick={logout}>Log Out</button>
-                        </li>
+                        <div className="dropdown-items-a">
+                            <li>{user.username}</li>
+                            <li>Hello, {user.firstName}</li>
+                            <li>{user.email}</li>
+                            <li>
+                                <NavLink
+                                    onClick={closeMenu}
+                                    className="menu-clickable"
+                                    id="vg-link"
+                                    to="/groups"
+                                >
+                                    View groups
+                                </NavLink>
+                            </li>
+                            <li>
+                                <NavLink
+                                    onClick={closeMenu}
+                                    className="menu-clickable"
+                                    id="ve-link"
+                                    to="/events"
+                                >
+                                    View events
+                                </NavLink>
+                            </li>
+                            <li className="menu-clickable">
+                                <button onClick={logout}>Log Out</button>
+                            </li>
+                        </div>
                     </>
                 ) : (
                     <>
-                        <OpenModalMenuItem
-                            className="menu-clickable main-menu-user-interaction"
-                            itemText="Log In"
-                            onItemClick={closeMenu}
-                            modalComponent={<LoginFormModal />}
-                        />
-                        <OpenModalMenuItem
-                            className="menu-clickable main-menu-user-interaction"
-                            itemText="Sign Up"
-                            onItemClick={closeMenu}
-                            modalComponent={<SignupFormModal />}
-                        />
-                        <li>
-                            <NavLink
-                                onClick={closeMenu}
-                                className="menu-clickable"
-                                id="vg-link"
-                                to="/groups"
-                            >
-                                View groups
-                            </NavLink>
-                        </li>
-                        <li>
-                            <NavLink
-                                onClick={closeMenu}
-                                className="menu-clickable"
-                                id="ve-link"
-                                to="/events"
-                            >
-                                View events
-                            </NavLink>
-                        </li>
+                        <div className="dropdown-items-a">
+                            <OpenModalMenuItem
+                                className="menu-clickable main-menu-user-interaction"
+                                itemText="Log In"
+                                onItemClick={closeMenu}
+                                modalComponent={<LoginFormModal />}
+                            />
+                            <OpenModalMenuItem
+                                className="menu-clickable main-menu-user-interaction"
+                                itemText="Sign Up"
+                                onItemClick={closeMenu}
+                                modalComponent={<SignupFormModal />}
+                            />
+                            <li>
+                                <NavLink
+                                    onClick={closeMenu}
+                                    className="menu-clickable"
+                                    id="vg-link"
+                                    to="/groups"
+                                >
+                                    View groups
+                                </NavLink>
+                            </li>
+                            <li>
+                                <NavLink
+                                    onClick={closeMenu}
+                                    className="menu-clickable"
+                                    id="ve-link"
+                                    to="/events"
+                                >
+                                    View events
+                                </NavLink>
+                            </li>
+                        </div>
                     </>
                 )}
             </ul>

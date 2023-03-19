@@ -25,7 +25,10 @@ function Navigation({ isLoaded }) {
         <div id="nav-full-container">
             <ul className="nav-container">
                 <div>
-                    <li className="nav-elements">
+                    <li
+                        id="home-pic"
+                        className="nav-outer-elements nav-elements"
+                    >
                         <NavLink exact to="/">
                             {meetupSvg}
                         </NavLink>
@@ -34,10 +37,18 @@ function Navigation({ isLoaded }) {
 
                 <div className="navbar-2nd-half">
                     {sessionUser && (
-                        <NavLink to="/groups/new">Start a new group</NavLink>
+                        <NavLink
+                            className="start-new-group-nav nav-elements"
+                            to="/groups/new"
+                        >
+                            Start a new group
+                        </NavLink>
                     )}
                     {isLoaded && (
-                        <li id="profile-stuff" className="nav-elements">
+                        <li
+                            id="profile-stuff"
+                            className="nav-outer-elements nav-elements"
+                        >
                             <ProfileButton user={sessionUser} />
                         </li>
                     )}
