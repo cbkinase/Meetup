@@ -28,7 +28,7 @@ export default function AbridgedEventInfo({ event }) {
     return (
         <div className="main-event-container">
             <div className="event-subcontainer">
-                <div>
+                <div id="add-ev-img-pad">
                     <img
                         onClick={handleClick}
                         className="event-image"

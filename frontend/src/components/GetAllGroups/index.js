@@ -25,7 +25,7 @@ export default function GroupCollection({ isEvents }) {
     return (
         <div>
             <div id="top-bar-groups-events">
-                <div>
+                <div id="events-or-groups">
                     <NavLink
                         className={isEvents ? "inactive-tab" : "active-tab"}
                         to="/groups"
@@ -39,7 +39,9 @@ export default function GroupCollection({ isEvents }) {
                         Events
                     </NavLink>
                 </div>
-                <h2>{isEvents ? "Events" : "Groups"} in Meetup</h2>
+                <h2 id="ge-status">
+                    {isEvents ? "Events" : "Groups"} in Meetup
+                </h2>
             </div>
             <ul className="item1-container">
                 {!isEvents

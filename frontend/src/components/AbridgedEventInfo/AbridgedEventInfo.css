@@ -9,9 +9,26 @@
 .event-subcontainer {
     display: flex;
     flex-direction: row;
+    max-width: 600px;
+    border-bottom: 2px solid rgb(103, 102, 102);
+    padding-top: 20px;
+    padding-bottom: 20px;
+    padding-left: 10px;
+    padding-right: 10px;
+    box-shadow: rgba(0, 0, 0, 0.1) 0px 0px 5px 0px,
+        rgba(0, 0, 0, 0.1) 0px 0px 1px 0px;
 }
 
 .event-image {
+    width: 200px;
+    height: 130px;
+    max-width: 200px;
+    max-height: 130px;
+    padding-right: 20px;
+    cursor: pointer;
+}
+
+#add-ev-img-pad {
     width: 200px;
     height: 130px;
     max-width: 200px;
@@ -24,4 +41,14 @@
     width: 300px;
     font-size: 14px;
     cursor: pointer;
+}
+
+@media screen and (max-width: 800px) {
+    .event-image {
+        width: 100%;
+    }
+
+    .event-subcontainer {
+        max-width: 80vw;
+    }
 }
