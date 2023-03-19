@@ -27,16 +27,16 @@ export default function GroupCollection({ isEvents }) {
             <div id="top-bar-groups-events">
                 <div id="events-or-groups">
                     <NavLink
-                        className={isEvents ? "inactive-tab" : "active-tab"}
-                        to="/groups"
-                    >
-                        Groups
-                    </NavLink>
-                    <NavLink
                         className={isEvents ? "active-tab" : "inactive-tab"}
                         to="/events"
                     >
                         Events
+                    </NavLink>
+                    <NavLink
+                        className={isEvents ? "inactive-tab" : "active-tab"}
+                        to="/groups"
+                    >
+                        Groups
                     </NavLink>
                 </div>
                 <h2 id="ge-status">

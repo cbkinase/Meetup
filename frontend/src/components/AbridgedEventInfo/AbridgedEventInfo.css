@@ -46,11 +46,17 @@
 #abg-event-date {
     color: rgb(15, 180, 180);
     font-weight: bold;
+    padding-bottom: 5px;
 }
 
 #abg-event-name {
     font-weight: bold;
     font-size: 18px;
+    padding-bottom: 5px;
+}
+
+#abg-event-venue {
+    color: gray;
 }
 
 @media screen and (max-width: 800px) {
