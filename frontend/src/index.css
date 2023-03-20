@@ -154,6 +154,14 @@ h1 {
     padding-bottom: 10px;
 }
 
+.login-signup-button {
+    background-color: #e82a8c !important;
+    margin-bottom: 5px;
+    color: white;
+    border-radius: 10px;
+    padding-top: 5px;
+}
+
 /* h2 {
     font-size: 18px;
     font-weight: bold;

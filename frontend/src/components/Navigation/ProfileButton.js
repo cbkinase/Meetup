@@ -149,13 +149,13 @@ function ProfileButton({ user }) {
                     <>
                         <div className="dropdown-items-a">
                             <OpenModalMenuItem
-                                className="menu-clickable main-menu-user-interaction"
+                                className="menu-clickable main-menu-user-interaction login-signup-button"
                                 itemText="Log In"
                                 onItemClick={closeMenu}
                                 modalComponent={<LoginFormModal />}
                             />
                             <OpenModalMenuItem
-                                className="menu-clickable main-menu-user-interaction"
+                                className="menu-clickable main-menu-user-interaction login-signup-button"
                                 itemText="Sign Up"
                                 onItemClick={closeMenu}
                                 modalComponent={<SignupFormModal />}
