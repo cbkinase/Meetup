@@ -132,6 +132,6 @@
         margin-top: 15px;
     }
     #single-event-img {
-        border-radius: 15px;
+        max-width: 80vw;
     }
 }
