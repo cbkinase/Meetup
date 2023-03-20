@@ -152,7 +152,7 @@ function SignupFormModal() {
                     </label>
                 </div>
                 <button
-                    className="decorated-button"
+                    className="decorated-button alt-color-button"
                     disabled={submitDisabled}
                     id="submit"
                     type="submit"

@@ -126,6 +126,18 @@ h1 {
     padding: 0px;
 }
 
+.small-button {
+    padding: 2px 4px !important;
+    margin-right: 3px;
+    background-color: #e82a8c !important;
+    border-color: #e82a8c !important;
+}
+
+.alt-color-button:not(:disabled) {
+    background-color: #e82a8c !important;
+    border-color: #e82a8c !important;
+}
+
 :root {
     background: #ece9e6;
     background: -webkit-linear-gradient(to left, #ffffff, #ece9e6);

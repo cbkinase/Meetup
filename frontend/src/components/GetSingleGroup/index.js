@@ -7,6 +7,7 @@ import { NavLink } from "react-router-dom";
 import OpenModalButton from "../OpenModalButton";
 import DeleteGroupModal from "../DeleteGroup";
 import AbridgedEventInfo from "../AbridgedEventInfo";
+import "./GetSingleGroup.css";
 
 export default function SingleGroup() {
     const dispatch = useDispatch();
@@ -84,20 +85,24 @@ export default function SingleGroup() {
     }).length;
 
     return (
-        <div>
-            <NavLink to="/groups">
-                <i class="fa-regular fa-less-than"></i> Groups
-            </NavLink>
+        <div className="main-single-group-container">
+            <div id="return-to-groups">
+                <NavLink to="/groups">
+                    <i className="fa-regular fa-less-than"></i> Groups
+                </NavLink>
+            </div>
             <div>
-                <img
-                    src={
-                        groupInfo.GroupImages.length > 0
-                            ? groupInfo.GroupImages[0].url
-                            : "NO IMAGE"
-                    }
-                ></img>
-                <div>
-                    <div>
+                <div id="group-detail-container">
+                    <img
+                        id="group-detail-img"
+                        alt={groupInfo.name}
+                        src={
+                            groupInfo.GroupImages.length > 0
+                                ? groupInfo.GroupImages[0].url
+                                : "NO IMAGE"
+                        }
+                    ></img>
+                    <div id="group-detail-text">
                         <h1>{groupInfo.name}</h1>
                         <p>
                             {groupInfo.city}, {groupInfo.state}
@@ -111,64 +116,74 @@ export default function SingleGroup() {
                             Organized by {groupInfo.Organizer.firstName}{" "}
                             {groupInfo.Organizer.lastName}
                         </p>
+                        {!userInfo ? null : groupInfo.Organizer.id ===
+                          userInfo.id ? (
+                            <div>
+                                <button
+                                    className="decorated-button small-button"
+                                    onClick={() => {
+                                        history.push(
+                                            `/groups/${groupId}/events/new`
+                                        );
+                                    }}
+                                >
+                                    Create event
+                                </button>
+                                <button
+                                    className="decorated-button small-button"
+                                    onClick={() =>
+                                        history.push(`/groups/${groupId}/edit`)
+                                    }
+                                >
+                                    Update
+                                </button>
+                                <OpenModalButton
+                                    className="decorated-button small-button"
+                                    buttonText="Delete"
+                                    modalComponent={
+                                        <DeleteGroupModal groupId={groupId} />
+                                    }
+                                ></OpenModalButton>
+                            </div>
+                        ) : (
+                            <div>
+                                <button
+                                    className="decorated-button small-button"
+                                    onClick={handleJoinGroup}
+                                >
+                                    Join this Group
+                                </button>
+                            </div>
+                        )}
                     </div>
-                    {!userInfo ? null : groupInfo.Organizer.id ===
-                      userInfo.id ? (
-                        <div>
-                            <button
-                                className="decorated-button"
-                                onClick={() => {
-                                    history.push(
-                                        `/groups/${groupId}/events/new`
-                                    );
-                                }}
-                            >
-                                Create event
-                            </button>
-                            <button
-                                className="decorated-button"
-                                onClick={() =>
-                                    history.push(`/groups/${groupId}/edit`)
-                                }
-                            >
-                                Update
-                            </button>
-                            <OpenModalButton
-                                className="decorated-button"
-                                buttonText="Delete"
-                                modalComponent={
-                                    <DeleteGroupModal groupId={groupId} />
-                                }
-                            ></OpenModalButton>
-                        </div>
-                    ) : (
-                        <div>
-                            <button
-                                className="decorated-button"
-                                onClick={handleJoinGroup}
-                            >
-                                Join this Group
-                            </button>
-                        </div>
-                    )}
                 </div>
-                <div>
-                    <h2>Organizer</h2>
-                    <p>
-                        {groupInfo.Organizer.firstName}{" "}
-                        {groupInfo.Organizer.lastName}
-                    </p>
-                    <h2>What we're about</h2>
-                    <p>{groupInfo.about}</p>
-                </div>
-                {groupEvents.length === 0 ? (
+                <div id="group-spiel">
                     <div>
-                        <h2>No upcoming events!</h2>
+                        <h2 className="organizer-label-group">Organizer</h2>
+                        <p id="organizer-fn-ln-desc">
+                            {groupInfo.Organizer.firstName}{" "}
+                            {groupInfo.Organizer.lastName}
+                        </p>
+                    </div>
+                    <div>
+                        <h2 className="organizer-label-group">
+                            What we're about
+                        </h2>
+                        <p id="group-desc-mid">{groupInfo.about}</p>
+                    </div>
+                </div>
+                {prevEvents.length === 0 && futureEvents.length === 0 ? (
+                    <div>
+                        <h2 className="organizer-label-group">
+                            No upcoming events!
+                        </h2>
                     </div>
                 ) : null}
                 {futureEvents.length ? (
                     <div>
-                        <h2>Upcoming Events ({futureEvents.length})</h2>
+                        <h2 className="organizer-label-group">
+                            Upcoming Events ({futureEvents.length})
+                        </h2>
                         {futureEvents.map((event) => (
                             <AbridgedEventInfo
                                 event={event}
@@ -178,7 +193,9 @@ export default function SingleGroup() {
                 ) : null}
                 {prevEvents.length ? (
                     <div>
-                        <h2>Past Events ({prevEvents.length})</h2>
+                        <h2 className="organizer-label-group">
+                            Past Events ({prevEvents.length})
+                        </h2>
                         {prevEvents.map((event) => (
                             <AbridgedEventInfo
                                 event={event}

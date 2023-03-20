@@ -107,7 +107,7 @@ function LoginFormModal() {
                     )} */}
                 </div>
                 <button
-                    className="decorated-button button-needs-adjustment"
+                    className="decorated-button button-needs-adjustment alt-color-button"
                     disabled={submitDisabled}
                     id="submit"
                     type="submit"
