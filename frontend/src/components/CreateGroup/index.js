@@ -122,32 +122,58 @@ export default function CreateGroupForm({ isUpdating }) {
     }
 
     return (
-        <div>
-            {!isUpdating ? (
-                <h3>BECOME AN ORGANIZER</h3>
-            ) : (
-                <h3>UPDATE YOUR GROUP'S INFORMATION</h3>
-            )}
-            {!isUpdating ? (
-                <h2>
-                    We'll walk you through a few steps to build your local
-                    community
-                </h2>
-            ) : (
-                <h2>
-                    We'll walk you through a few steps to update your group's
-                    information
-                </h2>
-            )}
-            <form onSubmit={handleSubmit}>
-                <div className="form-create-section">
-                    <h2>First, set your group's location</h2>
+        <div
+            style={{
+                display: "flex",
+                flexDirection: "column",
+                justifyContent: "center",
+                alignItems: "flex-start",
+                marginLeft: "20px",
+                marginRight: "20px",
+            }}
+        >
+            <div
+                style={{
+                    display: "flex",
+                    flexDirection: "column",
+                    justifyContent: "center",
+                    alignItems: "flex-start",
+                }}
+                id="create-group-header"
+            >
+                {!isUpdating ? (
+                    <h3 id="main-create-title">BECOME AN ORGANIZER</h3>
+                ) : (
+                    <h3 id="main-create-title">
+                        UPDATE YOUR GROUP'S INFORMATION
+                    </h3>
+                )}
+                {!isUpdating ? (
+                    <h2 className="create-group-subheading">
+                        We'll walk you through a few steps to build your local
+                        community
+                    </h2>
+                ) : (
+                    <h2 className="create-group-subheading">
+                        We'll walk you through a few steps to update your
+                        group's information
+                    </h2>
+                )}
+            </div>
+            <div className="has-bottom-border"></div>
+            <div>
+                <form id="create-group-form" onSubmit={handleSubmit}>
+                    {/* <div className="form-create-section"> */}
+                    <h2 className="create-group-subheading">
+                        First, set your group's location
+                    </h2>
                     <p>
                         Meetup groups meet locally, in person and online. We'll
                         connect you with people in your area, and more can join
                         you online.
                     </p>
                     <input
+                        className="color-input"
                         onChange={(e) => setLocation(e.target.value)}
                         placeholder="City, STATE"
                         defaultValue={location}
@@ -158,15 +184,19 @@ export default function CreateGroupForm({ isUpdating }) {
                     {!errors.location && hasSubmitted && errors.state && (
                         <p className="errors">*{errors.state}</p>
                     )}
-                </div>
-                <div className="form-create-section">
-                    <h2>What will your group's name be?</h2>
+                    <div className="has-bottom-border"></div>
+                    {/* </div> */}
+                    {/* <div className="form-create-section"> */}
+                    <h2 className="create-group-subheading">
+                        What will your group's name be?
+                    </h2>
                     <p>
                         Choose a name that will give people a clear idea of what
                         the group is about. Feel free to get creative! You can
                         edit this later if you change your mind.
                     </p>
                     <input
+                        className="color-input"
                         defaultValue={groupName}
                         onChange={(e) => setGroupName(e.target.value)}
                         placeholder="What is your group name?"
@@ -174,19 +204,24 @@ export default function CreateGroupForm({ isUpdating }) {
                     {hasSubmitted && errors.name && (
                         <p className="errors">*{errors.name}</p>
                     )}
-                </div>
-                <div className="form-create-section">
-                    <h2>Now describe what your group will be about</h2>
-                    <p>
+                    <div className="has-bottom-border"></div>
+                    {/* </div> */}
+                    {/* <div className="form-create-section"> */}
+                    <h2 className="create-group-subheading">
+                        Now describe what your group will be about
+                    </h2>
+                    <p id="describing-the-description">
                         People will see this when we promote your group, but
                         you'll be able to add to it later, too
                     </p>
                     <ol>
-                        <li>1. What's the purpose of the group?</li>
-                        <li>2. Who should join?</li>
-                        <li>3. What will you do at your events?</li>
+                        <li>1. {"‎‎‎"} What's the purpose of the group?</li>
+                        <li>2. {"‎‎‎"} Who should join?</li>
+                        <li>3. {"‎‎‎"} What will you do at your events?</li>
                     </ol>
                     <textarea
+                        id="create-group-about"
+                        className="color-input"
                         defaultValue={description}
                         onChange={(e) => setDescription(e.target.value)}
                         placeholder="Please write at least 30 characters"
@@ -194,76 +229,87 @@ export default function CreateGroupForm({ isUpdating }) {
                     {hasSubmitted && errors.about && (
                         <p className="errors">*{errors.about}</p>
                     )}
-                </div>
-                <div className="form-create-section">
-                    <h2>Final steps...</h2>
-                    <div>
-                        <label htmlFor="type">
-                            Is this an in person or online group?
-                        </label>
-                        <select
-                            onChange={(e) => setGroupType(e.target.value)}
-                            id="type"
-                            name="type"
-                            defaultValue={groupType}
-                        >
-                            <option value="">(select one)</option>
-                            <option value="Online">Online</option>
-                            <option value="In person">In person</option>
-                        </select>
-                        {hasSubmitted && errors.type && (
-                            <p className="errors">*{errors.type}</p>
-                        )}
-                    </div>
-                    <div>
-                        <label htmlFor="type">
-                            Is this group private or public?
-                        </label>
-                        <select
-                            onChange={(e) => setGroupPrivacy(e.target.value)}
-                            id="type"
-                            name="type"
-                            defaultValue={groupPrivacy}
-                        >
-                            <option value="">(select one)</option>
-                            <option value="Public">Public</option>
-                            <option value="Private">Private</option>
-                        </select>
-                        {hasSubmitted && errors.privacy && (
-                            <p className="errors">*{errors.privacy}</p>
-                        )}
-                    </div>
+                    {/* </div> */}
+                    {/* <div className="form-create-section"> */}
+                    <div className="has-bottom-border"></div>
+                    <h2 className="create-group-subheading">Final steps...</h2>
+                    {/* <div> */}
+                    <label htmlFor="type">
+                        Is this an in person or online group?
+                    </label>
+                    <select
+                        className="color-input"
+                        onChange={(e) => setGroupType(e.target.value)}
+                        id="type"
+                        name="type"
+                        defaultValue={groupType}
+                    >
+                        <option value="">(select one)</option>
+                        <option value="Online">Online</option>
+                        <option value="In person">In person</option>
+                    </select>
+                    {hasSubmitted && errors.type && (
+                        <p className="errors">*{errors.type}</p>
+                    )}
+                    {/* </div> */}
+                    {/* <div> */}
+                    <label
+                        className="slight-spacing-above-create-group"
+                        htmlFor="type"
+                    >
+                        Is this group private or public?
+                    </label>
+                    <select
+                        className="color-input"
+                        onChange={(e) => setGroupPrivacy(e.target.value)}
+                        id="type"
+                        name="type"
+                        defaultValue={groupPrivacy}
+                    >
+                        <option value="">(select one)</option>
+                        <option value="Public">Public</option>
+                        <option value="Private">Private</option>
+                    </select>
+                    {hasSubmitted && errors.privacy && (
+                        <p className="errors">*{errors.privacy}</p>
+                    )}
+                    {/* </div> */}
                     {!isUpdating && (
-                        <div>
-                            <p>Please add an image url for your group below:</p>
+                        <>
+                            <p className="slight-spacing-above-create-group">
+                                Please add an image url for your group below:
+                            </p>
                             <input
+                                className="color-input"
                                 onChange={(e) => setGroupImage(e.target.value)}
                                 defaultValue={groupImage}
                             ></input>
                             {hasSubmitted && errors.image && (
                                 <p className="errors">*{errors.image}</p>
                             )}
-                        </div>
+                        </>
                     )}
-                </div>
-                {!isUpdating ? (
-                    <button
-                        className="decorated-button button-needs-adjustment"
-                        id="submit"
-                        type="submit"
-                    >
-                        Create group
-                    </button>
-                ) : (
-                    <button
-                        className="decorated-button button-needs-adjustment"
-                        id="submit"
-                        type="submit"
-                    >
-                        Update group
-                    </button>
-                )}
-            </form>
+                    {/* </div> */}
+                    <div className="has-bottom-border"></div>
+                    {!isUpdating ? (
+                        <button
+                            className="decorated-button button-needs-adjustment"
+                            id="submit"
+                            type="submit"
+                        >
+                            Create group
+                        </button>
+                    ) : (
+                        <button
+                            className="decorated-button button-needs-adjustment"
+                            id="submit"
+                            type="submit"
+                        >
+                            Update group
+                        </button>
+                    )}
+                </form>
+            </div>
         </div>
     );
 }
