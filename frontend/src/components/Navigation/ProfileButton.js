@@ -83,11 +83,37 @@ function ProfileButton({ user }) {
                 {user ? (
                     <>
                         <div className="dropdown-items-a">
-                            <li>{user.username}</li>
-                            <li>Hello, {user.firstName}</li>
-                            <li>{user.email}</li>
+                            <li
+                            // style={{
+                            //     marginLeft: "4px",
+                            //     overflowX: "hidden",
+                            //     maxWidth: "85px",
+                            // }}
+                            >
+                                {user.username}
+                            </li>
+                            <li
+                            // style={{
+                            //     maxWidth: "85px",
+                            //     marginLeft: "4px",
+                            //     overflowX: "hidden",
+                            // }}
+                            >
+                                Hello, {user.firstName}
+                            </li>
+                            <li
+                            // style={{
+                            //     overflowX: "hidden",
+                            //     maxWidth: "90px",
+                            // }}
+                            >
+                                {user.email}
+                            </li>
                             <li>
                                 <NavLink
+                                    style={{
+                                        marginLeft: "4px",
+                                    }}
                                     onClick={closeMenu}
                                     className="menu-clickable"
                                     id="vg-link"
@@ -98,6 +124,9 @@ function ProfileButton({ user }) {
                             </li>
                             <li>
                                 <NavLink
+                                    style={{
+                                        marginLeft: "4px",
+                                    }}
                                     onClick={closeMenu}
                                     className="menu-clickable"
                                     id="ve-link"
@@ -108,6 +137,10 @@ function ProfileButton({ user }) {
                             </li>
                             <li className="menu-clickable">
                                 <button
+                                    style={{
+                                        fontWeight: "bold",
+                                        marginLeft: "4px",
+                                    }}
                                     className="decorated-button alt-color-button"
                                     onClick={logout}
                                 >

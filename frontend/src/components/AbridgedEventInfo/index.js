@@ -15,7 +15,7 @@ export default function AbridgedEventInfo({ event }) {
     };
 
     let printDate = event.startDate.split("T");
-    printDate = `${printDate[0]} · ${printDate[1].slice(0, -5)} UTC`;
+    printDate = `${printDate[0]} · ${printDate[1].slice(0, -5)} (UTC)`;
     let printVenue;
     if (event.Venue && event.Venue.length) {
         printVenue = `${event.Venue.city}, ${event.Venue.state}`;

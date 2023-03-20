@@ -1,0 +1,18 @@
+.event-create-spacing {
+    margin: 20px 0px 5px 0px;
+}
+
+#create-event-about {
+    width: 300px;
+    height: 120px;
+}
+
+.decorated-event-create-text {
+    font-weight: bold;
+    margin-top: 10px;
+    margin-bottom: 5px;
+}
+
+.other-create-event-decorated-text {
+    font-style: italic;
+}

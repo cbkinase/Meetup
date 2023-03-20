@@ -52,6 +52,7 @@
     animation: growDown 300ms ease-in-out forwards;
     transform-origin: top center;
     z-index: 1;
+    position: absolute;
 }
 
 .profile-dropdown li {
@@ -110,5 +111,8 @@
     }
     .start-new-group-nav {
         padding: 8px 12px;
+    }
+    .profile-dropdown {
+        position: revert;
     }
 }
