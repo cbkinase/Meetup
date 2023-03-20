@@ -159,14 +159,16 @@ export default function SingleGroup() {
                 </div>
                 <div id="group-spiel">
                     <div>
-                        <h2 className="organizer-label-group">Organizer</h2>
+                        <h2 className="organizer-label-group g-about-label">
+                            Organizer
+                        </h2>
                         <p id="organizer-fn-ln-desc">
                             {groupInfo.Organizer.firstName}{" "}
                             {groupInfo.Organizer.lastName}
                         </p>
                     </div>
                     <div>
-                        <h2 className="organizer-label-group">
+                        <h2 className="organizer-label-group g-about-label">
                             What we're about
                         </h2>
                         <p id="group-desc-mid">{groupInfo.about}</p>
@@ -174,14 +176,14 @@ export default function SingleGroup() {
                 </div>
                 {prevEvents.length === 0 && futureEvents.length === 0 ? (
                     <div>
-                        <h2 className="organizer-label-group">
+                        <h2 className="organizer-label-group event-time-descriptor">
                             No upcoming events!
                         </h2>
                     </div>
                 ) : null}
                 {futureEvents.length ? (
                     <div>
-                        <h2 className="organizer-label-group">
+                        <h2 className="organizer-label-group event-time-descriptor">
                             Upcoming Events ({futureEvents.length})
                         </h2>
                         {futureEvents.map((event) => (
@@ -192,8 +194,8 @@ export default function SingleGroup() {
                     </div>
                 ) : null}
                 {prevEvents.length ? (
-                    <div>
-                        <h2 className="organizer-label-group">
+                    <div id="past-events">
+                        <h2 className="organizer-label-group event-time-descriptor">
                             Past Events ({prevEvents.length})
                         </h2>
                         {prevEvents.map((event) => (
