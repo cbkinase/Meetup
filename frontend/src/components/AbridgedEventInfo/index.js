@@ -43,7 +43,8 @@ export default function AbridgedEventInfo({ event }) {
                 <div className="event-actual-info" onClick={handleClick}>
                     <h3 id="abg-event-date">{printDate}</h3>
                     <h2 id="abg-event-name">{event.name}</h2>
-                    <p id="abg-event-venue">{printVenue}</p>
+                    <p class="abg-event-venue">{printVenue}</p>
+                    <p style={{ marginTop: "10px" }}>{event.description}</p>
                 </div>
             </div>
         </div>

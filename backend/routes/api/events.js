@@ -87,13 +87,7 @@ router.get("/", getAllEventsMiddleware, async (req, res, next) => {
         ...pagination,
         order: [["startDate", "ASC"]],
         attributes: {
-            exclude: [
-                "capacity",
-                "description",
-                "price",
-                "updatedAt",
-                "createdAt",
-            ],
+            exclude: ["capacity", "price", "updatedAt", "createdAt"],
         },
         where,
         include: [
