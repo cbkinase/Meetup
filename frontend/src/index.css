@@ -133,9 +133,17 @@ h1 {
     border-color: #e82a8c !important;
 }
 
+.small-button:hover {
+    background-color: #d4257f !important;
+}
+
 .alt-color-button:not(:disabled) {
     background-color: #e82a8c !important;
     border-color: #e82a8c !important;
+}
+
+.alt-color-button:not(:disabled):hover {
+    background-color: #d4257f !important;
 }
 
 .alt-color-button-2:not(:disabled) {
@@ -160,6 +168,10 @@ h1 {
     color: white;
     border-radius: 10px;
     padding-top: 5px;
+}
+
+.login-signup-button:hover {
+    background-color: #d4257f !important;
 }
 
 /* h2 {
