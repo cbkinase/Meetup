@@ -38,9 +38,12 @@ export default function SingleEvent() {
     if (Object.keys(group).length === 0) return null;
 
     let printStartDate = event.startDate.split("T");
-    printStartDate = `${printStartDate[0]} · ${printStartDate[1].slice(0, -5)}`;
+    printStartDate = `${printStartDate[0]} · ${printStartDate[1].slice(
+        0,
+        -5
+    )} (UTC)`;
     let printEndDate = event.endDate.split("T");
-    printEndDate = `${printEndDate[0]} · ${printEndDate[1].slice(0, -5)}`;
+    printEndDate = `${printEndDate[0]} · ${printEndDate[1].slice(0, -5)} (UTC)`;
 
     return (
         <div

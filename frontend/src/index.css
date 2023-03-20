@@ -138,10 +138,20 @@ h1 {
     border-color: #e82a8c !important;
 }
 
+.alt-color-button-2:not(:disabled) {
+    background-color: grey !important;
+    border-color: grey !important;
+}
+.alt-color-button-2:not(:disabled):hover {
+    background-color: rgb(163, 163, 163) !important;
+    border-color: rgb(163, 163, 163) !important;
+}
+
 :root {
     background: #ece9e6;
     background: -webkit-linear-gradient(to left, #ffffff, #ece9e6);
     background: linear-gradient(to left, #ffffff, #ece9e6);
+    padding-bottom: 10px;
 }
 
 /* h2 {

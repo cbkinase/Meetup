@@ -128,8 +128,8 @@ export default function CreateGroupForm({ isUpdating }) {
                 flexDirection: "column",
                 justifyContent: "center",
                 alignItems: "flex-start",
-                marginLeft: "20px",
-                marginRight: "20px",
+                marginLeft: "60px",
+                marginRight: "60px",
             }}
         >
             <div
@@ -293,6 +293,7 @@ export default function CreateGroupForm({ isUpdating }) {
                     <div className="has-bottom-border"></div>
                     {!isUpdating ? (
                         <button
+                            style={{ fontWeight: "bold" }}
                             className="decorated-button button-needs-adjustment"
                             id="submit"
                             type="submit"
@@ -301,6 +302,7 @@ export default function CreateGroupForm({ isUpdating }) {
                         </button>
                     ) : (
                         <button
+                            style={{ fontWeight: "bold" }}
                             className="decorated-button button-needs-adjustment"
                             id="submit"
                             type="submit"

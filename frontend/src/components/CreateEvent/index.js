@@ -3,6 +3,7 @@ import { useState, useEffect } from "react";
 import { getGroupInfo } from "../../store/groups";
 import { useHistory, useParams } from "react-router-dom";
 import { createEvent, createEventImage } from "../../store/events";
+import "./CreateEvent.css";
 
 export default function CreateEventForm() {
     const dispatch = useDispatch();
@@ -105,12 +106,26 @@ export default function CreateEventForm() {
     };
 
     return (
-        <div>
-            <h1>Create an event for {group.name}</h1>
+        <div
+            style={{
+                display: "flex",
+                flexDirection: "column",
+                justifyContent: "center",
+                alignItems: "flex-start",
+                marginLeft: "60px",
+                marginRight: "60px",
+            }}
+        >
+            <h1 className="create-group-subheading event-create-spacing">
+                Create an event for "{group.name}"
+            </h1>
             <form onSubmit={handleSubmit}>
                 <div>
-                    <p>What is the name of your event?</p>
+                    <p className="decorated-event-create-text">
+                        What is the name of your event?
+                    </p>
                     <input
+                        className="color-input"
                         onChange={(e) => setEventName(e.target.value)}
                         placeholder="Event Name"
                     ></input>
@@ -118,13 +133,18 @@ export default function CreateEventForm() {
                         <p className="errors">*{errors.name}</p>
                     )}
                 </div>
+                <div className="has-bottom-border"></div>
                 <div>
                     <div>
-                        <label htmlFor="type">
+                        <label
+                            className="decorated-event-create-text"
+                            htmlFor="type"
+                        >
                             Is this an in person or online event?
                             <br></br>
                         </label>
                         <select
+                            className="color-input"
                             onChange={(e) => setEventType(e.target.value)}
                             id="type"
                             name="type"
@@ -138,8 +158,11 @@ export default function CreateEventForm() {
                         )}
                     </div>
                     <div>
-                        <p>What is the price for your event?</p>
+                        <p className="decorated-event-create-text">
+                            What is the price for your event?
+                        </p>
                         <input
+                            className="color-input"
                             defaultValue={0}
                             onChange={(e) => setEventPrice(e.target.value)}
                             type="number"
@@ -150,11 +173,18 @@ export default function CreateEventForm() {
                             <p className="errors">*{errors.price}</p>
                         )}
                     </div>
+                    <div className="has-bottom-border"></div>
                 </div>
                 <div>
                     <div>
-                        <p>When does your event start?</p>
+                        <p className="decorated-event-create-text">
+                            When does your event start?
+                        </p>
+                        <p className="other-create-event-decorated-text">
+                            Please note that all times are expressed in UTC.
+                        </p>
                         <input
+                            className="color-input"
                             onChange={(e) => setEventStart(e.target.value)}
                             type="datetime-local"
                         ></input>
@@ -163,8 +193,14 @@ export default function CreateEventForm() {
                         <p className="errors">*{errors.startDate}</p>
                     )}
                     <div>
-                        <p>When does your event end?</p>
+                        <p className="decorated-event-create-text">
+                            When does your event end?
+                        </p>
+                        <p className="other-create-event-decorated-text">
+                            Please note that all times are expressed in UTC.
+                        </p>
                         <input
+                            className="color-input"
                             onChange={(e) => setEventEnd(e.target.value)}
                             type="datetime-local"
                         ></input>
@@ -172,11 +208,15 @@ export default function CreateEventForm() {
                             <p className="errors">*{errors.endDate}</p>
                         )}
                     </div>
+                    <div className="has-bottom-border"></div>
                 </div>
                 <div>
                     <div>
-                        <p>Please add an image url for your event below:</p>
+                        <p className="decorated-event-create-text">
+                            Please add an image url for your event below:
+                        </p>
                         <input
+                            className="color-input"
                             onChange={(e) => setEventImage(e.target.value)}
                             placeholder="Image URL"
                         ></input>
@@ -184,11 +224,16 @@ export default function CreateEventForm() {
                             <p className="errors">*{errors.image}</p>
                         )}
                     </div>
+                    <div className="has-bottom-border"></div>
                 </div>
                 <div>
                     <div>
-                        <p>Please describe your event:</p>
+                        <p className="decorated-event-create-text">
+                            Please describe your event:
+                        </p>
                         <textarea
+                            id="create-event-about"
+                            className="color-input"
                             onChange={(e) =>
                                 setEventDescription(e.target.value)
                             }
@@ -200,6 +245,7 @@ export default function CreateEventForm() {
                     </div>
                 </div>
                 <button
+                    style={{ fontWeight: "bold" }}
                     className="decorated-button button-needs-adjustment"
                     id="submit"
                     type="submit"
