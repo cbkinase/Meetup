@@ -111,9 +111,7 @@ function ProfileButton({ user }) {
                             </li>
                             <li>
                                 <NavLink
-                                    style={{
-                                        marginLeft: "4px",
-                                    }}
+                                    style={{}}
                                     onClick={closeMenu}
                                     className="menu-clickable"
                                     id="vg-link"
@@ -124,9 +122,7 @@ function ProfileButton({ user }) {
                             </li>
                             <li>
                                 <NavLink
-                                    style={{
-                                        marginLeft: "4px",
-                                    }}
+                                    style={{}}
                                     onClick={closeMenu}
                                     className="menu-clickable"
                                     id="ve-link"
@@ -135,11 +131,11 @@ function ProfileButton({ user }) {
                                     View events
                                 </NavLink>
                             </li>
+                            <div className="has-bottom-border"></div>
                             <li className="menu-clickable">
                                 <button
                                     style={{
                                         fontWeight: "bold",
-                                        marginLeft: "4px",
                                     }}
                                     className="decorated-button alt-color-button"
                                     onClick={logout}
