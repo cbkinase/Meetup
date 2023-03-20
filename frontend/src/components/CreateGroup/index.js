@@ -2,6 +2,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useState, useEffect } from "react";
 import { createGroup, createGroupImage, editGroup } from "../../store/groups";
 import { useHistory, useParams } from "react-router-dom";
+import "./CreateGroup.css";
 
 export default function CreateGroupForm({ isUpdating }) {
     // Rather than using the 'isUpdating' boolean, it might make more sense to
