@@ -247,7 +247,7 @@ export default function CreateGroupForm({ isUpdating }) {
                 </div>
                 {!isUpdating ? (
                     <button
-                        className="decorated-button"
+                        className="decorated-button button-needs-adjustment"
                         id="submit"
                         type="submit"
                     >
@@ -255,7 +255,7 @@ export default function CreateGroupForm({ isUpdating }) {
                     </button>
                 ) : (
                     <button
-                        className="decorated-button"
+                        className="decorated-button button-needs-adjustment"
                         id="submit"
                         type="submit"
                     >

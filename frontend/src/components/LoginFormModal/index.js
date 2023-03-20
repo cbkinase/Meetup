@@ -106,10 +106,19 @@ function LoginFormModal() {
                         <p className="errors">*{validationErrors.password}</p>
                     )} */}
                 </div>
-                <button disabled={submitDisabled} id="submit" type="submit">
+                <button
+                    className="decorated-button button-needs-adjustment alt-color-button"
+                    disabled={submitDisabled}
+                    id="submit"
+                    type="submit"
+                >
                     Log In
                 </button>
-                <button onClick={handleDemoLogin} id="demo">
+                <button
+                    className="decorated-button button-needs-adjustment"
+                    onClick={handleDemoLogin}
+                    id="demo"
+                >
                     Demo User
                 </button>
             </form>

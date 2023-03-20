@@ -6,6 +6,7 @@ import { getGroupInfo } from "../../store/groups";
 import { NavLink } from "react-router-dom";
 import OpenModalButton from "../OpenModalButton";
 import DeleteEventModal from "../DeleteEvent";
+import "./GetSingleEvent.css";
 
 export default function SingleEvent() {
     const params = useParams();
@@ -43,9 +44,11 @@ export default function SingleEvent() {
 
     return (
         <div>
-            <NavLink to="/events">
-                <i class="fa-regular fa-less-than"></i> Events
-            </NavLink>
+            <div>
+                <NavLink to="/events">
+                    <i class="fa-regular fa-less-than"></i> Events
+                </NavLink>
+            </div>
             <h2>{event.name}</h2>
             <p>
                 Hosted by {group.Organizer.firstName} {group.Organizer.lastName}

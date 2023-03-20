@@ -108,7 +108,7 @@ function ProfileButton({ user }) {
                             </li>
                             <li className="menu-clickable">
                                 <button
-                                    className="decorated-button"
+                                    className="decorated-button alt-color-button"
                                     onClick={logout}
                                 >
                                     Log Out
