@@ -298,7 +298,7 @@ export default function CreateGroupForm({ isUpdating }) {
                             id="submit"
                             type="submit"
                         >
-                            Create group
+                            Create Group
                         </button>
                     ) : (
                         <button
@@ -307,7 +307,7 @@ export default function CreateGroupForm({ isUpdating }) {
                             id="submit"
                             type="submit"
                         >
-                            Update group
+                            Update Group
                         </button>
                     )}
                 </form>

@@ -110,7 +110,7 @@ export default function SingleGroup() {
                         <p>
                             {numAssociatedEvents}{" "}
                             {numAssociatedEvents === 1 ? "Event" : "Events"} ·{" "}
-                            {groupInfo.type}
+                            {groupInfo.private ? "Private" : "Public"}
                         </p>
                         <p>
                             Organized by {groupInfo.Organizer.firstName}{" "}
