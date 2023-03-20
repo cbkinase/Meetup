@@ -1,0 +1,51 @@
+#create-group-header {
+    margin-top: 30px;
+    padding-bottom: 5px;
+}
+
+.has-bottom-border {
+    margin-top: 10px;
+    margin-bottom: 10px;
+    border-bottom: 2px solid rgb(103, 102, 102);
+    width: 100%;
+}
+
+#create-group-form {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+.color-input {
+    background-color: rgba(183, 218, 245, 0.203);
+    border: 2px solid black;
+    border-radius: 2px;
+    margin-top: 10px;
+    margin-bottom: 2px;
+}
+
+#main-create-title {
+    color: rgb(9, 119, 119);
+    font-weight: bold;
+}
+
+.create-group-subheading {
+    font-size: 22px;
+    font-weight: bold;
+    margin-bottom: 3px;
+}
+
+#describing-the-description {
+    margin-top: 5px;
+    margin-bottom: 20px;
+}
+
+#create-group-about {
+    width: 300px;
+    height: 120px;
+    margin-top: 15px;
+}
+
+.slight-spacing-above-create-group {
+    margin-top: 10px;
+}
