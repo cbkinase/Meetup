@@ -6,7 +6,7 @@ This is a Meetup clone, presently hosted on Render. <a href="https://cameron-mee
 
 ## Technologies used
 
-- Backend: Node.js, Express.js, Sequelize
+- Backend: Node.js, Express.js, Sequelize, PostgreSQL
 - Frontend: React, Redux
 
 ## Demo
