@@ -2,7 +2,7 @@
 
 ## Intro
 
-This is a Meetup clone, presently hosted <a href="https://cameron-meetup-auth.onrender.com/">on Render</a>. Come check it out!
+This is a Meetup clone, presently hosted on Render. <a href="https://cameron-meetup-auth.onrender.com/">Come check it out!</a>
 
 ## Technologies used
 
