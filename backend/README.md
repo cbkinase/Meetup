@@ -2,7 +2,7 @@
 
 ## Database Schema Design
 
-`<insert database schema design here>`
+<img src="https://github.com/cbkinase/Meetup/blob/main/meetup_dbdiagram.png">
 
 ## API Documentation
 
