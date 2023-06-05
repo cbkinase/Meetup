@@ -372,7 +372,6 @@ router.put(
             err.status = 404;
             return next(err);
         }
-        console.log(membership);
         if (membership[0]?.status !== "co-host") {
             let err = new Error("Forbidden");
             err.status = 403;

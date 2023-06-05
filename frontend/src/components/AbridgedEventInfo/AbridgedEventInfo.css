@@ -54,6 +54,7 @@
     font-size: 18px;
     padding-bottom: 5px;
     margin-top: 5px;
+    overflow-wrap: break-word;
 }
 
 .abg-event-venue {

@@ -1,7 +1,8 @@
 import { NavLink } from "react-router-dom";
 import React, { useState, useEffect, useRef } from "react";
 import OpenModalButton from "../OpenModalButton/";
-import SignupFormModal from "../SignupFormModal";
+// import SignupFormModal from "../SignupFormModal";
+import NewSignupForm from "../SignupFormModal/NewSignupForm";
 import "./Homepage.css";
 import { useSelector } from "react-redux";
 
@@ -132,7 +133,7 @@ export default function Homepage() {
                             className="join-meetup-button"
                             buttonText="Join Meetup"
                             onItemClick={closeMenu}
-                            modalComponent={<SignupFormModal />}
+                            modalComponent={<NewSignupForm />}
                         ></OpenModalButton>
                     </div>
                 ) : null}

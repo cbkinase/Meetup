@@ -3,8 +3,10 @@ import { useHistory } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import * as sessionActions from "../../store/session";
 import OpenModalMenuItem from "./OpenModalMenuItem";
-import LoginFormModal from "../LoginFormModal";
-import SignupFormModal from "../SignupFormModal";
+// import LoginFormModal from "../LoginFormModal";
+import NewLoginForm from "../LoginFormModal/NewLoginForm";
+// import SignupFormModal from "../SignupFormModal";
+import NewSignupForm from "../SignupFormModal/NewSignupForm";
 import { NavLink } from "react-router-dom";
 import "./Navigation.css";
 
@@ -83,7 +85,7 @@ function ProfileButton({ user }) {
                 {user ? (
                     <>
                         <div className="dropdown-items-a">
-                            <li
+                            <li style={{fontWeight: "bold"}}
                             // style={{
                             //     marginLeft: "4px",
                             //     overflowX: "hidden",
@@ -107,8 +109,9 @@ function ProfileButton({ user }) {
                             //     maxWidth: "90px",
                             // }}
                             >
-                                {user.email}
+                                {/* {user.email} */}
                             </li>
+                            <div style={{marginBottom: "4px"}} className="has-bottom-border"></div>
                             <li>
                                 <NavLink
                                     style={{}}
@@ -152,13 +155,13 @@ function ProfileButton({ user }) {
                                 className="menu-clickable main-menu-user-interaction login-signup-button"
                                 itemText="Log In"
                                 onItemClick={closeMenu}
-                                modalComponent={<LoginFormModal />}
+                                modalComponent={<NewLoginForm />}
                             />
                             <OpenModalMenuItem
                                 className="menu-clickable main-menu-user-interaction login-signup-button"
                                 itemText="Sign Up"
                                 onItemClick={closeMenu}
-                                modalComponent={<SignupFormModal />}
+                                modalComponent={<NewSignupForm />}
                             />
                             <li>
                                 <NavLink

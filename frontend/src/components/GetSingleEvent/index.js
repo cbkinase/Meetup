@@ -57,7 +57,7 @@ export default function SingleEvent() {
                 <div className="main-single-event-container">
                     <div className="single-event-preamble">
                         <NavLink to="/events">
-                            <i class="fa-regular fa-less-than"></i> Events
+                            <i className="fa-regular fa-less-than"></i> Events
                         </NavLink>
                     </div>
                     <div className="single-event-header">

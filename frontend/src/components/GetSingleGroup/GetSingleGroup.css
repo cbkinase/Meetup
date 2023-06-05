@@ -53,6 +53,7 @@
     margin-bottom: 30px;
     margin-top: 30px;
     border-radius: 5px;
+    max-width: 90vw;
 }
 
 #group-spiel > div {
@@ -70,6 +71,7 @@
 
 #group-desc-mid {
     font-weight: bold;
+    overflow-wrap: break-word;
 }
 
 #past-events {
