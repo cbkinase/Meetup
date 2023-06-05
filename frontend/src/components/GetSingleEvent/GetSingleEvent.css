@@ -28,13 +28,14 @@
     height: 268px;
     max-width: 350px;
     max-height: 250px;
-    padding-right: 20px;
+    margin-right: 20px;
     align-self: center;
+    border-radius: 10px;
 }
 
 #group-of-event-img {
     max-width: 120px;
-    padding-right: 20px;
+    border-radius: 10px;
 }
 
 #group-of-event {
@@ -50,6 +51,8 @@
     background-color: white;
     padding: 15px 15px;
     margin-bottom: 15px;
+    width: 300px;
+    justify-content: space-evenly;
 }
 
 .event-proper-information {

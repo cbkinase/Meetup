@@ -22,61 +22,69 @@ export default function GroupCollection({ isEvents }) {
         if (Object.values(groups.allGroups).length === 0) return null;
     } else if (Object.values(events.allEvents).length === 0) return null;
 
-    return (
-        <div>
-            <div id="top-bar-groups-events">
-                <div id="events-or-groups">
-                    <NavLink
-                        className={isEvents ? "active-tab" : "inactive-tab"}
-                        to="/events"
-                    >
-                        Events
-                    </NavLink>
-                    <NavLink
-                        className={isEvents ? "inactive-tab" : "active-tab"}
-                        to="/groups"
-                    >
-                        Groups
-                    </NavLink>
-                </div>
-                <h2 id="ge-status">
-                    {isEvents ? "Events" : "Groups"} in Meetup
-                </h2>
+    function sortDates(a, b) {
+        const currentDate = new Date();
+        const dateA = new Date(a.startDate);
+        const dateB = new Date(b.startDate);
+
+        if (dateA > currentDate && dateB > currentDate) {
+          return dateA - dateB; // Sort future dates in ascending order
+        } else if (dateA <= currentDate && dateB <= currentDate) {
+          return dateB - dateA; // Sort past dates in descending order
+        } else if (dateA <= currentDate) {
+          return 1; // Put past dates below future dates
+        } else {
+          return -1; // Put future dates above past dates
+        }
+      };
+
+return (
+    <div>
+        <div id="top-bar-groups-events">
+            <div id="events-or-groups">
+                <NavLink
+                    className={isEvents ? "active-tab" : "inactive-tab"}
+                    to="/events"
+                >
+                    Events
+                </NavLink>
+                <NavLink
+                    className={isEvents ? "inactive-tab" : "active-tab"}
+                    to="/groups"
+                >
+                    Groups
+                </NavLink>
             </div>
-            <ul className="item1-container">
-                {!isEvents
-                    ? Object.values(groups.allGroups).map((group) => {
-                          return (
-                              <AbridgedGroupInfo
-                                  key={group.id}
-                                  group={group}
-                                  numEvents={
-                                      Object.values(events.allEvents).filter(
-                                          (event) => event.groupId === group.id
-                                      ).length
-                                  }
-                              ></AbridgedGroupInfo>
-                          );
-                      })
-                    : Object.values(events.allEvents)
-                          .sort(function (a, b) {
-                              // Order events by most upcoming at top.
-                              // Events whose startDate is in the past are
-                              // filtered to the bottom.
-                              if (new Date() > new Date(a.startDate)) return 1;
-                              return (
-                                  new Date(a.startDate) - new Date(b.startDate)
-                              );
-                          })
-                          .map((event) => {
-                              return (
-                                  <AbridgedEventInfo
-                                      key={event.id}
-                                      event={event}
-                                  ></AbridgedEventInfo>
-                              );
-                          })}
-            </ul>
+            <h2 id="ge-status">
+                {isEvents ? "Events" : "Groups"} in Meetup
+            </h2>
         </div>
-    );
+        <ul className="item1-container">
+            {!isEvents
+                ? Object.values(groups.allGroups).map((group) => {
+                    return (
+                        <AbridgedGroupInfo
+                            key={group.id}
+                            group={group}
+                            numEvents={
+                                Object.values(events.allEvents).filter(
+                                    (event) => event.groupId === group.id
+                                ).length
+                            }
+                        ></AbridgedGroupInfo>
+                    );
+                })
+                : Object.values(events.allEvents)
+                    .sort(sortDates)
+                    .map((event) => {
+                        return (
+                            <AbridgedEventInfo
+                                key={event.id}
+                                event={event}
+                            ></AbridgedEventInfo>
+                        );
+                    })}
+        </ul>
+    </div>
+);
 }

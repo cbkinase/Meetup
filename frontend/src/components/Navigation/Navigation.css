@@ -58,6 +58,7 @@
 .profile-dropdown li {
     padding-top: 2px;
     padding-bottom: 2px;
+    overflow-wrap: break-word;
 }
 
 .dropdown-items-a {
@@ -85,12 +86,13 @@
 }
 
 .main-dropdown-button {
-    /* border-radius: 20px; */
+    border-radius: 9999px;
     border: 1px solid black;
     /* padding: 3px 5px 3px 5px; */
-    background-color: rgb(230, 229, 229);
+    /* background-color: rgb(230, 229, 229); */
+    background-color: inherit;
     cursor: pointer;
-    border-radius: 8px;
+    /* border-radius: 8px; */
     padding: 8px 16px;
 }
 
