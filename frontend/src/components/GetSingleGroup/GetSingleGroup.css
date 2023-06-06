@@ -36,12 +36,14 @@
 
 #group-detail-text > h1 {
     padding-bottom: 5px;
+    overflow-wrap: break-word;
 }
 
 #group-detail-text > p {
     padding-bottom: 5px;
     color: gray;
     font-size: 14px;
+    overflow-wrap: break-word;
 }
 
 #group-spiel {
@@ -94,4 +96,5 @@
     .event-time-descriptor {
         margin-left: 20px;
     }
+
 }
