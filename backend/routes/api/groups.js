@@ -702,7 +702,14 @@ router.get("/:id", ensureGroupExists, async (req, res, next) => {
     numMembers = await group.getMemberships();
     group = group.toJSON();
     group.numMembers = numMembers.length;
-    delete group.Memberships;
+    // delete group.Memberships;
+    for (let i = 0; i < group.Memberships.length; i++) {
+        let member = group.Memberships[i];
+        let status = member.status;
+        group.Memberships[i] = await User.findByPk(member.userId)
+        group.Memberships[i] = group.Memberships[i].toJSON();
+        group.Memberships[i].status = status;
+    }
     group.Organizer = group.User;
     delete group.User;
     delete group.Organizer.username;

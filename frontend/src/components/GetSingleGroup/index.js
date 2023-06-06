@@ -7,6 +7,9 @@ import { NavLink } from "react-router-dom";
 import OpenModalButton from "../OpenModalButton";
 import DeleteGroupModal from "../DeleteGroup";
 import AbridgedEventInfo from "../AbridgedEventInfo";
+import MembersInfo from "./MembersInfo";
+import ManageMembers from "./ManageMembers";
+import { csrfFetch } from "../../store/csrf";
 import "./GetSingleGroup.css";
 
 export default function SingleGroup() {
@@ -17,6 +20,15 @@ export default function SingleGroup() {
     let groupEvents = useSelector((state) => state.events.allEvents);
     let prevEvents = [];
     let futureEvents = [];
+
+    function isInGroupAlready(user, group) {
+        return group.Memberships.some(member => member.id === user.id && member.status !== "pending")
+    }
+
+    function isMembershipPending(user, group) {
+        return group.Memberships.some(member => member.id === user.id && member.status === "pending")
+    }
+
     function splitEvents(eventData) {
         prevEvents = [];
         futureEvents = [];
@@ -64,7 +76,7 @@ export default function SingleGroup() {
         }
         fetchData();
         dispatch(getGroupInfo(groupId));
-    }, [dispatch]);
+    }, [dispatch, groupId]);
 
     const groupInfo = useSelector((state) => {
         if (groupId == state.groups.singleGroup.id)
@@ -73,8 +85,22 @@ export default function SingleGroup() {
     });
 
     const handleJoinGroup = () => {
-        alert("Feature coming soon");
+        csrfFetch(`/api/groups/${groupId}/membership`, {
+            method: "POST",
+            // headers: { "Content-Type": "application/json" },
+            // body: JSON.stringify({  })
+        })
+        alert("Membership requested");
     };
+
+    const handleLeaveGroup = () => {
+        csrfFetch(`/api/groups/${groupId}/membership`, {
+            method: "DELETE",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ memberId: userInfo.id })
+        })
+        dispatch(getGroupInfo(groupId));
+    }
     const userInfo = useSelector((state) => state.session.user);
 
     if (Object.keys(groupInfo).length === 0) return <h1>Loading...</h1>;
@@ -144,8 +170,25 @@ export default function SingleGroup() {
                                         <DeleteGroupModal groupId={groupId} />
                                     }
                                 ></OpenModalButton>
+                                <OpenModalButton
+                                    className="decorated-button small-button"
+                                    buttonText="Manage Members"
+                                    modalComponent={<ManageMembers group={groupInfo} user={userInfo} />} />
                             </div>
-                        ) : (
+                        ) :
+                        isInGroupAlready(userInfo, groupInfo)
+                        ? <div>
+                        <button
+                            className="decorated-button small-button"
+                            onClick={handleLeaveGroup}
+                        >
+                            Leave this Group
+                        </button>
+                    </div>
+                        :
+                        isMembershipPending(userInfo, groupInfo)
+                        ? null
+                        : (
                             <div>
                                 <button
                                     className="decorated-button small-button"
@@ -157,6 +200,7 @@ export default function SingleGroup() {
                         )}
                     </div>
                 </div>
+                <MembersInfo group={groupInfo} />
                 <div id="group-spiel">
                     <div>
                         <h2 className="organizer-label-group g-about-label">
@@ -188,6 +232,7 @@ export default function SingleGroup() {
                         </h2>
                         {futureEvents.map((event) => (
                             <AbridgedEventInfo
+                            key={event.id}
                                 event={event}
                             ></AbridgedEventInfo>
                         ))}
@@ -200,6 +245,7 @@ export default function SingleGroup() {
                         </h2>
                         {prevEvents.map((event) => (
                             <AbridgedEventInfo
+                            key={event.id}
                                 event={event}
                             ></AbridgedEventInfo>
                         ))}
