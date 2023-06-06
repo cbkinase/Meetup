@@ -10,9 +10,11 @@ import AbridgedEventInfo from "../AbridgedEventInfo";
 import MembersInfo from "./MembersInfo";
 import ManageMembers from "./ManageMembers";
 import { csrfFetch } from "../../store/csrf";
+import Popup from "../Popup";
 import "./GetSingleGroup.css";
 
 export default function SingleGroup() {
+    const [showPopup, setShowPopup] = useState(false);
     const dispatch = useDispatch();
     const params = useParams();
     const groupId = params.groupId;
@@ -20,6 +22,16 @@ export default function SingleGroup() {
     let groupEvents = useSelector((state) => state.events.allEvents);
     let prevEvents = [];
     let futureEvents = [];
+
+    useEffect(() => {
+        if (showPopup) {
+            const timer = setTimeout(() => {
+                setShowPopup(false);
+            }, 4900);
+
+            return () => clearTimeout(timer);
+        }
+    }, [showPopup]);
 
     function isInGroupAlready(user, group) {
         return group.Memberships.some(member => member.id === user.id && member.status !== "pending")
@@ -90,11 +102,12 @@ export default function SingleGroup() {
             // headers: { "Content-Type": "application/json" },
             // body: JSON.stringify({  })
         })
-        alert("Membership requested");
+        // alert("Membership requested");
+        setShowPopup(true);
     };
 
-    const handleLeaveGroup = () => {
-        csrfFetch(`/api/groups/${groupId}/membership`, {
+    const handleLeaveGroup = async () => {
+        await csrfFetch(`/api/groups/${groupId}/membership`, {
             method: "DELETE",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ memberId: userInfo.id })
@@ -112,147 +125,150 @@ export default function SingleGroup() {
 
     return (
         <div className="main-single-group-container">
-            <div style={{maxWidth: "600px"}}>
-            <div id="return-to-groups">
-                <NavLink to="/groups">
-                    <i className="fa-regular fa-less-than"></i> Groups
-                </NavLink>
-            </div>
-            <div>
-                <div id="group-detail-container">
-                    <img
-                        id="group-detail-img"
-                        alt={groupInfo.name}
-                        src={
-                            groupInfo.GroupImages.length > 0
-                                ? groupInfo.GroupImages[0].url
-                                : "NO IMAGE"
-                        }
-                    ></img>
-                    <div id="group-detail-text">
-                        <h1>{groupInfo.name}</h1>
-                        <p>
-                            {groupInfo.city}, {groupInfo.state}
-                        </p>
-                        <p>
-                            {numAssociatedEvents}{" "}
-                            {numAssociatedEvents === 1 ? "Event" : "Events"} ·{" "}
-                            {groupInfo.private ? "Private" : "Public"}
-                        </p>
-                        <p>
-                            Organized by {groupInfo.Organizer.firstName}{" "}
-                            {groupInfo.Organizer.lastName}
-                        </p>
-                        {!userInfo ? null : groupInfo.Organizer.id ===
-                          userInfo.id ? (
-                            <div>
-                                <button
-                                    className="decorated-button small-button"
-                                    onClick={() => {
-                                        history.push(
-                                            `/groups/${groupId}/events/new`
-                                        );
-                                    }}
-                                >
-                                    Create event
-                                </button>
-                                <button
-                                    className="decorated-button small-button"
-                                    onClick={() =>
-                                        history.push(`/groups/${groupId}/edit`)
-                                    }
-                                >
-                                    Update
-                                </button>
-                                <OpenModalButton
-                                    className="decorated-button small-button"
-                                    buttonText="Delete"
-                                    modalComponent={
-                                        <DeleteGroupModal groupId={groupId} />
-                                    }
-                                ></OpenModalButton>
-                                <OpenModalButton
-                                    className="decorated-button small-button"
-                                    buttonText="Manage Members"
-                                    modalComponent={<ManageMembers group={groupInfo} user={userInfo} />} />
-                            </div>
-                        ) :
-                        isInGroupAlready(userInfo, groupInfo)
-                        ? <div>
-                        <button
-                            className="decorated-button small-button"
-                            onClick={handleLeaveGroup}
-                        >
-                            Leave this Group
-                        </button>
-                    </div>
-                        :
-                        isMembershipPending(userInfo, groupInfo)
-                        ? null
-                        : (
-                            <div>
-                                <button
-                                    className="decorated-button small-button"
-                                    onClick={handleJoinGroup}
-                                >
-                                    Join this Group
-                                </button>
-                            </div>
-                        )}
-                    </div>
+            {showPopup && (
+                <Popup textTitle={"Membership Requested"} textBody={"The group owner has been notified of your request."} />
+            )}
+            <div style={{ maxWidth: "600px" }}>
+                <div id="return-to-groups">
+                    <NavLink to="/groups">
+                        <i className="fa-regular fa-less-than"></i> Groups
+                    </NavLink>
                 </div>
-                <MembersInfo group={groupInfo} />
-                <div id="group-spiel">
-                    <div>
-                        <h2 className="organizer-label-group g-about-label">
-                            Organizer
-                        </h2>
-                        <p id="organizer-fn-ln-desc">
-                            {groupInfo.Organizer.firstName}{" "}
-                            {groupInfo.Organizer.lastName}
-                        </p>
+                <div>
+                    <div id="group-detail-container">
+                        <img
+                            id="group-detail-img"
+                            alt={groupInfo.name}
+                            src={
+                                groupInfo.GroupImages.length > 0
+                                    ? groupInfo.GroupImages[0].url
+                                    : "NO IMAGE"
+                            }
+                        ></img>
+                        <div id="group-detail-text">
+                            <h1>{groupInfo.name}</h1>
+                            <p>
+                                {groupInfo.city}, {groupInfo.state}
+                            </p>
+                            <p>
+                                {numAssociatedEvents}{" "}
+                                {numAssociatedEvents === 1 ? "Event" : "Events"} ·{" "}
+                                {groupInfo.private ? "Private" : "Public"}
+                            </p>
+                            <p>
+                                Organized by {groupInfo.Organizer.firstName}{" "}
+                                {groupInfo.Organizer.lastName}
+                            </p>
+                            {!userInfo ? null : groupInfo.Organizer.id ===
+                                userInfo.id ? (
+                                <div>
+                                    <button
+                                        className="decorated-button small-button"
+                                        onClick={() => {
+                                            history.push(
+                                                `/groups/${groupId}/events/new`
+                                            );
+                                        }}
+                                    >
+                                        Create event
+                                    </button>
+                                    <button
+                                        className="decorated-button small-button"
+                                        onClick={() =>
+                                            history.push(`/groups/${groupId}/edit`)
+                                        }
+                                    >
+                                        Update
+                                    </button>
+                                    <OpenModalButton
+                                        className="decorated-button small-button"
+                                        buttonText="Delete"
+                                        modalComponent={
+                                            <DeleteGroupModal groupId={groupId} />
+                                        }
+                                    ></OpenModalButton>
+                                    <OpenModalButton
+                                        className="decorated-button small-button"
+                                        buttonText="Manage Members"
+                                        modalComponent={<ManageMembers group={groupInfo} user={userInfo} />} />
+                                </div>
+                            ) :
+                                isInGroupAlready(userInfo, groupInfo)
+                                    ? <div>
+                                        <button
+                                            className="decorated-button small-button"
+                                            onClick={handleLeaveGroup}
+                                        >
+                                            Leave this Group
+                                        </button>
+                                    </div>
+                                    :
+                                    isMembershipPending(userInfo, groupInfo)
+                                        ? null
+                                        : (
+                                            <div>
+                                                <button
+                                                    className="decorated-button small-button"
+                                                    onClick={handleJoinGroup}
+                                                >
+                                                    Join this Group
+                                                </button>
+                                            </div>
+                                        )}
+                        </div>
                     </div>
-                    <div>
-                        <h2 className="organizer-label-group g-about-label">
-                            What we're about
-                        </h2>
-                        <p id="group-desc-mid">{groupInfo.about}</p>
+                    <MembersInfo group={groupInfo} />
+                    <div id="group-spiel">
+                        <div>
+                            <h2 className="organizer-label-group g-about-label">
+                                Organizer
+                            </h2>
+                            <p id="organizer-fn-ln-desc">
+                                {groupInfo.Organizer.firstName}{" "}
+                                {groupInfo.Organizer.lastName}
+                            </p>
+                        </div>
+                        <div>
+                            <h2 className="organizer-label-group g-about-label">
+                                What we're about
+                            </h2>
+                            <p id="group-desc-mid">{groupInfo.about}</p>
+                        </div>
                     </div>
+                    {prevEvents.length === 0 && futureEvents.length === 0 ? (
+                        <div>
+                            <h2 className="organizer-label-group event-time-descriptor">
+                                No upcoming events!
+                            </h2>
+                        </div>
+                    ) : null}
+                    {futureEvents.length ? (
+                        <div>
+                            <h2 className="organizer-label-group event-time-descriptor">
+                                Upcoming Events ({futureEvents.length})
+                            </h2>
+                            {futureEvents.map((event) => (
+                                <AbridgedEventInfo
+                                    key={event.id}
+                                    event={event}
+                                ></AbridgedEventInfo>
+                            ))}
+                        </div>
+                    ) : null}
+                    {prevEvents.length ? (
+                        <div id="past-events">
+                            <h2 className="organizer-label-group event-time-descriptor">
+                                Past Events ({prevEvents.length})
+                            </h2>
+                            {prevEvents.map((event) => (
+                                <AbridgedEventInfo
+                                    key={event.id}
+                                    event={event}
+                                ></AbridgedEventInfo>
+                            ))}
+                        </div>
+                    ) : null}
                 </div>
-                {prevEvents.length === 0 && futureEvents.length === 0 ? (
-                    <div>
-                        <h2 className="organizer-label-group event-time-descriptor">
-                            No upcoming events!
-                        </h2>
-                    </div>
-                ) : null}
-                {futureEvents.length ? (
-                    <div>
-                        <h2 className="organizer-label-group event-time-descriptor">
-                            Upcoming Events ({futureEvents.length})
-                        </h2>
-                        {futureEvents.map((event) => (
-                            <AbridgedEventInfo
-                            key={event.id}
-                                event={event}
-                            ></AbridgedEventInfo>
-                        ))}
-                    </div>
-                ) : null}
-                {prevEvents.length ? (
-                    <div id="past-events">
-                        <h2 className="organizer-label-group event-time-descriptor">
-                            Past Events ({prevEvents.length})
-                        </h2>
-                        {prevEvents.map((event) => (
-                            <AbridgedEventInfo
-                            key={event.id}
-                                event={event}
-                            ></AbridgedEventInfo>
-                        ))}
-                    </div>
-                ) : null}
-            </div>
             </div>
         </div>
     );
