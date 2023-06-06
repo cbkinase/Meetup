@@ -1,0 +1,81 @@
+.manage-container {
+    width: 90vw;
+    max-width: 500px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 5px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.section-heading {
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.section-subheading {
+    font-size: 20px;
+    font-weight: bold;
+    margin-bottom: 20px;
+}
+
+.member-list {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.member-card {
+    width: calc(100% - 10px);
+    margin-bottom: 20px;
+    padding: 10px;
+    background-color: #f2f2f2;
+    border-radius: 5px;
+    display: flex;
+    align-items: center;
+}
+
+.member-avatar {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin-right: 10px;
+}
+
+.member-details {
+    flex: 1;
+}
+
+.member-name {
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+.remove-button,
+.accept-button {
+    display: inline-block;
+    padding: 5px 10px;
+    background-color: #e32359;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    font-size: 14px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    margin-right: 5px;
+}
+
+.remove-button:hover,
+.accept-button:hover {
+    background-color: #c62828;
+}
+
+.accept-button {
+    background-color: #008294;
+}
+
+.accept-button:hover {
+    background-color: #1b9bac;
+}

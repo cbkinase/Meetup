@@ -65,12 +65,26 @@
 }
 
 .join-meetup-button {
-    border-radius: 8px;
+    /* border-radius: 8px;
     cursor: pointer;
     color: #fff;
     padding: 8px 16px;
     background-color: #008294;
+    border-color: #008294; */
+    display: block;
+    min-width: 10vw;
+    padding: 8px 16px;
+    background-color: #008294;
     border-color: #008294;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    fill: #fff;
+    margin-bottom: 10px;
+    font-size: 1.05rem;
+    height: 2.75rem;
+    font-weight: bold;
 }
 
 .join-meetup-button:hover {
