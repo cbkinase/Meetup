@@ -112,6 +112,7 @@ export default function SingleGroup() {
 
     return (
         <div className="main-single-group-container">
+            <div style={{maxWidth: "600px"}}>
             <div id="return-to-groups">
                 <NavLink to="/groups">
                     <i className="fa-regular fa-less-than"></i> Groups
@@ -251,6 +252,7 @@ export default function SingleGroup() {
                         ))}
                     </div>
                 ) : null}
+            </div>
             </div>
         </div>
     );
