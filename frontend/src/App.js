@@ -40,6 +40,10 @@ function App() {
                     <Route exact path="/groups/:groupId/events/new">
                         <CreateEventForm></CreateEventForm>
                     </Route>
+                    <Route exact path="/groups/:groupId/events/:eventId/edit">
+                        <CreateEventForm isUpdating={true}></CreateEventForm>
+                    </Route>
+
                     <Route exact path="/groups/:groupId">
                         <SingleGroup></SingleGroup>
                     </Route>

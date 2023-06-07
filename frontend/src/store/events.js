@@ -96,6 +96,22 @@ export function createEvent(event, groupId) {
     };
 }
 
+export function editEvent(payload, eventId) {
+    return async function (dispatch) {
+        const res = await csrfFetch(`/api/events/${eventId}`, {
+            method: "PUT",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(payload),
+        })
+
+        if (res.ok) {
+            const data = await res.json();
+            dispatch(makeEvent(payload));
+            return data;
+        }
+    }
+}
+
 export function createEventImage(eventId, url, preview = false) {
     return async function (dispatch) {
         const res = await csrfFetch(`/api/events/${eventId}/images`, {
