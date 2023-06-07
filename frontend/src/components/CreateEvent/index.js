@@ -100,7 +100,7 @@ export default function CreateEventForm({ isUpdating }) {
 
         if (!eventType) err.type = "Event Type is required";
 
-        if ( !isUpdating &&
+        if (!isUpdating &&
             !eventImage.endsWith(".png") &&
             !eventImage.endsWith(".jpg") &&
             !eventImage.endsWith(".jpeg")
@@ -134,13 +134,16 @@ export default function CreateEventForm({ isUpdating }) {
                     if (data && data.errors) setErrors({ ...data.errors, ...err });
                 });
         }
-        const newEvent = await dispatch(
-            createEvent(payload, groupId)
-        ).catch(async (res) => {
-            setHasSubmitted(true);
-            const data = await res.json();
-            if (data && data.errors) setErrors({ ...data.errors, ...err });
-        });
+        let newEvent;
+        if (!isUpdating) {
+            newEvent = await dispatch(
+                createEvent(payload, groupId)
+            ).catch(async (res) => {
+                setHasSubmitted(true);
+                const data = await res.json();
+                if (data && data.errors) setErrors({ ...data.errors, ...err });
+            });
+        }
         if (newEvent || updatedEvent) {
             let targetId = newEvent?.id || updatedEvent?.id
             if (!isUpdating) {
