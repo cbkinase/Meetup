@@ -179,9 +179,7 @@ export default function SingleEvent() {
                                                         <button
                                                             className="decorated-button small-button"
                                                             onClick={() =>
-                                                                alert(
-                                                                    "Feature coming soon"
-                                                                )
+                                                                history.push(`/groups/${group.id}/events/${eventId}/edit`)
                                                             }
                                                         >
                                                             Update

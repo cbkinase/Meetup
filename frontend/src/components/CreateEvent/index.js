@@ -2,12 +2,12 @@ import { useDispatch, useSelector } from "react-redux";
 import { useState, useEffect } from "react";
 import { getGroupInfo } from "../../store/groups";
 import { useHistory, useParams } from "react-router-dom";
-import { createEvent, createEventImage } from "../../store/events";
+import { createEvent, createEventImage, getEventInfo, editEvent } from "../../store/events";
 import "./CreateEvent.css";
 
-export default function CreateEventForm() {
+export default function CreateEventForm({ isUpdating }) {
     const dispatch = useDispatch();
-    const params = useParams();
+    const { groupId, eventId } = useParams();
     const history = useHistory();
     const [venues, setVenues] = useState(null);
     const user = useSelector((state) => state.session.user);
@@ -16,31 +16,61 @@ export default function CreateEventForm() {
     }
 
     const group = useSelector((state) => {
-        if (params.groupId == state.groups.singleGroup.id)
+        if (groupId == state.groups.singleGroup.id)
             return state.groups.singleGroup;
         return {};
     });
 
-    const [eventName, setEventName] = useState("");
-    const [eventType, setEventType] = useState("");
-    const [eventPrice, setEventPrice] = useState(0);
-    const [eventStart, setEventStart] = useState("");
-    const [eventEnd, setEventEnd] = useState("");
-    const [eventImage, setEventImage] = useState("");
-    const [eventDescription, setEventDescription] = useState("");
+    let event = useSelector(state => {
+        if (isUpdating) {
+            return state.events.singleEvent
+        }
+        else return null;
+    });
+
+    let eImage;
+    let eStart;
+    let eEnd;
+
+    if (event && event.EventImages?.length) {
+        eImage = event.EventImages.filter(
+            (img) => img.preview === true)[0].url;
+    }
+
+    if (isUpdating && event && event.startDate) {
+        const sdate = new Date(event.startDate);
+        const edate = new Date(event.endDate);
+        eStart = sdate.toISOString().slice(0, 16);
+        eEnd = edate.toISOString().slice(0, 16);
+    }
+
+    const [eventName, setEventName] = useState(event?.name || "");
+    const [eventType, setEventType] = useState(event?.type || "");
+    const [eventPrice, setEventPrice] = useState(event?.price || 0);
+    const [eventStart, setEventStart] = useState(eStart || "");
+    const [eventEnd, setEventEnd] = useState(eEnd || "");
+    const [eventImage, setEventImage] = useState(eImage || "");
+    const [eventDescription, setEventDescription] = useState(event?.description || "");
     const [eventCapacity, setEventCapacity] = useState(10);
-    const [eventVenueId, setEventVenueId] = useState(null);
+    const [eventVenueId, setEventVenueId] = useState(event?.venueId || null);
     const [errors, setErrors] = useState({});
     const [hasSubmitted, setHasSubmitted] = useState(false);
+
+    useEffect(() => {
+        if (isUpdating) {
+            dispatch(getEventInfo(eventId))
+        }
+    }, [eventId])
 
     // Set page title and reset upon leaving the page
 
     useEffect(() => {
         const prevTitle = document.title;
         // In case they come into the page without the store pre-loaded
-        dispatch(getGroupInfo(params.groupId)).then((res) => {
+
+        dispatch(getGroupInfo(groupId)).then((res) => {
             if (user.id !== res.Organizer.id) {
-                history.push(`/groups/${params.groupId}`);
+                history.push(`/groups/${groupId}`);
             }
             document.title = `Create an event for ${res.name}`;
             setVenues(res.Venues);
@@ -69,7 +99,8 @@ export default function CreateEventForm() {
         }
 
         if (!eventType) err.type = "Event Type is required";
-        if (
+
+        if ( !isUpdating &&
             !eventImage.endsWith(".png") &&
             !eventImage.endsWith(".jpg") &&
             !eventImage.endsWith(".jpeg")
@@ -94,16 +125,29 @@ export default function CreateEventForm() {
             setErrors(err);
             return;
         }
+        let updatedEvent;
+        if (isUpdating) {
+            updatedEvent = await dispatch(editEvent(payload, eventId))
+                .catch(async (res) => {
+                    setHasSubmitted(true);
+                    const data = await res.json();
+                    if (data && data.errors) setErrors({ ...data.errors, ...err });
+                });
+        }
         const newEvent = await dispatch(
-            createEvent(payload, params.groupId)
+            createEvent(payload, groupId)
         ).catch(async (res) => {
             setHasSubmitted(true);
             const data = await res.json();
             if (data && data.errors) setErrors({ ...data.errors, ...err });
         });
-        if (newEvent) {
-            await dispatch(createEventImage(newEvent.id, eventImage, true));
-            history.push(`/events/${newEvent.id}`);
+        if (newEvent || updatedEvent) {
+            let targetId = newEvent?.id || updatedEvent?.id
+            if (!isUpdating) {
+                await dispatch(createEventImage(newEvent.id, eventImage, true));
+            }
+
+            history.push(`/events/${targetId}`);
         }
     };
 
@@ -119,7 +163,7 @@ export default function CreateEventForm() {
             }}
         >
             <h1 className="create-group-subheading event-create-spacing">
-                Create an event for "{group.name}"
+                Create an event for "{group.name || event?.Group?.name}"
             </h1>
             <form onSubmit={handleSubmit}>
                 <div>
@@ -129,6 +173,7 @@ export default function CreateEventForm() {
                     <input
                         className="color-input"
                         onChange={(e) => setEventName(e.target.value)}
+                        value={eventName}
                         placeholder="Event Name"
                     ></input>
                     {hasSubmitted && errors.name && (
@@ -148,6 +193,7 @@ export default function CreateEventForm() {
                         <select
                             className="color-input"
                             onChange={(e) => setEventType(e.target.value)}
+                            value={eventType}
                             id="type"
                             name="type"
                         >
@@ -164,13 +210,15 @@ export default function CreateEventForm() {
                             <p className="decorated-event-create-text">Select a venue for your event.</p>
                             <select
                                 className="color-input"
+                                value={eventVenueId}
                                 onChange={(e) => setEventVenueId(e.target.value)}
                                 id="venueId"
                                 name="venueId"
                             >
                                 <option value={null}>(select one or leave blank)</option>
-                                {venues.map(venue => {
-                                    return <option value={venue.id}>{venue.address} - {venue.city}, {venue.state}</option>
+                                {venues && venues.map(venue => {
+                                    return <option
+                                        key={venue.id} value={venue.id}>{venue.address} - {venue.city}, {venue.state}</option>
                                 })}
                             </select>
                         </div>
@@ -181,7 +229,7 @@ export default function CreateEventForm() {
                         </p>
                         <input
                             className="color-input"
-                            defaultValue={0}
+                            value={eventPrice}
                             onChange={(e) => setEventPrice(e.target.value)}
                             type="number"
                             min="0"
@@ -204,6 +252,7 @@ export default function CreateEventForm() {
                         <input
                             className="color-input"
                             onChange={(e) => setEventStart(e.target.value)}
+                            value={eventStart}
                             type="datetime-local"
                         ></input>
                     </div>
@@ -220,6 +269,7 @@ export default function CreateEventForm() {
                         <input
                             className="color-input"
                             onChange={(e) => setEventEnd(e.target.value)}
+                            value={eventEnd}
                             type="datetime-local"
                         ></input>
                         {hasSubmitted && errors.endDate && (
@@ -228,7 +278,7 @@ export default function CreateEventForm() {
                     </div>
                     <div className="has-bottom-border"></div>
                 </div>
-                <div>
+                {!isUpdating && <div>
                     <div>
                         <p className="decorated-event-create-text">
                             Please add an image url for your event below:
@@ -236,6 +286,7 @@ export default function CreateEventForm() {
                         <input
                             className="color-input"
                             onChange={(e) => setEventImage(e.target.value)}
+                            value={eventImage}
                             placeholder="Image URL"
                         ></input>
                         {hasSubmitted && errors.image && (
@@ -243,7 +294,7 @@ export default function CreateEventForm() {
                         )}
                     </div>
                     <div className="has-bottom-border"></div>
-                </div>
+                </div>}
                 <div>
                     <div>
                         <p className="decorated-event-create-text">
@@ -255,6 +306,7 @@ export default function CreateEventForm() {
                             onChange={(e) =>
                                 setEventDescription(e.target.value)
                             }
+                            value={eventDescription}
                             placeholder="Please include at least 30 characters"
                         ></textarea>
                         {hasSubmitted && errors.description && (
@@ -268,7 +320,7 @@ export default function CreateEventForm() {
                     id="submit"
                     type="submit"
                 >
-                    Create Event
+                    {isUpdating ? "Update Event" : "Create Event"}
                 </button>
             </form>
         </div>
