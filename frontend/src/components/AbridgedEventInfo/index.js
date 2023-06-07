@@ -17,7 +17,7 @@ export default function AbridgedEventInfo({ event }) {
     let printDate = event.startDate.split("T");
     printDate = `${printDate[0]} · ${printDate[1].slice(0, -5)} (UTC)`;
     let printVenue;
-    if (event.Venue && event.Venue.length) {
+    if (event.Venue) {
         printVenue = `${event.Venue.city}, ${event.Venue.state}`;
     } else if (event.type === "In person") {
         printVenue = "In person, no Venue specified";
@@ -30,6 +30,11 @@ export default function AbridgedEventInfo({ event }) {
             <div className="event-subcontainer">
                 <div onClick={handleClick} id="add-ev-img-pad">
                     <img
+                        onError={(e) => {
+                            e.target.onerror = null;
+                            e.target.src =
+                                "https://secure.meetupstatic.com/next/images/fallbacks/group-cover-15-wide.webp";
+                        }}
                         onClick={handleClick}
                         className="event-image"
                         alt={event.name}

@@ -9,6 +9,7 @@ export default function CreateEventForm() {
     const dispatch = useDispatch();
     const params = useParams();
     const history = useHistory();
+    const [venues, setVenues] = useState(null);
     const user = useSelector((state) => state.session.user);
     if (!user) {
         history.push("/");
@@ -28,7 +29,7 @@ export default function CreateEventForm() {
     const [eventImage, setEventImage] = useState("");
     const [eventDescription, setEventDescription] = useState("");
     const [eventCapacity, setEventCapacity] = useState(10);
-    // const [eventVenueId, setEventVenueId] = useState(1);
+    const [eventVenueId, setEventVenueId] = useState(null);
     const [errors, setErrors] = useState({});
     const [hasSubmitted, setHasSubmitted] = useState(false);
 
@@ -42,6 +43,7 @@ export default function CreateEventForm() {
                 history.push(`/groups/${params.groupId}`);
             }
             document.title = `Create an event for ${res.name}`;
+            setVenues(res.Venues);
         });
 
         return () => {
@@ -77,8 +79,8 @@ export default function CreateEventForm() {
             err.description = "Description must be at least 30 characters long";
 
         const payload = {
-            // venueId: eventVenueId,
-            venueId: null,
+            venueId: eventVenueId,
+            // venueId: null,
             name: eventName,
             type: eventType,
             capacity: eventCapacity,
@@ -157,6 +159,22 @@ export default function CreateEventForm() {
                             <p className="errors">*{errors.type}</p>
                         )}
                     </div>
+                    {eventType === "In person" &&
+                        <div>
+                            <p className="decorated-event-create-text">Select a venue for your event.</p>
+                            <select
+                                className="color-input"
+                                onChange={(e) => setEventVenueId(e.target.value)}
+                                id="venueId"
+                                name="venueId"
+                            >
+                                <option value={null}>(select one or leave blank)</option>
+                                {venues.map(venue => {
+                                    return <option value={venue.id}>{venue.address} - {venue.city}, {venue.state}</option>
+                                })}
+                            </select>
+                        </div>
+                    }
                     <div>
                         <p className="decorated-event-create-text">
                             What is the price for your event?

@@ -98,4 +98,15 @@ router.put("/:id", venueCreationMiddleware, async (req, res, next) => {
     });
 });
 
+router.delete("/:id", [requireAuth, ensureVenueExists, ensureUserIsCoHost], async (req, res, next) => {
+    let venue = await Venue.findByPk(req.params.id);
+
+    await venue.destroy();
+
+    return res.json({
+        message: "Successfully deleted",
+        statusCode: 200,
+    });
+})
+
 module.exports = router;

@@ -18,6 +18,11 @@ export default function AbridgedGroupInfo({ group, numEvents }) {
         <div className="group-info-container">
             <div className="group-info-subcontainer">
                 <img
+                    onError={(e) => {
+                        e.target.onerror = null;
+                        e.target.src =
+                            "https://secure.meetupstatic.com/next/images/fallbacks/group-cover-15-wide.webp";
+                    }}
                     onClick={handleClick}
                     id="preview-image"
                     src={group.previewImage ? group.previewImage : defaultImage}

@@ -45,6 +45,15 @@ export default function SingleEvent() {
     let printEndDate = event.endDate.split("T");
     printEndDate = `${printEndDate[0]} · ${printEndDate[1].slice(0, -5)} (UTC)`;
 
+    let printVenue;
+    if (event.Venue) {
+        printVenue = `${event.Venue.address} - ${event.Venue.city}, ${event.Venue.state}`;
+    } else if (event.type === "In person") {
+        printVenue = "In person, no Venue specified";
+    } else {
+        printVenue = "Online";
+    }
+
     return (
         <div
             style={{
@@ -71,6 +80,11 @@ export default function SingleEvent() {
                     </div>
                     <div className="single-event-main">
                         <img
+                            onError={(e) => {
+                                e.target.onerror = null;
+                                e.target.src =
+                                    "https://secure.meetupstatic.com/next/images/fallbacks/group-cover-15-wide.webp";
+                            }}
                             id="single-event-img"
                             src={
                                 event.EventImages.length &&
@@ -82,6 +96,11 @@ export default function SingleEvent() {
                             <div className="group-of-event-details">
                                 <div>
                                     <img
+                                        onError={(e) => {
+                                            e.target.onerror = null;
+                                            e.target.src =
+                                                "https://upload.wikimedia.org/wikipedia/commons/thumb/d/d1/Image_not_available.png/640px-Image_not_available.png";
+                                        }}
                                         id="group-of-event-img"
                                         src={
                                             group.GroupImages.length &&
@@ -136,8 +155,8 @@ export default function SingleEvent() {
                                         <p className="single-event-muted-text">
                                             {event.price != 0
                                                 ? `$${Number(
-                                                      event.price
-                                                  ).toFixed(2)}`
+                                                    event.price
+                                                ).toFixed(2)}`
                                                 : "FREE"}
                                         </p>
                                     </div>
@@ -149,13 +168,13 @@ export default function SingleEvent() {
                                     <div className="stauts-and-buttons">
                                         <div>
                                             <p className="single-event-muted-text">
-                                                {event.type}
+                                                {printVenue}
                                             </p>
                                         </div>
                                         <div id="space-buttons-event-page">
                                             {userInfo &&
                                                 userInfo.id ===
-                                                    group.Organizer.id && (
+                                                group.Organizer.id && (
                                                     <>
                                                         <button
                                                             className="decorated-button small-button"

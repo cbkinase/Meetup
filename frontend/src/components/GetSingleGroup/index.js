@@ -9,6 +9,7 @@ import DeleteGroupModal from "../DeleteGroup";
 import AbridgedEventInfo from "../AbridgedEventInfo";
 import MembersInfo from "./MembersInfo";
 import ManageMembers from "./ManageMembers";
+import ManageVenues from "./ManageVenues";
 import { csrfFetch } from "../../store/csrf";
 import Popup from "../Popup";
 import "./GetSingleGroup.css";
@@ -137,6 +138,11 @@ export default function SingleGroup() {
                 <div>
                     <div id="group-detail-container">
                         <img
+                            onError={(e) => {
+                                e.target.onerror = null;
+                                e.target.src =
+                                    "https://upload.wikimedia.org/wikipedia/commons/thumb/d/d1/Image_not_available.png/640px-Image_not_available.png";
+                            }}
                             id="group-detail-img"
                             alt={groupInfo.name}
                             src={
@@ -161,37 +167,45 @@ export default function SingleGroup() {
                             </p>
                             {!userInfo ? null : groupInfo.Organizer.id ===
                                 userInfo.id ? (
-                                <div>
-                                    <button
-                                        className="decorated-button small-button"
-                                        onClick={() => {
-                                            history.push(
-                                                `/groups/${groupId}/events/new`
-                                            );
-                                        }}
-                                    >
-                                        Create event
-                                    </button>
-                                    <button
-                                        className="decorated-button small-button"
-                                        onClick={() =>
-                                            history.push(`/groups/${groupId}/edit`)
-                                        }
-                                    >
-                                        Update
-                                    </button>
-                                    <OpenModalButton
-                                        className="decorated-button small-button"
-                                        buttonText="Delete"
-                                        modalComponent={
-                                            <DeleteGroupModal groupId={groupId} />
-                                        }
-                                    ></OpenModalButton>
-                                    <OpenModalButton
-                                        className="decorated-button small-button"
-                                        buttonText="Manage Members"
-                                        modalComponent={<ManageMembers group={groupInfo} user={userInfo} />} />
-                                </div>
+                                <>
+                                    <div>
+                                        <button
+                                            className="decorated-button small-button"
+                                            onClick={() => {
+                                                history.push(
+                                                    `/groups/${groupId}/events/new`
+                                                );
+                                            }}
+                                        >
+                                            Create event
+                                        </button>
+                                        <button
+                                            className="decorated-button small-button"
+                                            onClick={() =>
+                                                history.push(`/groups/${groupId}/edit`)
+                                            }
+                                        >
+                                            Update
+                                        </button>
+                                        <OpenModalButton
+                                            className="decorated-button small-button"
+                                            buttonText="Delete"
+                                            modalComponent={
+                                                <DeleteGroupModal groupId={groupId} />
+                                            }
+                                        ></OpenModalButton>
+                                    </div>
+                                    <div>
+                                        <OpenModalButton
+                                            className="decorated-button small-button"
+                                            buttonText="Manage Members"
+                                            modalComponent={<ManageMembers group={groupInfo} user={userInfo} />} />
+                                        <OpenModalButton
+                                            className="decorated-button small-button"
+                                            buttonText="Manage Venues"
+                                            modalComponent={<ManageVenues group={groupInfo} user={userInfo} />} />
+                                    </div>
+                                </>
                             ) :
                                 isInGroupAlready(userInfo, groupInfo)
                                     ? <div>
