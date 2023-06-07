@@ -9,7 +9,11 @@ module.exports = (sequelize, DataTypes) => {
          */
         static associate(models) {
             // define association here
-            Venue.hasMany(models.Event, { foreignKey: "venueId" });
+            Venue.hasMany(models.Event, {
+                foreignKey: "venueId",
+                onDelete: 'SET NULL',
+                onUpdate: 'CASCADE'
+            });
             Venue.belongsTo(models.Group, { foreignKey: "groupId" });
         }
     }
