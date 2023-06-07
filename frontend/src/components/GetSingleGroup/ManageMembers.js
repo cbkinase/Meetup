@@ -41,7 +41,9 @@ export default function ManageMembers({ group, user }) {
     return (
         <div className="manage-container">
             <div className="section-heading">Manage Memberships</div>
-            <div className="section-subheading">Members</div>
+            <div className="has-bottom-border"></div>
+            <div style={{height: "5px"}}></div>
+            <div className="section-subheading">Current Members</div>
             <div className="member-list">
                 {otherMembers.map(member => (
                     <div key={member.id} className="member-card">
