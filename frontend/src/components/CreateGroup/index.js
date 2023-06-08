@@ -173,6 +173,7 @@ export default function CreateGroupForm({ isUpdating }) {
                         you online.
                     </p>
                     <input
+                        id="group-location-input"
                         className="color-input"
                         onChange={(e) => setLocation(e.target.value)}
                         placeholder="City, STATE"
@@ -196,6 +197,7 @@ export default function CreateGroupForm({ isUpdating }) {
                         edit this later if you change your mind.
                     </p>
                     <input
+                        id="group-name-input"
                         className="color-input"
                         defaultValue={groupName}
                         onChange={(e) => setGroupName(e.target.value)}
@@ -245,8 +247,8 @@ export default function CreateGroupForm({ isUpdating }) {
                         defaultValue={groupType}
                     >
                         <option value="">(select one)</option>
-                        <option value="Online">Online</option>
-                        <option value="In person">In person</option>
+                        <option id="online-group-select" value="Online">Online</option>
+                        <option id="in-person-group-select" value="In person">In person</option>
                     </select>
                     {hasSubmitted && errors.type && (
                         <p className="errors">*{errors.type}</p>
@@ -267,8 +269,8 @@ export default function CreateGroupForm({ isUpdating }) {
                         defaultValue={groupPrivacy}
                     >
                         <option value="">(select one)</option>
-                        <option value="Public">Public</option>
-                        <option value="Private">Private</option>
+                        <option id="public-group-select" value="Public">Public</option>
+                        <option id="private-group-select" value="Private">Private</option>
                     </select>
                     {hasSubmitted && errors.privacy && (
                         <p className="errors">*{errors.privacy}</p>
@@ -280,6 +282,7 @@ export default function CreateGroupForm({ isUpdating }) {
                                 Please add an image url for your group below:
                             </p>
                             <input
+                                id="group-picture-input"
                                 className="color-input"
                                 onChange={(e) => setGroupImage(e.target.value)}
                                 defaultValue={groupImage}

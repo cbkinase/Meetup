@@ -154,6 +154,7 @@ function ProfileButton({ user }) {
                             <OpenModalMenuItem
                                 className="menu-clickable main-menu-user-interaction login-signup-button"
                                 itemText="Log In"
+                                id="login-button"
                                 onItemClick={closeMenu}
                                 modalComponent={<NewLoginForm />}
                             />

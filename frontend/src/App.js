@@ -9,6 +9,7 @@ import SingleGroup from "./components/GetSingleGroup";
 import CreateGroupForm from "./components/CreateGroup";
 import SingleEvent from "./components/GetSingleEvent";
 import CreateEventForm from "./components/CreateEvent";
+import Footer from "./components/Footer";
 
 function App() {
     const dispatch = useDispatch();
@@ -52,6 +53,7 @@ function App() {
                     </Route>
                 </Switch>
             )}
+            {isLoaded && <Footer />}
         </>
     );
 }

@@ -170,6 +170,7 @@ export default function SingleGroup() {
                                 <>
                                     <div>
                                         <button
+                                            id="create-event-group-page"
                                             className="decorated-button small-button"
                                             onClick={() => {
                                                 history.push(

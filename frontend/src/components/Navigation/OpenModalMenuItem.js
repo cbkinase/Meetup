@@ -7,6 +7,7 @@ function OpenModalMenuItem({
     onItemClick, // optional: callback function that will be called once the menu item that opens the modal is clicked
     onModalClose, // optional: callback function that will be called once the modal is closed
     className,
+    id,
 }) {
     const { setModalContent, setOnModalClose } = useModal();
 
@@ -17,7 +18,7 @@ function OpenModalMenuItem({
     };
 
     return (
-        <li className={className} onClick={onClick}>
+        <li id={id} className={className} onClick={onClick}>
             {itemText}
         </li>
     );
