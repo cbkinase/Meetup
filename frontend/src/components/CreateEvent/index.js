@@ -174,6 +174,7 @@ export default function CreateEventForm({ isUpdating }) {
                         What is the name of your event?
                     </p>
                     <input
+                        id="event-name-input"
                         className="color-input"
                         onChange={(e) => setEventName(e.target.value)}
                         value={eventName}
@@ -201,8 +202,8 @@ export default function CreateEventForm({ isUpdating }) {
                             name="type"
                         >
                             <option value="">(select one)</option>
-                            <option value="Online">Online</option>
-                            <option value="In person">In person</option>
+                            <option id="online-event-select" value="Online">Online</option>
+                            <option id="in-person-event-select" value="In person">In person</option>
                         </select>
                         {hasSubmitted && errors.type && (
                             <p className="errors">*{errors.type}</p>
@@ -231,6 +232,7 @@ export default function CreateEventForm({ isUpdating }) {
                             What is the price for your event?
                         </p>
                         <input
+                            id="event-price-input"
                             className="color-input"
                             value={eventPrice}
                             onChange={(e) => setEventPrice(e.target.value)}
@@ -253,6 +255,7 @@ export default function CreateEventForm({ isUpdating }) {
                             Please note that all times are expressed in UTC.
                         </p>
                         <input
+                            id="event-start-input"
                             className="color-input"
                             onChange={(e) => setEventStart(e.target.value)}
                             value={eventStart}
@@ -270,6 +273,7 @@ export default function CreateEventForm({ isUpdating }) {
                             Please note that all times are expressed in UTC.
                         </p>
                         <input
+                            id="event-end-input"
                             className="color-input"
                             onChange={(e) => setEventEnd(e.target.value)}
                             value={eventEnd}
@@ -287,6 +291,7 @@ export default function CreateEventForm({ isUpdating }) {
                             Please add an image url for your event below:
                         </p>
                         <input
+                            id="event-picture-input"
                             className="color-input"
                             onChange={(e) => setEventImage(e.target.value)}
                             value={eventImage}
