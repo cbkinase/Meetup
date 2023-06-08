@@ -177,6 +177,7 @@ export default function SingleEvent() {
                                                 group.Organizer.id && (
                                                     <>
                                                         <button
+                                                            id="edit-event-button"
                                                             className="decorated-button small-button"
                                                             onClick={() =>
                                                                 history.push(`/groups/${group.id}/events/${eventId}/edit`)
