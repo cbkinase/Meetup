@@ -99,7 +99,7 @@ export default function NewSignupForm() {
                         <p className="errors">*{errors.username}</p>
                     )}
           </div>
-          <div class="form-group">
+          <div className="form-group">
               <label htmlFor="firstname">First name</label>
               <input
                 type="text"
