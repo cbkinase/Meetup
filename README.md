@@ -43,4 +43,4 @@ Currently, you are able to:
 ## How to Use Locally
 
 1. Copy this repository.
-2. Run `bash start.sh` in the root directory
+2. Run `bash start.sh` in the root directory of the project.
