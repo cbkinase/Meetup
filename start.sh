@@ -24,6 +24,7 @@ if [ ! -d "$be_directory" ]; then
     cd backend
     echo "Installing backend dependencies and creating/seeding database. This may take a few minutes."
     npm i && npx dotenv sequelize-cli db:migrate && npx dotenv sequelize-cli db:seed:all
+    cd ..
 else
     echo "Starting up Meetup!!!"
 fi
@@ -36,6 +37,7 @@ if [ ! -d "$fe_directory" ]; then
     echo "Installing frontend dependencies. This may take some time."
     cd frontend
     npm install
+    cd ..
 else
     echo "Directory exists: $fe_directory"
 fi
