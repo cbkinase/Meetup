@@ -202,6 +202,7 @@ export default function SingleGroup() {
                                             buttonText="Manage Members"
                                             modalComponent={<ManageMembers group={groupInfo} user={userInfo} />} />
                                         <OpenModalButton
+                                            id="manage-venue-button"
                                             className="decorated-button small-button"
                                             buttonText="Manage Venues"
                                             modalComponent={<ManageVenues group={groupInfo} user={userInfo} />} />

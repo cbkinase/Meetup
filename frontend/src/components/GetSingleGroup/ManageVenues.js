@@ -103,14 +103,14 @@ export default function ManageVenues({ user, group }) {
                         required />
                 </div>
                 <div className="venue-form-group">
-                    <button type="submit">Add Venue</button>
+                    <button id="submit-venue-button" type="submit">Add Venue</button>
                 </div>
             </form>
 
             <h3>Venue List</h3>
             <ul className="venue-list">
                 {vens.sort((a, b) => b.id - a.id).map(venue => (
-                    <li key={venue.id}>
+                    <li id={`venue-${venue.id}`} key={venue.id}>
                         <div>
                             <h3>{venue.address}</h3>
                             <p>{venue.city}, {venue.state}</p>
