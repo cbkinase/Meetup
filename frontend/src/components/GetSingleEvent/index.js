@@ -93,7 +93,7 @@ export default function SingleEvent() {
                             alt={event.name}
                         ></img>
                         <div id="group-of-event">
-                            <div className="group-of-event-details">
+                            <div style={{cursor: "pointer"}} onClick={e => history.push(`/groups/${group.id}`)} className="group-of-event-details">
                                 <div>
                                     <img
                                         onError={(e) => {
@@ -109,7 +109,7 @@ export default function SingleEvent() {
                                         alt={group.name}
                                     ></img>
                                 </div>
-                                <div>
+                                <div style={{marginLeft: "15px"}}>
                                     <h3 id="group-name-event-detail">
                                         {group.name}
                                     </h3>
