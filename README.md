@@ -17,7 +17,7 @@ Currently, you are able to:
 
 - Backend: Node.js, Express.js, Sequelize, PostgreSQL
 - Frontend: React, Redux
-- Testing: Selenium
+- Testing: Selenium, Pytest
 
 ## Demo
 
