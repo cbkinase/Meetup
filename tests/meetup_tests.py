@@ -14,6 +14,11 @@ def automator():
 
 
 class TestExample:
+    def test_invalid_login(self, automator):
+        automator.invalid_login()
+        errors = automator.driver.find_elements(By.CLASS_NAME, "errors")
+        assert len(errors) > 0
+        assert errors[0].text == "The provided credentials were invalid."
 
     def test_demo_login(self, automator):
         """Testing logging in as a demo user"""

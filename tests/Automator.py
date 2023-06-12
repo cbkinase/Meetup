@@ -21,7 +21,7 @@ class Automator:
     def get_group_or_event_id(self):
         return self.driver.current_url.split("/")[-1]
 
-    def login_as_demo(self):
+    def prep_login(self):
         self.driver.get(self.entry_url)
 
         # Open profile dropdown
@@ -30,10 +30,19 @@ class Automator:
 
         # Click login button
         self.driver.find_element(By.ID, "login-button").click()
-        time.sleep(0.1)
+        time.sleep(0.2)
+
+    def login_as_demo(self):
+        self.prep_login()
 
         # Click demo user button
         self.driver.find_element(By.CLASS_NAME, "login-alt-color").click()
+
+    def invalid_login(self):
+        self.prep_login()
+        self.driver.find_element(By.ID, "credential").send_keys("asdasdasd123123")
+        self.driver.find_element(By.ID, "password").send_keys("123sdasdasd")
+        self.driver.find_element(By.ID, "login-submit").submit()
 
     def make_a_group(self, private=False, online=False):
         self.driver.get(f"{self.entry_url}/groups/new")
