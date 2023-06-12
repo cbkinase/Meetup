@@ -17,6 +17,7 @@ Currently, you are able to:
 
 - Backend: Node.js, Express.js, Sequelize, PostgreSQL
 - Frontend: React, Redux
+- Testing: Selenium
 
 ## Demo
 
@@ -44,3 +45,6 @@ Currently, you are able to:
 
 1. Copy this repository.
 2. Run `bash start.sh` in the root directory of the project.
+
+### To test
+1. Run `bash test.sh` in the root directory of the project.
