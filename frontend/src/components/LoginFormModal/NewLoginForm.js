@@ -98,7 +98,7 @@ export default function NewLoginForm() {
             required />
       </div>
       <div className="form-group">
-        <button disabled={credential.length === 0 && password.length === 0} type="submit">Log In</button>
+        <button id="login-submit" disabled={credential.length === 0 && password.length === 0} type="submit">Log In</button>
         <button onClick={handleDemoLogin} className="login-alt-color">Demo User</button>
       </div>
     </form>
