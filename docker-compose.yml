@@ -1,0 +1,41 @@
+version: '3.8'
+services:
+
+  nginx:
+    build:
+      context: ./nginx
+      dockerfile: Dockerfile
+    ports:
+      - '8080:80'
+    depends_on:
+      - frontend
+      - backend
+    restart: always
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    environment:
+      - HOST=0.0.0.0
+      - DANGEROUSLY_DISABLE_HOST_CHECK=true
+    volumes:
+      - /home/node/app/node_modules
+      - ./frontend:/home/node/app
+    restart: always
+
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    environment:
+      - PORT=8000
+      - DB_FILE=db/dev.db
+      - JWT_SECRET=VgQEn4xs1TYL++w7
+      - JWT_EXPIRES_IN=604800
+      - SCHEMA=custom_schema_name
+    volumes:
+      - ./backend:/home/node/app
+      - /home/node/app/node_modules
+    command: ["bash", "./dbInit.sh"]
+    restart: always
