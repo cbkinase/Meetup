@@ -26,5 +26,5 @@ COPY --chown=node:node . .
 # Make port 8000 available to the world outside this container
 EXPOSE 8000
 
-# Start the app
-CMD [ "npm", "start" ]
+# Start the app & create/seed DB if needed
+CMD [ "bash", "./dbInit.sh" ]
