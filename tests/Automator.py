@@ -3,6 +3,7 @@ import requests
 from datetime import datetime, timedelta
 from selenium import webdriver
 from webdriver_manager.chrome import ChromeDriverManager
+from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
 from faker import Faker
@@ -11,8 +12,14 @@ from faker import Faker
 class Automator:
     def __init__(self, entry_url):
         self.entry_url = entry_url
-        self.driver = webdriver.Chrome(ChromeDriverManager().install())
+
+        options = Options()
+        options.add_argument("--headless")
+        options.add_argument("--no-sandbox")
+        options.add_argument("--disable-dev-shm-usage")
+        self.driver = webdriver.Chrome(options=options)
         self.driver.implicitly_wait(10)
+
         self.fake = Faker()
         self.created_group_id = None
         self.created_event_id = None
