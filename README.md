@@ -43,6 +43,7 @@ Currently, you are able to:
 
 ## How to Use Locally
 
-1. Clone this repository.
+1. Clone this repository
 2. Run `docker compose up`
-3. To run tests, run `docker compose up tests`
+3. The application will now be available at `localhost:8080`
+4. To run tests, run `docker compose up tests`
