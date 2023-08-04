@@ -1,13 +1,12 @@
 import pytest
 from selenium.webdriver.common.by import By
 from Automator import Automator
-from config import ENTRY_URL
 
 
 @pytest.fixture(scope="class")
-def automator():
+def automator(url):
     # Set up the driver before running the tests
-    automator = Automator(entry_url=ENTRY_URL)
+    automator = Automator(entry_url=url)
     yield automator
     # Close the driver after running the tests
     automator.quit()

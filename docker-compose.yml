@@ -39,3 +39,12 @@ services:
       - /home/node/app/node_modules
     command: ["bash", "./dbInit.sh"]
     restart: always
+
+  tests:
+    build:
+      context: ./tests
+      dockerfile: Dockerfile.test
+    depends_on:
+      - backend
+      - frontend
+      - nginx
