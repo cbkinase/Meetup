@@ -43,8 +43,6 @@ Currently, you are able to:
 
 ## How to Use Locally
 
-1. Copy this repository.
-2. Run `bash start.sh` in the root directory of the project.
-
-### To test
-1. Run `bash test.sh` in the root directory of the project.
+1. Clone this repository.
+2. Run `docker compose up`
+3. To run tests, run `docker compose up tests`
